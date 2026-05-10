@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" style="background:#fff;font-family:Arial,sans-serif;">
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#111">Outboard Ignition Circuit</text>
+
+  <!-- Battery -->
+  <rect x="30" y="230" width="100" height="65" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="80" y="253" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">BATTERY</text>
+  <text x="80" y="268" text-anchor="middle" font-size="9" fill="#555">12V 600CCA</text>
+  <line x1="45" y1="278" x2="68" y2="278" stroke="#333" stroke-width="3"/>
+  <line x1="49" y1="285" x2="64" y2="285" stroke="#333" stroke-width="1.5"/>
+  <text x="33" y="248" font-size="12" fill="#cc0000" font-weight="bold">+</text>
+  <text x="33" y="292" font-size="12" fill="#000" font-weight="bold">−</text>
+
+  <!-- Wire to key switch -->
+  <line x1="80" y1="230" x2="80" y2="180" stroke="#cc0000" stroke-width="2.5"/>
+  <line x1="80" y1="180" x2="260" y2="180" stroke="#cc0000" stroke-width="2.5"/>
+  <text x="165" y="170" text-anchor="middle" font-size="9" fill="#888">4 AWG RED to starter</text>
+
+  <!-- Key Switch Box -->
+  <rect x="260" y="140" width="130" height="230" rx="6" fill="#e8e8e8" stroke="#333" stroke-width="2"/>
+  <text x="325" y="162" text-anchor="middle" font-size="12" font-weight="bold" fill="#222">KEY SWITCH</text>
+  <!-- positions -->
+  <rect x="275" y="172" width="110" height="30" rx="3" fill="#fff" stroke="#aaa" stroke-width="1"/>
+  <text x="330" y="192" text-anchor="middle" font-size="10" fill="#333">OFF</text>
+  <rect x="275" y="206" width="110" height="30" rx="3" fill="#ffe0e0" stroke="#cc0000" stroke-width="1.5"/>
+  <text x="330" y="226" text-anchor="middle" font-size="10" fill="#cc0000">RUN / ON</text>
+  <rect x="275" y="240" width="110" height="30" rx="3" fill="#e0ffe0" stroke="#006600" stroke-width="1.5"/>
+  <text x="330" y="260" text-anchor="middle" font-size="10" fill="#006600">START</text>
+  <rect x="275" y="274" width="110" height="30" rx="3" fill="#e8e0ff" stroke="#660099" stroke-width="1.5"/>
+  <text x="330" y="294" text-anchor="middle" font-size="10" fill="#660099">CHOKE (opt)</text>
+  <!-- terminal labels -->
+  <text x="265" y="175" font-size="8" fill="#888">B</text>
+  <text x="265" y="225" font-size="8" fill="#888">M</text>
+  <text x="265" y="260" font-size="8" fill="#888">S</text>
+  <text x="390" y="225" font-size="8" fill="#888">A (acc)</text>
+  <circle cx="260" cy="180" r="4" fill="#cc0000"/>
+  <circle cx="260" cy="220" r="4" fill="#660099"/>
+  <circle cx="260" cy="255" r="4" fill="#006600"/>
+  <circle cx="390" cy="220" r="4" fill="#cc6600"/>
+
+  <!-- Battery line to key switch B -->
+  <line x1="80" y1="180" x2="260" y2="180" stroke="#cc0000" stroke-width="2.5"/>
+  <circle cx="260" cy="180" r="4" fill="#cc0000"/>
+
+  <!-- CDI / Ignition Module -->
+  <rect x="560" y="130" width="130" height="65" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="625" y="155" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">CDI / IGNITION</text>
+  <text x="625" y="170" text-anchor="middle" font-size="10" fill="#555">MODULE</text>
+  <text x="625" y="185" text-anchor="middle" font-size="9" fill="#888">Capacitor Discharge</text>
+  <!-- wire from M terminal to CDI -->
+  <line x1="260" y1="220" x2="230" y2="220" stroke="#660099" stroke-width="2"/>
+  <line x1="230" y1="220" x2="230" y2="163" stroke="#660099" stroke-width="2"/>
+  <line x1="230" y1="163" x2="560" y2="163" stroke="#660099" stroke-width="2"/>
+  <text x="395" y="153" text-anchor="middle" font-size="9" fill="#660099">Purple — Ignition on</text>
+
+  <!-- Starter Solenoid -->
+  <rect x="560" y="220" width="130" height="65" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="625" y="245" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">STARTER</text>
+  <text x="625" y="260" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">SOLENOID</text>
+  <text x="625" y="275" text-anchor="middle" font-size="9" fill="#888">Relay / contactor</text>
+  <!-- S terminal wire to solenoid -->
+  <line x1="260" y1="255" x2="220" y2="255" stroke="#006600" stroke-width="2"/>
+  <line x1="220" y1="255" x2="560" y2="255" stroke="#006600" stroke-width="2"/>
+  <text x="395" y="245" text-anchor="middle" font-size="9" fill="#006600">Green — Crank</text>
+
+  <!-- Starter Motor -->
+  <rect x="560" y="320" width="130" height="60" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="625" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">STARTER</text>
+  <text x="625" y="360" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">MOTOR</text>
+  <!-- solenoid to starter -->
+  <line x1="625" y1="285" x2="625" y2="320" stroke="#cc0000" stroke-width="3"/>
+  <text x="640" y="310" font-size="9" fill="#888">4 AWG</text>
+
+  <!-- Kill Switch -->
+  <rect x="560" y="410" width="130" height="55" rx="5" fill="#f0f0f0" stroke="#cc0000" stroke-width="2"/>
+  <text x="625" y="432" text-anchor="middle" font-size="11" font-weight="bold" fill="#cc0000">KILL SWITCH</text>
+  <text x="625" y="448" text-anchor="middle" font-size="9" fill="#333">Safety lanyard</text>
+  <text x="625" y="461" text-anchor="middle" font-size="9" fill="#555">Grounds kill wire</text>
+  <!-- kill wire from CDI to kill switch -->
+  <line x1="690" y1="163" x2="750" y2="163" stroke="#000" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="750" y1="163" x2="750" y2="437" stroke="#000" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="750" y1="437" x2="690" y2="437" stroke="#000" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="760" y="310" font-size="9" fill="#333">Kill / Stop wire</text>
+
+  <!-- Neutral Safety Switch -->
+  <rect x="560" y="490" width="130" height="55" rx="5" fill="#f0f0f0" stroke="#ccaa00" stroke-width="1.5"/>
+  <text x="625" y="512" text-anchor="middle" font-size="11" font-weight="bold" fill="#665500">NEUTRAL</text>
+  <text x="625" y="527" text-anchor="middle" font-size="10" font-weight="bold" fill="#665500">SAFETY SW</text>
+  <text x="625" y="540" text-anchor="middle" font-size="9" fill="#888">Prevents crank in gear</text>
+  <!-- neutral safety in series with start wire -->
+  <line x1="390" y1="255" x2="390" y2="517" stroke="#006600" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="390" y1="517" x2="560" y2="517" stroke="#006600" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="470" y="510" text-anchor="middle" font-size="9" fill="#006600">Green — in series</text>
+
+  <!-- Battery heavy wire to solenoid -->
+  <line x1="80" y1="180" x2="80" y2="90" stroke="#cc0000" stroke-width="3"/>
+  <line x1="80" y1="90" x2="625" y2="90" stroke="#cc0000" stroke-width="3"/>
+  <line x1="625" y1="90" x2="625" y2="220" stroke="#cc0000" stroke-width="3"/>
+  <text x="355" y="82" text-anchor="middle" font-size="9" fill="#888">4 AWG RED — Battery + to solenoid main terminal</text>
+
+  <!-- Ground -->
+  <line x1="80" y1="295" x2="80" y2="550" stroke="#000" stroke-width="2.5"/>
+  <line x1="80" y1="550" x2="625" y2="550" stroke="#000" stroke-width="2.5"/>
+  <line x1="625" y1="550" x2="625" y2="380" stroke="#000" stroke-width="2.5"/>
+  <text x="355" y="568" text-anchor="middle" font-size="9" fill="#888">4 AWG BLK — Common Ground</text>
+  <!-- Ground symbol -->
+  <line x1="80" y1="550" x2="80" y2="580" stroke="#000" stroke-width="2"/>
+  <line x1="64" y1="580" x2="96" y2="580" stroke="#000" stroke-width="2.5"/>
+  <line x1="69" y1="587" x2="91" y2="587" stroke="#000" stroke-width="2"/>
+  <line x1="74" y1="594" x2="86" y2="594" stroke="#000" stroke-width="1.5"/>
+
+  <!-- Legend -->
+  <rect x="30" y="430" width="210" height="130" rx="5" fill="#f9f9f9" stroke="#ccc" stroke-width="1"/>
+  <text x="135" y="448" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Wire Colors</text>
+  <line x1="40" y1="462" x2="70" y2="462" stroke="#cc0000" stroke-width="2.5"/>
+  <text x="75" y="466" font-size="10" fill="#333">Battery/Start (Red)</text>
+  <line x1="40" y1="480" x2="70" y2="480" stroke="#000" stroke-width="2.5"/>
+  <text x="75" y="484" font-size="10" fill="#333">Ground (Black)</text>
+  <line x1="40" y1="498" x2="70" y2="498" stroke="#660099" stroke-width="2.5"/>
+  <text x="75" y="502" font-size="10" fill="#333">Ignition On (Purple)</text>
+  <line x1="40" y1="516" x2="70" y2="516" stroke="#006600" stroke-width="2.5"/>
+  <text x="75" y="520" font-size="10" fill="#333">Crank/Start (Green)</text>
+  <line x1="40" y1="534" x2="70" y2="534" stroke="#000" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="75" y="538" font-size="10" fill="#333">Kill / Safety (dash)</text>
+</svg>

@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <marker id="arrowB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a6faf"/>
+    </marker>
+    <marker id="arrowR" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc3300"/>
+    </marker>
+    <marker id="arrowBk" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#555"/>
+    </marker>
+    <marker id="arrowG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#888"/>
+    </marker>
+    <linearGradient id="engineGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d0e8d0"/>
+      <stop offset="100%" stop-color="#a0c8a0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#f8f8f8"/>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="800" height="55" fill="#3a1a0a"/>
+  <text x="400" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="white">MARINE WET EXHAUST SYSTEM</text>
+  <text x="400" y="46" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#f0b870">Water-Cooled Exhaust — Raw Water Injection System</text>
+
+  <!-- Horizontal flow direction indicator -->
+  <text x="400" y="72" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888">HOT DRY EXHAUST GAS →→→ INJECTION POINT →→→ COOLED WET EXHAUST →→→ OVERBOARD</text>
+
+  <!-- ===== ENGINE ===== -->
+  <rect x="20" y="105" width="130" height="170" rx="6" fill="url(#engineGrad)" stroke="#2d5a1a" stroke-width="2.5"/>
+  <text x="85" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1a3a0a">MARINE</text>
+  <text x="85" y="147" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1a3a0a">DIESEL</text>
+  <text x="85" y="164" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1a3a0a">ENGINE</text>
+  <!-- engine cylinder lines -->
+  <line x1="35" y1="175" x2="140" y2="175" stroke="#2d5a1a" stroke-width="1" opacity="0.5"/>
+  <line x1="35" y1="190" x2="140" y2="190" stroke="#2d5a1a" stroke-width="1" opacity="0.5"/>
+  <line x1="35" y1="205" x2="140" y2="205" stroke="#2d5a1a" stroke-width="1" opacity="0.5"/>
+  <line x1="35" y1="220" x2="140" y2="220" stroke="#2d5a1a" stroke-width="1" opacity="0.5"/>
+  <text x="85" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">Exhaust port →</text>
+  <text x="85" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">Starboard or Port</text>
+
+  <!-- Hot exhaust from engine → exhaust manifold -->
+  <line x1="150" y1="185" x2="195" y2="185" stroke="#cc3300" stroke-width="3" marker-end="url(#arrowR)"/>
+  <!-- Hot label -->
+  <text x="172" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#cc3300" font-weight="bold">HOT</text>
+  <text x="172" y="198" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#cc3300">~800°F</text>
+
+  <!-- EXHAUST MANIFOLD -->
+  <rect x="195" y="160" width="115" height="60" rx="6" fill="#ffe0d0" stroke="#cc3300" stroke-width="2"/>
+  <text x="252" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a0000">EXHAUST</text>
+  <text x="252" y="196" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a0000">MANIFOLD</text>
+  <text x="252" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Cast iron / SS</text>
+  <text x="252" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">Water-jacketed type</text>
+
+  <!-- Hot exhaust manifold → water injection elbow -->
+  <line x1="310" y1="190" x2="355" y2="190" stroke="#cc3300" stroke-width="3" marker-end="url(#arrowR)"/>
+  <text x="332" y="183" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#cc3300">HOT GAS</text>
+
+  <!-- RAW WATER injection from top -->
+  <!-- raw water pipe coming down from above -->
+  <line x1="400" y1="85" x2="400" y2="152" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+  <!-- raw water source label -->
+  <rect x="355" y="63" width="130" height="32" rx="4" fill="#e8f4f8" stroke="#1a6faf" stroke-width="1.5"/>
+  <text x="420" y="79" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1a3a5c">RAW WATER PUMP</text>
+  <text x="420" y="91" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">From heat exchanger outlet</text>
+  <text x="420" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1a6faf">INJECTION →</text>
+
+  <!-- WATER INJECTION ELBOW / MIXING ELBOW -->
+  <rect x="355" y="152" width="130" height="85" rx="6" fill="#e8f0f8" stroke="#1a3a5c" stroke-width="2.5"/>
+  <text x="420" y="172" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1a3a5c">WATER</text>
+  <text x="420" y="186" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1a3a5c">INJECTION</text>
+  <text x="420" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1a3a5c">ELBOW</text>
+  <text x="420" y="214" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">(Mixing Point)</text>
+  <text x="420" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">Gas cools to ~130°F</text>
+  <!-- mixing symbol — asterisk -->
+  <text x="420" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#1a3a5c" opacity="0.2">✕</text>
+  <!-- injection nozzle symbol (where water meets gas) -->
+  <circle cx="400" cy="152" r="5" fill="#1a6faf"/>
+  <text x="340" y="155" font-family="Arial, sans-serif" font-size="8" fill="#1a6faf" font-weight="bold">INJECTION</text>
+  <text x="340" y="165" font-family="Arial, sans-serif" font-size="8" fill="#1a6faf" font-weight="bold">POINT ↑</text>
+
+  <!-- Mixed (wet exhaust) → exhaust hose -->
+  <line x1="485" y1="194" x2="535" y2="194" stroke="#555" stroke-width="3" marker-end="url(#arrowBk)"/>
+  <text x="510" y="186" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">WET</text>
+  <text x="510" y="204" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">~130°F</text>
+
+  <!-- EXHAUST HOSE -->
+  <rect x="535" y="170" width="105" height="55" rx="6" fill="#f0f0f0" stroke="#555" stroke-width="2"/>
+  <text x="587" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">EXHAUST</text>
+  <text x="587" y="206" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">HOSE</text>
+  <text x="587" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Fiberglass/rubber</text>
+  <!-- hose texture lines -->
+  <line x1="548" y1="178" x2="625" y2="178" stroke="#999" stroke-width="0.5" opacity="0.5"/>
+  <line x1="548" y1="184" x2="625" y2="184" stroke="#999" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- WATERLOCK / MUFFLER (optional but common) -->
+  <rect x="535" y="250" width="105" height="65" rx="6" fill="#e8e8f8" stroke="#5555aa" stroke-width="2"/>
+  <text x="587" y="272" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#2a2a6a">WATERLOCK</text>
+  <text x="587" y="286" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#2a2a6a">MUFFLER</text>
+  <text x="587" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Reduces back-pressure</text>
+  <text x="587" y="313" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Traps water at rest</text>
+  <!-- waterlock chambers -->
+  <line x1="548" y1="290" x2="625" y2="290" stroke="#5555aa" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <!-- Hose to waterlock -->
+  <line x1="587" y1="225" x2="587" y2="250" stroke="#555" stroke-width="3" marker-end="url(#arrowBk)"/>
+
+  <!-- Waterlock → transom fitting -->
+  <line x1="640" y1="282" x2="680" y2="282" stroke="#555" stroke-width="3" marker-end="url(#arrowBk)"/>
+
+  <!-- TRANSOM EXIT / EXHAUST OUTLET -->
+  <rect x="680" y="255" width="100" height="75" rx="6" fill="#e8e8e8" stroke="#555" stroke-width="2.5"/>
+  <text x="730" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">TRANSOM</text>
+  <text x="730" y="292" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">EXIT</text>
+  <text x="730" y="307" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Above waterline</text>
+  <text x="730" y="321" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">Water + gas → sea</text>
+  <!-- exhaust outlet symbol -->
+  <ellipse cx="773" cy="293" rx="8" ry="12" fill="#ccc" stroke="#555" stroke-width="1.5"/>
+  <!-- exhaust spray -->
+  <path d="M781 293 Q790 283 795 278" stroke="#888" stroke-width="1.5" fill="none"/>
+  <path d="M781 293 Q790 293 795 293" stroke="#888" stroke-width="1.5" fill="none"/>
+  <path d="M781 293 Q790 303 795 308" stroke="#888" stroke-width="1.5" fill="none"/>
+
+  <!-- HIGH LOOP annotation -->
+  <!-- High loop required at exhaust -->
+  <rect x="25" y="310" width="300" height="75" rx="6" fill="#fff9e6" stroke="#d4820a" stroke-width="1.5"/>
+  <text x="175" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#8B5E00">⚠ HIGH LOOP REQUIREMENT</text>
+  <text x="175" y="346" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Exhaust hose must have a high loop above</text>
+  <text x="175" y="359" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">waterline to prevent siphoning seawater</text>
+  <text x="175" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">back into engine when stopped.</text>
+  <text x="175" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">Siphon valve also recommended.</text>
+
+  <!-- High loop illustration (path going up then down) -->
+  <path d="M355 260 C380 260 380 220 400 220 C420 220 420 260 445 260" stroke="#555" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+  <text x="400" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">HIGH LOOP</text>
+  <text x="400" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#888">(above waterline)</text>
+
+  <!-- TEMP MEASUREMENTS along path -->
+  <text x="175" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#cc3300" font-weight="bold">~800°F</text>
+  <text x="175" y="167" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#cc3300">Dry gas</text>
+
+  <!-- LEGEND -->
+  <rect x="25" y="400" width="200" height="85" rx="6" fill="white" stroke="#ccc" stroke-width="1"/>
+  <text x="125" y="418" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">LEGEND</text>
+  <line x1="38" y1="430" x2="70" y2="430" stroke="#cc3300" stroke-width="3" marker-end="url(#arrowR)"/>
+  <text x="76" y="433" font-family="Arial, sans-serif" font-size="9" fill="#333">Hot Exhaust Gas</text>
+  <line x1="38" y1="446" x2="70" y2="446" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+  <text x="76" y="449" font-family="Arial, sans-serif" font-size="9" fill="#333">Raw Water Flow</text>
+  <line x1="38" y1="462" x2="70" y2="462" stroke="#555" stroke-width="3" marker-end="url(#arrowBk)"/>
+  <text x="76" y="465" font-family="Arial, sans-serif" font-size="9" fill="#333">Wet Exhaust (Gas+Water)</text>
+  <text x="38" y="479" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">⚠ Check exhaust elbow every season</text>
+
+  <!-- temperature arrow at transom -->
+  <text x="660" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Exit: ~100–130°F</text>
+  <text x="660" y="362" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Normal discharge</text>
+</svg>

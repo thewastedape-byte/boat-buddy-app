@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <marker id="arrowR" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc2222"/>
+    </marker>
+    <marker id="arrowBk" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+    <marker id="arrowY" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#aa8800"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#f8f8f8"/>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="800" height="55" fill="#1a1a3a"/>
+  <text x="400" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="white">ANCHOR WINDLASS WIRING DIAGRAM</text>
+  <text x="400" y="46" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a0a0f0">12VDC High-Current Circuit — Dual Switch Control</text>
+
+  <!-- Wire sizing reference bar -->
+  <rect x="0" y="55" width="800" height="22" fill="#f0f0f0"/>
+  <text x="10" y="70" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#555">WIRE SIZES:</text>
+  <rect x="105" y="58" width="16" height="14" rx="2" fill="#cc2222"/>
+  <text x="125" y="69" font-family="Arial, sans-serif" font-size="9" fill="#333">RED = Positive (+12V)  — 2/0 AWG main, 4 AWG control</text>
+  <rect x="420" y="58" width="16" height="14" rx="2" fill="#333"/>
+  <text x="440" y="69" font-family="Arial, sans-serif" font-size="9" fill="#333">BLACK = Negative/Ground  — 2/0 AWG main</text>
+  <rect x="640" y="58" width="16" height="14" rx="2" fill="#aa8800"/>
+  <text x="660" y="69" font-family="Arial, sans-serif" font-size="9" fill="#333">YELLOW = Control signal</text>
+
+  <!-- ===== DEDICATED BATTERY / BATTERY BANK ===== -->
+  <rect x="20" y="95" width="130" height="90" rx="6" fill="#ffe8e8" stroke="#cc2222" stroke-width="2.5"/>
+  <text x="85" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#4a0000">WINDLASS</text>
+  <text x="85" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#4a0000">BATTERY</text>
+  <text x="85" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">12V / 100+Ah</text>
+  <text x="85" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Or House Bank</text>
+  <text x="85" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">Near bow preferred</text>
+  <!-- battery symbol -->
+  <line x1="60" y1="110" x2="110" y2="110" stroke="#cc2222" stroke-width="2"/>
+  <line x1="65" y1="114" x2="105" y2="114" stroke="#cc2222" stroke-width="1"/>
+  <text x="52" y="115" font-family="Arial, sans-serif" font-size="12" fill="#cc2222" font-weight="bold">+</text>
+  <text x="115" y="115" font-family="Arial, sans-serif" font-size="12" fill="#333">−</text>
+
+  <!-- ===== MAIN FUSE (at battery +) ===== -->
+  <!-- 2/0 AWG red from battery + -->
+  <line x1="150" y1="125" x2="205" y2="125" stroke="#cc2222" stroke-width="5" marker-end="url(#arrowR)"/>
+  <!-- wire gauge label -->
+  <text x="177" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#cc2222" font-weight="bold">2/0 AWG</text>
+
+  <!-- MAIN FUSE/MIDI fuse -->
+  <rect x="205" y="108" width="90" height="42" rx="5" fill="#ffe8e8" stroke="#cc2222" stroke-width="2"/>
+  <text x="250" y="127" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a0000">MAIN FUSE</text>
+  <text x="250" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">150–200A MEGA</text>
+  <text x="250" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#888">Within 7" of battery +</text>
+  <!-- fuse element symbol -->
+  <rect x="228" y="112" width="44" height="12" rx="3" fill="none" stroke="#cc2222" stroke-width="1.5"/>
+  <line x1="210" y1="118" x2="228" y2="118" stroke="#cc2222" stroke-width="2"/>
+  <line x1="272" y1="118" x2="295" y2="118" stroke="#cc2222" stroke-width="2"/>
+
+  <!-- Fuse → Circuit Breaker -->
+  <line x1="295" y1="129" x2="345" y2="129" stroke="#cc2222" stroke-width="5" marker-end="url(#arrowR)"/>
+  <text x="320" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#cc2222">2/0 AWG</text>
+
+  <!-- CIRCUIT BREAKER -->
+  <rect x="345" y="108" width="110" height="42" rx="5" fill="#ffe8e8" stroke="#cc2222" stroke-width="2"/>
+  <text x="400" y="127" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a0000">CIRCUIT</text>
+  <text x="400" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a0000">BREAKER</text>
+  <text x="400" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#555">100–150A manual reset</text>
+  <!-- breaker symbol -->
+  <line x1="360" y1="125" x2="373" y2="125" stroke="#cc2222" stroke-width="2"/>
+  <line x1="373" y1="120" x2="382" y2="125" stroke="#cc2222" stroke-width="2"/>
+  <line x1="382" y1="125" x2="395" y2="125" stroke="#cc2222" stroke-width="2"/>
+
+  <!-- CB → Contactor/Solenoid -->
+  <line x1="455" y1="129" x2="500" y2="129" stroke="#cc2222" stroke-width="5" marker-end="url(#arrowR)"/>
+  <text x="477" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#cc2222">2/0 AWG</text>
+
+  <!-- ===== CONTACTOR / SOLENOID ===== -->
+  <rect x="500" y="90" width="130" height="90" rx="6" fill="#fff0d0" stroke="#aa6600" stroke-width="2.5"/>
+  <text x="565" y="113" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a2000">CONTACTOR /</text>
+  <text x="565" y="127" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a2000">SOLENOID</text>
+  <text x="565" y="142" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Direction reversing</text>
+  <text x="565" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">UP/DOWN relay pair</text>
+  <text x="565" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">Victron / Lewmar / Lofrans</text>
+  <!-- contactor coil symbol -->
+  <rect x="533" y="103" width="24" height="18" rx="3" fill="none" stroke="#aa6600" stroke-width="1.5"/>
+  <line x1="533" y1="112" x2="557" y2="112" stroke="#aa6600" stroke-width="1.5" stroke-dasharray="2,2"/>
+
+  <!-- Contactor → Windlass Motor -->
+  <line x1="630" y1="135" x2="670" y2="135" stroke="#cc2222" stroke-width="5" marker-end="url(#arrowR)"/>
+  <text x="650" y="127" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#cc2222">2/0 AWG</text>
+
+  <!-- WINDLASS MOTOR -->
+  <rect x="670" y="95" width="110" height="100" rx="6" fill="#e8e8f8" stroke="#3333aa" stroke-width="2.5"/>
+  <text x="725" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a1a5c">WINDLASS</text>
+  <text x="725" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a1a5c">MOTOR</text>
+  <text x="725" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">600–2500W</text>
+  <text x="725" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">50–200A peak draw</text>
+  <text x="725" y="176" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">Bow-mounted</text>
+  <!-- motor symbol -->
+  <circle cx="725" cy="130" r="12" fill="none" stroke="#3333aa" stroke-width="1.5"/>
+  <text x="725" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#3333aa">M</text>
+
+  <!-- GROUND RETURN from motor back to battery (heavy negative) -->
+  <line x1="725" y1="195" x2="725" y2="250" stroke="#333" stroke-width="5"/>
+  <line x1="725" y1="250" x2="85" y2="250" stroke="#333" stroke-width="5"/>
+  <line x1="85" y1="250" x2="85" y2="185" stroke="#333" stroke-width="5" marker-end="url(#arrowBk)"/>
+  <text x="405" y="243" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333" font-weight="bold">NEGATIVE RETURN — 2/0 AWG BLACK — DIRECT TO BATTERY (−)</text>
+  <!-- negative label annotations along route -->
+  <text x="160" y="245" font-family="Arial, sans-serif" font-size="8" fill="#555">− return</text>
+  <text x="650" y="245" font-family="Arial, sans-serif" font-size="8" fill="#555">− return</text>
+
+  <!-- ===== CONTROL CIRCUIT ===== -->
+  <text x="400" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#555">LOW-CURRENT CONTROL CIRCUIT (4 AWG or 4 AWG / 14 AWG control wire)</text>
+  <line x1="50" y1="285" x2="750" y2="285" stroke="#555" stroke-width="0.5" stroke-dasharray="6,4"/>
+
+  <!-- ===== DECK SWITCH ===== -->
+  <rect x="30" y="305" width="140" height="80" rx="6" fill="#fff0d0" stroke="#aa6600" stroke-width="2"/>
+  <text x="100" y="326" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a2000">DECK SWITCH</text>
+  <text x="100" y="341" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Foot switch or</text>
+  <text x="100" y="354" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">windlass control</text>
+  <text x="100" y="367" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">UP / DOWN / STOP</text>
+  <text x="100" y="378" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">Bow location</text>
+  <!-- switch symbol -->
+  <line x1="70" y1="340" x2="83" y2="340" stroke="#aa8800" stroke-width="2"/>
+  <line x1="83" y1="335" x2="92" y2="340" stroke="#aa8800" stroke-width="2"/>
+  <line x1="92" y1="340" x2="105" y2="340" stroke="#aa8800" stroke-width="2"/>
+
+  <!-- Deck switch control wires → contactor -->
+  <line x1="170" y1="340" x2="420" y2="340" stroke="#aa8800" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowY)"/>
+  <line x1="170" y1="355" x2="420" y2="355" stroke="#333" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="300" y="333" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#aa8800">CONTROL +  (14 AWG yellow/green)</text>
+  <text x="300" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">CONTROL GND (14 AWG black)</text>
+  <!-- bridge to contactor -->
+  <line x1="420" y1="340" x2="565" y2="180" stroke="#aa8800" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- ===== HELM SWITCH ===== -->
+  <rect x="220" y="305" width="145" height="80" rx="6" fill="#fff0d0" stroke="#aa6600" stroke-width="2"/>
+  <text x="292" y="326" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a2000">HELM SWITCH</text>
+  <text x="292" y="341" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Panel-mounted</text>
+  <text x="292" y="354" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">rocker switch or</text>
+  <text x="292" y="367" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">remote pendant</text>
+  <text x="292" y="378" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">UP / DOWN / OFF</text>
+  <!-- switch symbol -->
+  <line x1="255" y1="340" x2="268" y2="340" stroke="#aa8800" stroke-width="2"/>
+  <line x1="268" y1="335" x2="277" y2="340" stroke="#aa8800" stroke-width="2"/>
+  <line x1="277" y1="340" x2="290" y2="340" stroke="#aa8800" stroke-width="2"/>
+
+  <!-- Helm switch → same contactor control wires (parallel) -->
+  <line x1="292" y1="385" x2="292" y2="410" stroke="#aa8800" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="292" y1="410" x2="565" y2="410" stroke="#aa8800" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="565" y1="410" x2="565" y2="180" stroke="#aa8800" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowY)"/>
+  <text x="430" y="407" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#aa8800" font-style="italic">parallel control from helm</text>
+
+  <!-- WINDLASS SIZING / NOTES BOX -->
+  <rect x="450" y="305" width="330" height="155" rx="6" fill="white" stroke="#ccc" stroke-width="1.5"/>
+  <text x="615" y="323" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">INSTALLATION NOTES</text>
+  <line x1="460" y1="328" x2="770" y2="328" stroke="#ccc" stroke-width="0.5"/>
+  <text x="460" y="342" font-family="Arial, sans-serif" font-size="8" fill="#333">Wire sizing: based on distance — use voltage drop tables</text>
+  <text x="460" y="355" font-family="Arial, sans-serif" font-size="8" fill="#333">10ft run: 2/0 AWG  |  20ft: 3/0 AWG  |  30ft: 4/0 AWG</text>
+  <text x="460" y="368" font-family="Arial, sans-serif" font-size="8" fill="#333">Fuse = breaker located near battery, NOT at windlass</text>
+  <text x="460" y="381" font-family="Arial, sans-serif" font-size="8" fill="#333">Crimp lugs — no wire nuts on high-current runs</text>
+  <text x="460" y="394" font-family="Arial, sans-serif" font-size="8" fill="#333">Marine-grade tinned wire required</text>
+  <text x="460" y="407" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">ABYC E-11: no in-line fuses — use circuit breakers on DC</text>
+  <text x="460" y="420" font-family="Arial, sans-serif" font-size="8" fill="#333">Solenoid rated for continuous duty if auto-setting</text>
+  <text x="460" y="433" font-family="Arial, sans-serif" font-size="8" fill="#333">Windlass load: 1/3 breaking strength of anchor rode</text>
+  <text x="460" y="446" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">Never run engine directly from windlass battery — isolate!</text>
+
+  <!-- LEGEND -->
+  <rect x="30" y="410" width="200" height="70" rx="5" fill="white" stroke="#ccc" stroke-width="1"/>
+  <text x="130" y="428" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#333">LEGEND</text>
+  <line x1="42" y1="440" x2="72" y2="440" stroke="#cc2222" stroke-width="5"/>
+  <text x="78" y="443" font-family="Arial, sans-serif" font-size="8" fill="#333">+12V Power (2/0 AWG)</text>
+  <line x1="42" y1="454" x2="72" y2="454" stroke="#333" stroke-width="5"/>
+  <text x="78" y="457" font-family="Arial, sans-serif" font-size="8" fill="#333">Negative Return (2/0 AWG)</text>
+  <line x1="42" y1="468" x2="72" y2="468" stroke="#aa8800" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="78" y="471" font-family="Arial, sans-serif" font-size="8" fill="#333">Control Circuit (14 AWG)</text>
+</svg>

@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" style="background:#fff;font-family:Arial,sans-serif;">
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#111">Outboard EFI Sensor Wiring</text>
+
+  <!-- ECU Box - center -->
+  <rect x="330" y="200" width="240" height="200" rx="8" fill="#e0e8f0" stroke="#333" stroke-width="2.5"/>
+  <text x="450" y="228" text-anchor="middle" font-size="14" font-weight="bold" fill="#003366">ECU / PCM</text>
+  <text x="450" y="245" text-anchor="middle" font-size="10" fill="#003366">Engine Control Unit</text>
+  <!-- ECU terminal labels -->
+  <text x="338" y="270" font-size="9" fill="#333">MAP</text>
+  <text x="338" y="290" font-size="9" fill="#333">TPS</text>
+  <text x="338" y="310" font-size="9" fill="#333">CTS</text>
+  <text x="338" y="330" font-size="9" fill="#333">CPS</text>
+  <text x="338" y="350" font-size="9" fill="#333">IAT</text>
+  <text x="338" y="370" font-size="9" fill="#333">O2</text>
+  <!-- right side terminals -->
+  <text x="540" y="270" font-size="9" fill="#333">INJ1</text>
+  <text x="540" y="290" font-size="9" fill="#333">INJ2</text>
+  <text x="540" y="310" font-size="9" fill="#333">INJ3</text>
+  <text x="540" y="330" font-size="9" fill="#333">FUEL PMP</text>
+  <text x="540" y="350" font-size="9" fill="#333">IGN COIL</text>
+  <text x="540" y="370" font-size="9" fill="#333">DIAG</text>
+
+  <!-- ECU terminal dots left -->
+  <circle cx="330" cy="267" r="3" fill="#333"/>
+  <circle cx="330" cy="287" r="3" fill="#333"/>
+  <circle cx="330" cy="307" r="3" fill="#333"/>
+  <circle cx="330" cy="327" r="3" fill="#333"/>
+  <circle cx="330" cy="347" r="3" fill="#333"/>
+  <circle cx="330" cy="367" r="3" fill="#333"/>
+
+  <!-- ECU terminal dots right -->
+  <circle cx="570" cy="267" r="3" fill="#333"/>
+  <circle cx="570" cy="287" r="3" fill="#333"/>
+  <circle cx="570" cy="307" r="3" fill="#333"/>
+  <circle cx="570" cy="327" r="3" fill="#333"/>
+  <circle cx="570" cy="347" r="3" fill="#333"/>
+  <circle cx="570" cy="367" r="3" fill="#333"/>
+
+  <!-- Power supply to ECU -->
+  <line x1="450" y1="200" x2="450" y2="150" stroke="#cc0000" stroke-width="2"/>
+  <line x1="450" y1="150" x2="380" y2="150" stroke="#cc0000" stroke-width="2"/>
+  <rect x="320" y="140" width="60" height="20" rx="3" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="350" y="154" text-anchor="middle" font-size="9" fill="#333">IGN FUSE</text>
+  <text x="310" y="145" font-size="8" fill="#888">10A</text>
+  <line x1="320" y1="150" x2="230" y2="150" stroke="#cc0000" stroke-width="2"/>
+  <line x1="230" y1="150" x2="230" y2="110" stroke="#660099" stroke-width="2"/>
+  <text x="200" y="108" font-size="9" fill="#660099">Key Switch</text>
+  <text x="200" y="120" font-size="9" fill="#660099">IGN on</text>
+
+  <!-- MAP Sensor -->
+  <rect x="60" y="240" width="130" height="55" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="125" y="262" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">MAP SENSOR</text>
+  <text x="125" y="277" text-anchor="middle" font-size="9" fill="#555">Manifold Absolute Pressure</text>
+  <text x="125" y="290" text-anchor="middle" font-size="9" fill="#888">0-5V output</text>
+  <line x1="190" y1="267" x2="330" y2="267" stroke="#ccaa00" stroke-width="1.5"/>
+  <text x="260" y="257" font-size="9" fill="#ccaa00">0–5V signal</text>
+  <!-- sensor power and ground -->
+  <line x1="60" y1="262" x2="40" y2="262" stroke="#cc0000" stroke-width="1.5"/>
+  <text x="25" y="258" font-size="8" fill="#cc0000">5V</text>
+  <line x1="60" y1="278" x2="40" y2="278" stroke="#000" stroke-width="1.5"/>
+  <text x="25" y="282" font-size="8" fill="#000">GND</text>
+
+  <!-- TPS -->
+  <rect x="60" y="310" width="130" height="55" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="125" y="332" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">TPS</text>
+  <text x="125" y="347" text-anchor="middle" font-size="9" fill="#555">Throttle Position Sensor</text>
+  <text x="125" y="360" text-anchor="middle" font-size="9" fill="#888">Potentiometer</text>
+  <line x1="190" y1="337" x2="330" y2="287" stroke="#ccaa00" stroke-width="1.5"/>
+  <text x="260" y="325" font-size="9" fill="#ccaa00">0–5V</text>
+  <line x1="60" y1="332" x2="40" y2="332" stroke="#cc0000" stroke-width="1.5"/>
+  <text x="25" y="328" font-size="8" fill="#cc0000">5V</text>
+  <line x1="60" y1="348" x2="40" y2="348" stroke="#000" stroke-width="1.5"/>
+  <text x="25" y="352" font-size="8" fill="#000">GND</text>
+
+  <!-- Coolant Temp Sensor -->
+  <rect x="60" y="380" width="130" height="55" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="125" y="400" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">COOLANT TEMP</text>
+  <text x="125" y="415" text-anchor="middle" font-size="9" fill="#555">NTC Thermistor</text>
+  <text x="125" y="428" text-anchor="middle" font-size="9" fill="#888">Resistance varies with temp</text>
+  <line x1="190" y1="405" x2="270" y2="405" stroke="#cc6600" stroke-width="1.5"/>
+  <line x1="270" y1="405" x2="330" y2="307" stroke="#cc6600" stroke-width="1.5"/>
+  <text x="240" y="395" font-size="9" fill="#cc6600">Ω signal</text>
+  <line x1="60" y1="400" x2="40" y2="400" stroke="#cc0000" stroke-width="1.5"/>
+  <text x="25" y="396" font-size="8" fill="#cc0000">5V</text>
+  <line x1="60" y1="416" x2="40" y2="416" stroke="#000" stroke-width="1.5"/>
+  <text x="25" y="420" font-size="8" fill="#000">GND</text>
+
+  <!-- Crank Position Sensor -->
+  <rect x="60" y="450" width="130" height="55" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="125" y="470" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">CRANK POSITION</text>
+  <text x="125" y="485" text-anchor="middle" font-size="9" fill="#555">Hall Effect / Reluctor</text>
+  <text x="125" y="498" text-anchor="middle" font-size="9" fill="#888">Reluctor wheel detection</text>
+  <line x1="190" y1="475" x2="280" y2="475" stroke="#0000cc" stroke-width="1.5"/>
+  <line x1="280" y1="475" x2="330" y2="327" stroke="#0000cc" stroke-width="1.5"/>
+  <text x="245" y="465" font-size="9" fill="#0000cc">Digital pulse</text>
+  <line x1="60" y1="470" x2="40" y2="470" stroke="#cc0000" stroke-width="1.5"/>
+  <text x="25" y="466" font-size="8" fill="#cc0000">12V</text>
+  <line x1="60" y1="486" x2="40" y2="486" stroke="#000" stroke-width="1.5"/>
+  <text x="25" y="490" font-size="8" fill="#000">GND</text>
+
+  <!-- Right side - injectors -->
+  <!-- Injector 1 -->
+  <rect x="700" y="230" width="130" height="45" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="765" y="248" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">INJECTOR 1</text>
+  <text x="765" y="263" text-anchor="middle" font-size="9" fill="#555">14 Ω / pulsed 12V</text>
+  <line x1="700" y1="253" x2="570" y2="267" stroke="#cc0000" stroke-width="1.5"/>
+
+  <!-- Injector 2 -->
+  <rect x="700" y="285" width="130" height="45" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="765" y="303" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">INJECTOR 2</text>
+  <text x="765" y="318" text-anchor="middle" font-size="9" fill="#555">14 Ω / pulsed 12V</text>
+  <line x1="700" y1="308" x2="570" y2="287" stroke="#cc0000" stroke-width="1.5"/>
+
+  <!-- Injector 3 -->
+  <rect x="700" y="340" width="130" height="45" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="765" y="358" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">INJECTOR 3</text>
+  <text x="765" y="373" text-anchor="middle" font-size="9" fill="#555">14 Ω / pulsed 12V</text>
+  <line x1="700" y1="363" x2="570" y2="307" stroke="#cc0000" stroke-width="1.5"/>
+
+  <!-- Fuel Pump -->
+  <rect x="700" y="395" width="130" height="45" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="765" y="413" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">FUEL PUMP</text>
+  <text x="765" y="428" text-anchor="middle" font-size="9" fill="#555">VSS relay controlled</text>
+  <line x1="700" y1="418" x2="570" y2="327" stroke="#ccaa00" stroke-width="1.5"/>
+
+  <!-- Ignition Coil -->
+  <rect x="700" y="450" width="130" height="45" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="765" y="468" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">IGNITION COIL</text>
+  <text x="765" y="483" text-anchor="middle" font-size="9" fill="#555">CDI trigger</text>
+  <line x1="700" y1="473" x2="570" y2="347" stroke="#660099" stroke-width="1.5"/>
+
+  <!-- ECU ground -->
+  <line x1="450" y1="400" x2="450" y2="480" stroke="#000" stroke-width="2"/>
+  <line x1="450" y1="480" x2="200" y2="480" stroke="#000" stroke-width="2"/>
+  <!-- Ground symbol -->
+  <line x1="200" y1="480" x2="200" y2="510" stroke="#000" stroke-width="2"/>
+  <line x1="182" y1="510" x2="218" y2="510" stroke="#000" stroke-width="2.5"/>
+  <line x1="187" y1="518" x2="213" y2="518" stroke="#000" stroke-width="2"/>
+  <line x1="192" y1="526" x2="208" y2="526" stroke="#000" stroke-width="1.5"/>
+  <text x="200" y="542" text-anchor="middle" font-size="9" fill="#555">Engine Ground</text>
+
+  <!-- Sensor reference voltage note -->
+  <rect x="30" y="540" width="250" height="40" rx="4" fill="#fffbe6" stroke="#ccaa00" stroke-width="1"/>
+  <text x="155" y="557" text-anchor="middle" font-size="10" fill="#665500">ECU provides 5V reference to sensors</text>
+  <text x="155" y="572" text-anchor="middle" font-size="9" fill="#665500">All sensors share ECU signal ground</text>
+
+  <!-- Legend -->
+  <rect x="690" y="540" width="195" height="50" rx="5" fill="#f9f9f9" stroke="#ccc" stroke-width="1"/>
+  <line x1="700" y1="555" x2="725" y2="555" stroke="#ccaa00" stroke-width="2"/>
+  <text x="730" y="559" font-size="9" fill="#333">Analog signal (Yellow)</text>
+  <line x1="700" y1="573" x2="725" y2="573" stroke="#0000cc" stroke-width="2"/>
+  <text x="730" y="577" font-size="9" fill="#333">Digital signal (Blue)</text>
+</svg>

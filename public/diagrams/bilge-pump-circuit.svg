@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" style="background:#fff;font-family:Arial,sans-serif;">
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#111">Bilge Pump Electrical Circuit</text>
+
+  <!-- Battery -->
+  <rect x="30" y="100" width="100" height="65" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="80" y="123" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">BATTERY</text>
+  <text x="80" y="138" text-anchor="middle" font-size="9" fill="#555">12V DC</text>
+  <!-- battery symbol -->
+  <line x1="45" y1="145" x2="70" y2="145" stroke="#333" stroke-width="3"/>
+  <line x1="49" y1="152" x2="66" y2="152" stroke="#333" stroke-width="1.5"/>
+  <!-- terminals -->
+  <text x="33" y="115" font-size="12" fill="#cc0000" font-weight="bold">+</text>
+  <text x="33" y="160" font-size="12" fill="#000" font-weight="bold">−</text>
+
+  <!-- Positive wire from battery -->
+  <line x1="80" y1="100" x2="80" y2="70" stroke="#cc0000" stroke-width="2.5"/>
+  <line x1="80" y1="70" x2="300" y2="70" stroke="#cc0000" stroke-width="2.5"/>
+  <text x="180" y="60" text-anchor="middle" font-size="9" fill="#888">14 AWG RED</text>
+
+  <!-- Main Fuse on positive -->
+  <line x1="300" y1="70" x2="340" y2="70" stroke="#cc0000" stroke-width="2.5"/>
+  <rect x="340" y="60" width="30" height="20" rx="3" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="355" y="56" text-anchor="middle" font-size="9" fill="#555">20A</text>
+  <line x1="370" y1="70" x2="420" y2="70" stroke="#cc0000" stroke-width="2.5"/>
+  <circle cx="420" cy="70" r="4" fill="#333"/>
+
+  <!-- Manual Override Switch branch -->
+  <line x1="420" y1="70" x2="420" y2="150" stroke="#cc0000" stroke-width="2"/>
+  <rect x="370" y="150" width="100" height="50" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="420" y="170" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">MANUAL</text>
+  <text x="420" y="185" text-anchor="middle" font-size="10" fill="#333">SWITCH</text>
+  <!-- switch arc -->
+  <line x1="382" y1="175" x2="394" y2="175" stroke="#cc0000" stroke-width="1.5"/>
+  <path d="M394,175 Q404,165 414,175" fill="none" stroke="#333" stroke-width="1.5"/>
+  <line x1="414" y1="175" x2="426" y2="175" stroke="#cc0000" stroke-width="1.5"/>
+
+  <!-- Float Switch branch -->
+  <line x1="420" y1="70" x2="560" y2="70" stroke="#cc0000" stroke-width="2"/>
+  <circle cx="560" cy="70" r="4" fill="#333"/>
+  <line x1="560" y1="70" x2="560" y2="150" stroke="#cc0000" stroke-width="2"/>
+  <rect x="510" y="150" width="100" height="50" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="560" y="168" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">FLOAT</text>
+  <text x="560" y="183" text-anchor="middle" font-size="10" fill="#333">SWITCH (Auto)</text>
+  <!-- float symbol -->
+  <circle cx="560" cy="200" r="8" fill="none" stroke="#0000cc" stroke-width="1.5"/>
+  <text x="560" y="218" text-anchor="middle" font-size="9" fill="#0000cc">Float</text>
+  <line x1="555" y1="200" x2="555" y2="148" stroke="#0000cc" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <!-- Both switch outputs join to pump -->
+  <line x1="420" y1="200" x2="420" y2="260" stroke="#cc0000" stroke-width="2"/>
+  <line x1="560" y1="200" x2="560" y2="260" stroke="#cc0000" stroke-width="2"/>
+  <line x1="420" y1="260" x2="560" y2="260" stroke="#cc0000" stroke-width="2"/>
+  <circle cx="490" cy="260" r="4" fill="#333"/>
+  <line x1="490" y1="260" x2="490" y2="300" stroke="#cc0000" stroke-width="2"/>
+
+  <!-- Manual note -->
+  <text x="300" y="240" font-size="9" fill="#555">Manual</text>
+  <text x="300" y="252" font-size="9" fill="#555">always-on</text>
+  <text x="575" y="240" font-size="9" fill="#555">Auto on</text>
+  <text x="575" y="252" font-size="9" fill="#555">water rise</text>
+
+  <!-- Bilge Pump -->
+  <rect x="420" y="300" width="140" height="70" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="490" y="325" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">BILGE PUMP</text>
+  <text x="490" y="340" text-anchor="middle" font-size="10" fill="#555">1100–3700 GPH</text>
+  <text x="490" y="355" text-anchor="middle" font-size="9" fill="#888">Submersible</text>
+
+  <!-- Pump to thru-hull -->
+  <line x1="490" y1="370" x2="490" y2="420" stroke="#0000cc" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="505" y="400" font-size="9" fill="#0000cc">Discharge hose</text>
+  <rect x="440" y="420" width="100" height="40" rx="4" fill="#e0f0ff" stroke="#0000cc" stroke-width="1.5"/>
+  <text x="490" y="438" text-anchor="middle" font-size="10" font-weight="bold" fill="#0033aa">CHECK</text>
+  <text x="490" y="452" text-anchor="middle" font-size="10" font-weight="bold" fill="#0033aa">VALVE</text>
+  <line x1="490" y1="460" x2="490" y2="490" stroke="#0000cc" stroke-width="2" stroke-dasharray="6,3"/>
+  <rect x="440" y="490" width="100" height="40" rx="4" fill="#cce0ff" stroke="#333" stroke-width="1.5"/>
+  <text x="490" y="508" text-anchor="middle" font-size="10" font-weight="bold" fill="#003399">THRU-HULL</text>
+  <text x="490" y="522" text-anchor="middle" font-size="9" fill="#333">Above waterline</text>
+
+  <!-- Ground return -->
+  <line x1="490" y1="370" x2="750" y2="370" stroke="#000" stroke-width="2"/>
+  <line x1="750" y1="370" x2="750" y2="500" stroke="#000" stroke-width="2"/>
+  <line x1="750" y1="500" x2="80" y2="500" stroke="#000" stroke-width="2"/>
+  <line x1="80" y1="500" x2="80" y2="165" stroke="#000" stroke-width="2"/>
+  <text x="420" y="390" font-size="9" fill="#888">GND 14 AWG</text>
+
+  <!-- Ground symbol -->
+  <line x1="80" y1="500" x2="80" y2="530" stroke="#000" stroke-width="2"/>
+  <line x1="63" y1="530" x2="97" y2="530" stroke="#000" stroke-width="2.5"/>
+  <line x1="68" y1="538" x2="92" y2="538" stroke="#000" stroke-width="2"/>
+  <line x1="73" y1="546" x2="87" y2="546" stroke="#000" stroke-width="1.5"/>
+
+  <!-- Warning note -->
+  <rect x="620" y="100" width="250" height="80" rx="5" fill="#fff0f0" stroke="#cc0000" stroke-width="1.5"/>
+  <text x="745" y="120" text-anchor="middle" font-size="11" font-weight="bold" fill="#cc0000">⚠ IMPORTANT</text>
+  <text x="745" y="138" text-anchor="middle" font-size="10" fill="#550000">Float switch must be wired</text>
+  <text x="745" y="153" text-anchor="middle" font-size="10" fill="#550000">DIRECT to battery (not through</text>
+  <text x="745" y="168" text-anchor="middle" font-size="10" fill="#550000">main switch) for bilge protection</text>
+
+  <!-- Legend -->
+  <rect x="620" y="430" width="250" height="110" rx="5" fill="#f9f9f9" stroke="#ccc" stroke-width="1"/>
+  <text x="745" y="448" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Wire Colors &amp; Symbols</text>
+  <line x1="630" y1="462" x2="660" y2="462" stroke="#cc0000" stroke-width="2.5"/>
+  <text x="665" y="466" font-size="10" fill="#333">Positive (Red)</text>
+  <line x1="630" y1="480" x2="660" y2="480" stroke="#000" stroke-width="2.5"/>
+  <text x="665" y="484" font-size="10" fill="#333">Ground (Black)</text>
+  <line x1="630" y1="498" x2="660" y2="498" stroke="#0000cc" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="665" y="502" font-size="10" fill="#333">Water/hose (Blue dash)</text>
+  <rect x="630" y="510" width="20" height="14" rx="2" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="665" y="521" font-size="10" fill="#333">= Inline fuse</text>
+</svg>

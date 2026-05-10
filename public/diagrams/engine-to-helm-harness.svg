@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" style="background:#fff;font-family:Arial,sans-serif;">
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#111">Engine-to-Helm Wiring Harness</text>
+
+  <!-- Engine side connector -->
+  <rect x="40" y="80" width="110" height="440" rx="8" fill="#e0e8f0" stroke="#333" stroke-width="2.5"/>
+  <text x="95" y="103" text-anchor="middle" font-size="11" font-weight="bold" fill="#003366">ENGINE</text>
+  <text x="95" y="118" text-anchor="middle" font-size="11" font-weight="bold" fill="#003366">HARNESS</text>
+  <text x="95" y="133" text-anchor="middle" font-size="9" fill="#555">Engine side</text>
+  <!-- connector body -->
+  <rect x="55" y="145" width="80" height="340" rx="4" fill="#ccd8e8" stroke="#666" stroke-width="1"/>
+  <text x="95" y="165" text-anchor="middle" font-size="9" fill="#003366">10-pin</text>
+
+  <!-- Helm side connector -->
+  <rect x="750" y="80" width="110" height="440" rx="8" fill="#e0ffe0" stroke="#333" stroke-width="2.5"/>
+  <text x="805" y="103" text-anchor="middle" font-size="11" font-weight="bold" fill="#003300">HELM</text>
+  <text x="805" y="118" text-anchor="middle" font-size="11" font-weight="bold" fill="#003300">PANEL</text>
+  <text x="805" y="133" text-anchor="middle" font-size="9" fill="#555">Helm side</text>
+  <!-- connector body -->
+  <rect x="765" y="145" width="80" height="340" rx="4" fill="#cceecc" stroke="#666" stroke-width="1"/>
+  <text x="805" y="165" text-anchor="middle" font-size="9" fill="#003300">10-pin</text>
+
+  <!-- Wire definitions (10 wires) -->
+  <!-- Pin 1: Battery+ / Main Power -->
+  <circle cx="135" cy="190" r="5" fill="#cc0000"/>
+  <line x1="135" y1="190" x2="765" y2="190" stroke="#cc0000" stroke-width="3"/>
+  <circle cx="765" cy="190" r="5" fill="#cc0000"/>
+  <text x="230" y="183" font-size="9" fill="#cc0000">10 AWG</text>
+  <text x="155" y="186" font-size="8" fill="#333">1</text>
+  <text x="735" y="186" font-size="8" fill="#333">1</text>
+  <text x="450" y="183" text-anchor="middle" font-size="9" fill="#cc0000" font-weight="bold">RED — Battery + / Main Power</text>
+
+  <!-- Pin 2: Ground -->
+  <circle cx="135" cy="220" r="5" fill="#111"/>
+  <line x1="135" y1="220" x2="765" y2="220" stroke="#111" stroke-width="3"/>
+  <circle cx="765" cy="220" r="5" fill="#111"/>
+  <text x="155" y="216" font-size="8" fill="#333">2</text>
+  <text x="735" y="216" font-size="8" fill="#333">2</text>
+  <text x="450" y="213" text-anchor="middle" font-size="9" fill="#111" font-weight="bold">BLACK — Battery Ground</text>
+
+  <!-- Pin 3: Key / Ignition -->
+  <circle cx="135" cy="255" r="5" fill="#660099"/>
+  <line x1="135" y1="255" x2="765" y2="255" stroke="#660099" stroke-width="2"/>
+  <circle cx="765" cy="255" r="5" fill="#660099"/>
+  <text x="155" y="251" font-size="8" fill="#333">3</text>
+  <text x="735" y="251" font-size="8" fill="#333">3</text>
+  <text x="450" y="248" text-anchor="middle" font-size="9" fill="#660099" font-weight="bold">PURPLE — Ignition / Key-On</text>
+
+  <!-- Pin 4: Tachometer signal -->
+  <circle cx="135" cy="285" r="5" fill="#ccaa00"/>
+  <line x1="135" y1="285" x2="765" y2="285" stroke="#ccaa00" stroke-width="2"/>
+  <circle cx="765" cy="285" r="5" fill="#ccaa00"/>
+  <text x="155" y="281" font-size="8" fill="#333">4</text>
+  <text x="735" y="281" font-size="8" fill="#333">4</text>
+  <text x="450" y="278" text-anchor="middle" font-size="9" fill="#997700" font-weight="bold">YELLOW — Tachometer Signal (W term)</text>
+
+  <!-- Pin 5: Oil pressure sender -->
+  <circle cx="135" cy="315" r="5" fill="#cc6600"/>
+  <line x1="135" y1="315" x2="765" y2="315" stroke="#cc6600" stroke-width="2"/>
+  <circle cx="765" cy="315" r="5" fill="#cc6600"/>
+  <text x="155" y="311" font-size="8" fill="#333">5</text>
+  <text x="735" y="311" font-size="8" fill="#333">5</text>
+  <text x="450" y="308" text-anchor="middle" font-size="9" fill="#cc6600" font-weight="bold">ORANGE — Oil Pressure Sender</text>
+
+  <!-- Pin 6: Coolant temp sender -->
+  <circle cx="135" cy="345" r="5" fill="#0000cc"/>
+  <line x1="135" y1="345" x2="765" y2="345" stroke="#0000cc" stroke-width="2"/>
+  <circle cx="765" cy="345" r="5" fill="#0000cc"/>
+  <text x="155" y="341" font-size="8" fill="#333">6</text>
+  <text x="735" y="341" font-size="8" fill="#333">6</text>
+  <text x="450" y="338" text-anchor="middle" font-size="9" fill="#0000cc" font-weight="bold">BLUE — Coolant Temp Sender</text>
+
+  <!-- Pin 7: Trim / tilt position -->
+  <circle cx="135" cy="375" r="5" fill="#006600"/>
+  <line x1="135" y1="375" x2="765" y2="375" stroke="#006600" stroke-width="2"/>
+  <circle cx="765" cy="375" r="5" fill="#006600"/>
+  <text x="155" y="371" font-size="8" fill="#333">7</text>
+  <text x="735" y="371" font-size="8" fill="#333">7</text>
+  <text x="450" y="368" text-anchor="middle" font-size="9" fill="#006600" font-weight="bold">GREEN — Trim/Tilt Position Gauge</text>
+
+  <!-- Pin 8: Starter / Crank -->
+  <circle cx="135" cy="405" r="5" fill="#cc3300"/>
+  <line x1="135" y1="405" x2="765" y2="405" stroke="#cc3300" stroke-width="2"/>
+  <circle cx="765" cy="405" r="5" fill="#cc3300"/>
+  <text x="155" y="401" font-size="8" fill="#333">8</text>
+  <text x="735" y="401" font-size="8" fill="#333">8</text>
+  <text x="450" y="398" text-anchor="middle" font-size="9" fill="#cc3300" font-weight="bold">PINK/DK RED — Starter Crank Signal</text>
+
+  <!-- Pin 9: Alternator / Charge light -->
+  <circle cx="135" cy="435" r="5" fill="#888"/>
+  <line x1="135" y1="435" x2="765" y2="435" stroke="#888" stroke-width="2"/>
+  <circle cx="765" cy="435" r="5" fill="#888"/>
+  <text x="155" y="431" font-size="8" fill="#333">9</text>
+  <text x="735" y="431" font-size="8" fill="#333">9</text>
+  <text x="450" y="428" text-anchor="middle" font-size="9" fill="#666" font-weight="bold">GRAY — Alternator Charge Light (L term)</text>
+
+  <!-- Pin 10: Horn -->
+  <circle cx="135" cy="465" r="5" fill="#990099"/>
+  <line x1="135" y1="465" x2="765" y2="465" stroke="#990099" stroke-width="2"/>
+  <circle cx="765" cy="465" r="5" fill="#990099"/>
+  <text x="155" y="461" font-size="8" fill="#333">10</text>
+  <text x="735" y="461" font-size="8" fill="#333">10</text>
+  <text x="450" y="458" text-anchor="middle" font-size="9" fill="#990099" font-weight="bold">VIOLET — Horn Signal</text>
+
+  <!-- Wire bundle illustration (middle) -->
+  <rect x="420" y="480" width="60" height="30" rx="15" fill="#ccc" stroke="#999" stroke-width="2"/>
+  <text x="450" y="500" text-anchor="middle" font-size="9" fill="#333">bundle</text>
+  <text x="450" y="530" text-anchor="middle" font-size="9" fill="#888">Corrugated split loom or conduit</text>
+
+  <!-- Pin function table at top -->
+  <rect x="220" y="55" width="460" height="20" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/>
+  <text x="450" y="69" text-anchor="middle" font-size="9" fill="#333">NOTE: Pin colors/functions vary by brand — always verify with engine wiring diagram</text>
+
+  <!-- Helm device symbols -->
+  <text x="870" y="200" text-anchor="middle" font-size="8" fill="#333">→ Fused +12V</text>
+  <text x="870" y="230" text-anchor="middle" font-size="8" fill="#333">→ Ground bus</text>
+  <text x="870" y="260" text-anchor="middle" font-size="8" fill="#333">→ Key switch</text>
+  <text x="870" y="290" text-anchor="middle" font-size="8" fill="#333">→ Tach gauge</text>
+  <text x="870" y="320" text-anchor="middle" font-size="8" fill="#333">→ Oil gauge</text>
+  <text x="870" y="350" text-anchor="middle" font-size="8" fill="#333">→ Temp gauge</text>
+  <text x="870" y="380" text-anchor="middle" font-size="8" fill="#333">→ Trim gauge</text>
+  <text x="870" y="410" text-anchor="middle" font-size="8" fill="#333">→ Start button</text>
+  <text x="870" y="440" text-anchor="middle" font-size="8" fill="#333">→ Charge light</text>
+  <text x="870" y="470" text-anchor="middle" font-size="8" fill="#333">→ Horn button</text>
+
+  <!-- Wire gauge note -->
+  <rect x="40" y="540" width="820" height="40" rx="4" fill="#f9f9f9" stroke="#ccc" stroke-width="1"/>
+  <text x="450" y="556" text-anchor="middle" font-size="9" fill="#555">Wire gauge: Pins 1-2 (main power/gnd) → 10 AWG minimum | Pins 3-10 (signal/control) → 18–22 AWG</text>
+  <text x="450" y="572" text-anchor="middle" font-size="9" fill="#888">Keep harness as short as possible. Protect with split loom. Use marine-grade tinned copper wire.</text>
+</svg>

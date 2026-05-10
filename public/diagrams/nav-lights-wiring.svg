@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" style="background:#fff;font-family:Arial,sans-serif;">
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#111">Navigation Lights Wiring</text>
+
+  <!-- Battery -->
+  <rect x="30" y="230" width="90" height="60" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="75" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">BATTERY</text>
+  <text x="75" y="270" text-anchor="middle" font-size="9" fill="#555">12V DC</text>
+  <line x1="40" y1="248" x2="60" y2="248" stroke="#333" stroke-width="3"/>
+  <line x1="44" y1="256" x2="56" y2="256" stroke="#333" stroke-width="1.5"/>
+  <line x1="40" y1="264" x2="60" y2="264" stroke="#333" stroke-width="3"/>
+  <line x1="44" y1="272" x2="56" y2="272" stroke="#333" stroke-width="1.5"/>
+
+  <!-- Wire to switch -->
+  <line x1="120" y1="260" x2="195" y2="260" stroke="#cc0000" stroke-width="2"/>
+  <text x="155" y="250" font-size="9" fill="#888">14 AWG</text>
+
+  <!-- Nav Light Switch -->
+  <rect x="195" y="230" width="100" height="60" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="245" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">NAV</text>
+  <text x="245" y="270" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">SWITCH</text>
+  <!-- switch arc symbol -->
+  <line x1="205" y1="260" x2="218" y2="260" stroke="#cc0000" stroke-width="2"/>
+  <path d="M218,260 Q228,250 238,260" fill="none" stroke="#333" stroke-width="1.5"/>
+  <line x1="238" y1="260" x2="252" y2="260" stroke="#cc0000" stroke-width="2"/>
+
+  <!-- Wire to fuse -->
+  <line x1="295" y1="260" x2="340" y2="260" stroke="#cc0000" stroke-width="2"/>
+  <!-- Fuse -->
+  <rect x="340" y="250" width="28" height="20" rx="3" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="354" y="245" text-anchor="middle" font-size="9" fill="#555">10A</text>
+  <line x1="368" y1="260" x2="410" y2="260" stroke="#cc0000" stroke-width="2"/>
+
+  <!-- Distribution point -->
+  <circle cx="410" cy="260" r="5" fill="#333"/>
+  <text x="410" y="248" text-anchor="middle" font-size="9" fill="#555">DIST</text>
+
+  <!-- 5 nav light circuits -->
+  <!-- Port (Red) - goes up-right -->
+  <line x1="410" y1="260" x2="410" y2="150" stroke="#cc0000" stroke-width="1.5"/>
+  <line x1="410" y1="150" x2="520" y2="150" stroke="#cc0000" stroke-width="1.5"/>
+  <rect x="520" y="127" width="28" height="16" rx="3" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="534" y="122" text-anchor="middle" font-size="9" fill="#555">3A</text>
+  <line x1="548" y1="135" x2="590" y2="135" stroke="#cc0000" stroke-width="1.5"/>
+  <rect x="590" y="115" width="120" height="40" rx="4" fill="#cc3333" stroke="#333" stroke-width="1.5"/>
+  <text x="650" y="133" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">PORT (Red)</text>
+  <text x="650" y="148" text-anchor="middle" font-size="9" fill="#ffcccc">Port side, 112.5°</text>
+
+  <!-- Starboard (Green) -->
+  <line x1="410" y1="260" x2="410" y2="200" stroke="#006600" stroke-width="1.5"/>
+  <circle cx="410" cy="200" r="4" fill="#333"/>
+  <line x1="410" y1="200" x2="520" y2="200" stroke="#006600" stroke-width="1.5"/>
+  <rect x="520" y="187" width="28" height="16" rx="3" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="534" y="182" text-anchor="middle" font-size="9" fill="#555">3A</text>
+  <line x1="548" y1="195" x2="590" y2="195" stroke="#006600" stroke-width="1.5"/>
+  <rect x="590" y="175" width="120" height="40" rx="4" fill="#006600" stroke="#333" stroke-width="1.5"/>
+  <text x="650" y="193" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">STBD (Green)</text>
+  <text x="650" y="208" text-anchor="middle" font-size="9" fill="#ccffcc">Starboard, 112.5°</text>
+
+  <!-- Masthead (White) -->
+  <line x1="410" y1="260" x2="520" y2="260" stroke="#cc0000" stroke-width="1.5"/>
+  <circle cx="520" cy="260" r="4" fill="#333"/>
+  <rect x="520" y="247" width="28" height="16" rx="3" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="534" y="242" text-anchor="middle" font-size="9" fill="#555">5A</text>
+  <line x1="548" y1="255" x2="590" y2="255" stroke="#cc0000" stroke-width="1.5"/>
+  <rect x="590" y="235" width="120" height="40" rx="4" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="650" y="253" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">MASTHEAD</text>
+  <text x="650" y="268" text-anchor="middle" font-size="9" fill="#555">White, 360°, top mast</text>
+
+  <!-- Stern (White) -->
+  <line x1="410" y1="260" x2="410" y2="320" stroke="#cc0000" stroke-width="1.5"/>
+  <circle cx="410" cy="320" r="4" fill="#333"/>
+  <line x1="410" y1="320" x2="520" y2="320" stroke="#cc0000" stroke-width="1.5"/>
+  <rect x="520" y="307" width="28" height="16" rx="3" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="534" y="302" text-anchor="middle" font-size="9" fill="#555">3A</text>
+  <line x1="548" y1="315" x2="590" y2="315" stroke="#cc0000" stroke-width="1.5"/>
+  <rect x="590" y="295" width="120" height="40" rx="4" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="650" y="313" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">STERN (White)</text>
+  <text x="650" y="328" text-anchor="middle" font-size="9" fill="#555">Stern, 135°</text>
+
+  <!-- Anchor (White) -->
+  <line x1="410" y1="320" x2="410" y2="390" stroke="#cc0000" stroke-width="1.5"/>
+  <circle cx="410" cy="390" r="4" fill="#333"/>
+  <line x1="410" y1="390" x2="520" y2="390" stroke="#cc0000" stroke-width="1.5"/>
+  <rect x="520" y="377" width="28" height="16" rx="3" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="534" y="372" text-anchor="middle" font-size="9" fill="#555">3A</text>
+  <line x1="548" y1="385" x2="590" y2="385" stroke="#cc0000" stroke-width="1.5"/>
+  <rect x="590" y="365" width="120" height="40" rx="4" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="650" y="383" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">ANCHOR (White)</text>
+  <text x="650" y="398" text-anchor="middle" font-size="9" fill="#555">All-round, 360°</text>
+
+  <!-- Common ground returns -->
+  <line x1="650" y1="155" x2="790" y2="155" stroke="#000" stroke-width="1.5"/>
+  <line x1="650" y1="215" x2="790" y2="215" stroke="#000" stroke-width="1.5"/>
+  <line x1="650" y1="275" x2="790" y2="275" stroke="#000" stroke-width="1.5"/>
+  <line x1="650" y1="335" x2="790" y2="335" stroke="#000" stroke-width="1.5"/>
+  <line x1="650" y1="405" x2="790" y2="405" stroke="#000" stroke-width="1.5"/>
+  <line x1="790" y1="155" x2="790" y2="450" stroke="#000" stroke-width="1.5"/>
+  <!-- Common ground return to battery -->
+  <line x1="790" y1="450" x2="75" y2="450" stroke="#000" stroke-width="1.5"/>
+  <line x1="75" y1="450" x2="75" y2="290" stroke="#000" stroke-width="1.5"/>
+  <text x="430" y="465" text-anchor="middle" font-size="9" fill="#888">14 AWG BLACK — Common Ground Return</text>
+
+  <!-- Ground symbol at battery -->
+  <line x1="75" y1="290" x2="75" y2="310" stroke="#000" stroke-width="2"/>
+  <line x1="58" y1="310" x2="92" y2="310" stroke="#000" stroke-width="2.5"/>
+  <line x1="63" y1="318" x2="87" y2="318" stroke="#000" stroke-width="2"/>
+  <line x1="68" y1="326" x2="82" y2="326" stroke="#000" stroke-width="1.5"/>
+
+  <!-- COLREGS note -->
+  <rect x="30" y="490" width="300" height="50" rx="4" fill="#fffbe6" stroke="#ccaa00" stroke-width="1"/>
+  <text x="180" y="510" text-anchor="middle" font-size="10" fill="#665500" font-weight="bold">COLREGS Rule 21 — Nav Light Arcs</text>
+  <text x="180" y="526" text-anchor="middle" font-size="9" fill="#665500">Masthead: 225° | Stern: 135° | Sidelights: 112.5° each</text>
+
+  <!-- Legend -->
+  <rect x="680" y="450" width="200" height="110" rx="5" fill="#f9f9f9" stroke="#ccc" stroke-width="1"/>
+  <text x="780" y="468" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Wire Colors</text>
+  <line x1="690" y1="482" x2="720" y2="482" stroke="#cc0000" stroke-width="2.5"/>
+  <text x="725" y="486" font-size="10" fill="#333">Positive + NAV (Red)</text>
+  <line x1="690" y1="500" x2="720" y2="500" stroke="#000" stroke-width="2.5"/>
+  <text x="725" y="504" font-size="10" fill="#333">Ground (Black)</text>
+  <line x1="690" y1="518" x2="720" y2="518" stroke="#006600" stroke-width="2.5"/>
+  <text x="725" y="522" font-size="10" fill="#333">Starboard (Green)</text>
+  <text x="780" y="544" text-anchor="middle" font-size="9" fill="#888">□ = Inline fuse</text>
+</svg>

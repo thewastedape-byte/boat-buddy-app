@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <marker id="arrowO" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8B5E00"/>
+    </marker>
+    <marker id="arrowR" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc2222"/>
+    </marker>
+    <linearGradient id="oilGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe090"/>
+      <stop offset="100%" stop-color="#d4820a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#f8f8f8"/>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="800" height="55" fill="#2a1800"/>
+  <text x="400" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="white">ENGINE OIL LUBRICATION SYSTEM</text>
+  <text x="400" y="46" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#f0c870">Pressure-Fed Full-Flow System — Marine Diesel Engine</text>
+
+  <!-- Oil pressure gauge annotation at top right -->
+  <rect x="630" y="62" width="150" height="50" rx="5" fill="#fff9e6" stroke="#d4820a" stroke-width="1.5"/>
+  <text x="705" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#8B5E00">OIL PRESSURE SPECS</text>
+  <text x="705" y="94" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Idle: 15–25 PSI</text>
+  <text x="705" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Running: 40–65 PSI typical</text>
+
+  <!-- ===== OIL PAN (bottom) ===== -->
+  <rect x="50" y="390" width="200" height="75" rx="6" fill="url(#oilGrad)" stroke="#8B5E00" stroke-width="2.5"/>
+  <text x="150" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2a1800">OIL PAN / SUMP</text>
+  <text x="150" y="432" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">4–8 quart capacity</text>
+  <text x="150" y="448" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">Marine-grade oil (SAE 15W-40)</text>
+  <text x="150" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#4a0000">Drain plug at lowest point</text>
+  <!-- oil waves in pan -->
+  <path d="M60 445 Q100 440 140 445 Q180 450 220 445" stroke="#8B5E00" stroke-width="1" fill="none" opacity="0.5"/>
+
+  <!-- OIL PAN → OIL PUMP (pickup tube, suction) -->
+  <line x1="150" y1="390" x2="150" y2="350" stroke="#8B5E00" stroke-width="2.5" marker-end="url(#arrowO)"/>
+  <text x="165" y="375" font-family="Arial, sans-serif" font-size="9" fill="#8B5E00">SUCTION</text>
+  <!-- pickup screen note -->
+  <rect x="110" y="348" width="80" height="28" rx="4" fill="#fff9e6" stroke="#8B5E00" stroke-width="1"/>
+  <text x="150" y="361" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#4a2800">PICKUP SCREEN</text>
+  <text x="150" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#888">Mesh strainer</text>
+
+  <!-- OIL PUMP -->
+  <rect x="50" y="275" width="130" height="70" rx="6" fill="#fff9e6" stroke="#8B5E00" stroke-width="2.5"/>
+  <text x="115" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2a1800">OIL PUMP</text>
+  <text x="115" y="313" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Gear or rotor type</text>
+  <text x="115" y="327" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Crankshaft-driven</text>
+  <text x="115" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">Creates 40–65 PSI</text>
+  <!-- pump gear symbol -->
+  <circle cx="115" cy="305" r="10" fill="none" stroke="#8B5E00" stroke-width="1.5"/>
+  <text x="115" y="309" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#8B5E00">⚙</text>
+  <!-- pickup screen → oil pump -->
+  <line x1="150" y1="348" x2="150" y2="345" stroke="#8B5E00" stroke-width="2" stroke-dasharray="2,2"/>
+
+  <!-- Pickup screen connection to pump -->
+  <line x1="135" y1="348" x2="120" y2="345" stroke="#8B5E00" stroke-width="2.5"/>
+  <line x1="120" y1="345" x2="120" y2="345" stroke="#8B5E00" stroke-width="1"/>
+
+  <!-- OIL PUMP → PRESSURE RELIEF VALVE -->
+  <line x1="180" y1="303" x2="225" y2="303" stroke="#8B5E00" stroke-width="3" marker-end="url(#arrowO)"/>
+  <text x="202" y="296" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#8B5E00" font-weight="bold">HIGH P.</text>
+
+  <!-- PRESSURE RELIEF VALVE -->
+  <rect x="225" y="285" width="105" height="50" rx="5" fill="#fff9e6" stroke="#8B5E00" stroke-width="2"/>
+  <text x="277" y="307" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#2a1800">PRESSURE</text>
+  <text x="277" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#2a1800">RELIEF VALVE</text>
+  <text x="277" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">Opens at 70–80 PSI</text>
+  <!-- relief valve symbol — spring -->
+  <path d="M254 293 L260 293 L260 300 L265 295 L265 302 L270 298 L270 293" stroke="#8B5E00" stroke-width="1.5" fill="none"/>
+  <!-- bypass arrow back to sump -->
+  <line x1="277" y1="335" x2="277" y2="415" stroke="#8B5E00" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="277" y1="415" x2="220" y2="415" stroke="#8B5E00" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowO)"/>
+  <text x="245" y="405" font-family="Arial, sans-serif" font-size="7" fill="#888" font-style="italic">bypass to sump</text>
+
+  <!-- PRV → OIL FILTER -->
+  <line x1="330" y1="310" x2="375" y2="310" stroke="#8B5E00" stroke-width="3" marker-end="url(#arrowO)"/>
+
+  <!-- OIL FILTER -->
+  <rect x="375" y="285" width="110" height="65" rx="6" fill="#fff9e6" stroke="#8B5E00" stroke-width="2.5"/>
+  <text x="430" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2a1800">OIL FILTER</text>
+  <text x="430" y="323" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Full-flow type</text>
+  <text x="430" y="337" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Filter element</text>
+  <text x="430" y="347" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">Replace every oil change</text>
+  <!-- filter element lines -->
+  <line x1="390" y1="318" x2="465" y2="318" stroke="#8B5E00" stroke-width="0.5" opacity="0.5"/>
+  <line x1="390" y1="326" x2="465" y2="326" stroke="#8B5E00" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- OIL PRESSURE SENDER tapped after filter -->
+  <line x1="430" y1="285" x2="430" y2="255" stroke="#cc2222" stroke-width="2" stroke-dasharray="4,3"/>
+  <rect x="375" y="225" width="110" height="35" rx="4" fill="#ffe8e8" stroke="#cc2222" stroke-width="1.5"/>
+  <text x="430" y="242" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#4a0000">OIL PRESSURE</text>
+  <text x="430" y="253" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">SENDER / GAUGE</text>
+  <!-- sender symbol -->
+  <circle cx="430" cy="240" r="6" fill="none" stroke="#cc2222" stroke-width="1.5"/>
+  <!-- wire to gauge -->
+  <line x1="485" y1="240" x2="530" y2="240" stroke="#cc2222" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="545" y="244" font-family="Arial, sans-serif" font-size="8" fill="#cc2222">→ gauge</text>
+
+  <!-- Filter → main oil gallery -->
+  <line x1="485" y1="317" x2="535" y2="317" stroke="#8B5E00" stroke-width="3" marker-end="url(#arrowO)"/>
+
+  <!-- MAIN OIL GALLERY (horizontal bar) -->
+  <rect x="535" y="295" width="220" height="45" rx="5" fill="#ffe090" stroke="#8B5E00" stroke-width="2.5"/>
+  <text x="645" y="313" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#2a1800">MAIN OIL GALLERY</text>
+  <text x="645" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Drilled passages through block</text>
+
+  <!-- From gallery down to bearings -->
+  <!-- Main bearings -->
+  <line x1="575" y1="340" x2="575" y2="375" stroke="#8B5E00" stroke-width="2.5" marker-end="url(#arrowO)"/>
+  <!-- Rod bearings -->
+  <line x1="635" y1="340" x2="635" y2="375" stroke="#8B5E00" stroke-width="2.5" marker-end="url(#arrowO)"/>
+  <!-- Cam bearings / valve train -->
+  <line x1="700" y1="340" x2="700" y2="375" stroke="#8B5E00" stroke-width="2.5" marker-end="url(#arrowO)"/>
+
+  <!-- MAIN BEARINGS -->
+  <rect x="535" y="375" width="95" height="55" rx="5" fill="#fff9e6" stroke="#8B5E00" stroke-width="1.5"/>
+  <text x="582" y="393" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#2a1800">MAIN</text>
+  <text x="582" y="406" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#2a1800">BEARINGS</text>
+  <text x="582" y="419" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">Crankshaft journals</text>
+  <text x="582" y="428" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#888">0.001"–0.003" clearance</text>
+
+  <!-- ROD BEARINGS -->
+  <rect x="593" y="375" width="95" height="55" rx="5" fill="#fff9e6" stroke="#8B5E00" stroke-width="1.5"/>
+  <text x="640" y="393" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#2a1800">ROD</text>
+  <text x="640" y="406" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#2a1800">BEARINGS</text>
+  <text x="640" y="419" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">Connecting rod big-end</text>
+
+  <!-- CAM / VALVE TRAIN -->
+  <rect x="655" y="375" width="100" height="55" rx="5" fill="#fff9e6" stroke="#8B5E00" stroke-width="1.5"/>
+  <text x="705" y="393" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#2a1800">CAM &amp; VALVE</text>
+  <text x="705" y="406" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#2a1800">TRAIN</text>
+  <text x="705" y="419" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">Camshaft, rockers</text>
+  <text x="705" y="428" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#888">Overhead valve gear</text>
+
+  <!-- Oil gravity return from bearings/valve train back to pan -->
+  <line x1="760" y1="430" x2="760" y2="465" stroke="#8B5E00" stroke-width="2.5" stroke-dasharray="5,3"/>
+  <line x1="760" y1="465" x2="200" y2="465" stroke="#8B5E00" stroke-width="2.5" stroke-dasharray="5,3"/>
+  <line x1="200" y1="465" x2="200" y2="430" stroke="#8B5E00" stroke-width="2.5" stroke-dasharray="5,3" marker-end="url(#arrowO)"/>
+  <text x="480" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#8B5E00" font-weight="bold">OIL GRAVITY RETURN TO SUMP (DRAIN-BACK PASSAGES)</text>
+
+  <!-- LEGEND -->
+  <rect x="20" y="90" width="200" height="95" rx="6" fill="white" stroke="#ccc" stroke-width="1"/>
+  <text x="120" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">LEGEND</text>
+  <line x1="32" y1="120" x2="70" y2="120" stroke="#8B5E00" stroke-width="3" marker-end="url(#arrowO)"/>
+  <text x="76" y="123" font-family="Arial, sans-serif" font-size="9" fill="#333">Pressurized Oil Flow</text>
+  <line x1="32" y1="135" x2="70" y2="135" stroke="#8B5E00" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="76" y="138" font-family="Arial, sans-serif" font-size="9" fill="#333">Oil Return / Drain-Back</text>
+  <line x1="32" y1="150" x2="70" y2="150" stroke="#cc2222" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <text x="76" y="153" font-family="Arial, sans-serif" font-size="9" fill="#333">Electrical Signal</text>
+  <text x="32" y="168" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">⚠ Oil pressure below 15 PSI = SHUTDOWN</text>
+  <text x="32" y="178" font-family="Arial, sans-serif" font-size="8" fill="#888">Change oil &amp; filter per hour/time spec</text>
+
+  <!-- No-pump flow annotation -->
+  <text x="115" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Pressure: 40–65 PSI →</text>
+</svg>

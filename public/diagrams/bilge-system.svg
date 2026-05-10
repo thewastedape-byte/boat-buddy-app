@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <marker id="arrowB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a6faf"/>
+    </marker>
+    <marker id="arrowR" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc2222"/>
+    </marker>
+    <marker id="arrowBk" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+    <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#90c8f0"/>
+      <stop offset="100%" stop-color="#4090c0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#f8f8f8"/>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="800" height="55" fill="#1a3a5c"/>
+  <text x="400" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="white">BILGE PUMP SYSTEM</text>
+  <text x="400" y="46" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a0c4e8">Automatic Float Switch + Manual Override — Plumbing &amp; Electrical</text>
+
+  <!-- SECTION DIVIDER -->
+  <line x1="400" y1="60" x2="400" y2="490" stroke="#ccc" stroke-width="1" stroke-dasharray="8,4"/>
+  <text x="200" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1a6faf">PLUMBING CIRCUIT</text>
+  <text x="600" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#cc2222">ELECTRICAL CIRCUIT</text>
+
+  <!-- ======== LEFT SIDE: PLUMBING ======== -->
+
+  <!-- BILGE SUMP (boat hull bottom) -->
+  <rect x="25" y="370" width="340" height="55" rx="6" fill="#e8f4f8" stroke="#1a6faf" stroke-width="2"/>
+  <text x="195" y="393" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1a3a5c">BILGE SUMP</text>
+  <text x="195" y="408" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Lowest point in hull — water collects here</text>
+  <text x="195" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Keep clean — debris clogs float switch</text>
+  <!-- water in sump -->
+  <rect x="40" y="390" width="80" height="28" rx="3" fill="url(#waterGrad)" opacity="0.6"/>
+  <text x="80" y="408" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">WATER</text>
+
+  <!-- FLOAT SWITCH -->
+  <rect x="50" y="290" width="110" height="60" rx="6" fill="#e8f4f8" stroke="#1a6faf" stroke-width="2"/>
+  <text x="105" y="313" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">FLOAT SWITCH</text>
+  <text x="105" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Activates at ~2" water</text>
+  <text x="105" y="341" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Check monthly</text>
+  <!-- float symbol -->
+  <circle cx="105" cy="312" r="10" fill="none" stroke="#1a6faf" stroke-width="1.5"/>
+  <line x1="105" y1="302" x2="105" y2="322" stroke="#1a6faf" stroke-width="1.5"/>
+  <!-- connection line float switch to sump -->
+  <line x1="105" y1="350" x2="105" y2="370" stroke="#1a6faf" stroke-width="2" stroke-dasharray="4,3"/>
+  <!-- water level arrow -->
+  <line x1="40" y1="360" x2="40" y2="378" stroke="#1a6faf" stroke-width="1.5" marker-end="url(#arrowB)"/>
+  <text x="50" y="367" font-family="Arial, sans-serif" font-size="8" fill="#1a6faf">rises</text>
+
+  <!-- BILGE PUMP -->
+  <rect x="190" y="280" width="110" height="65" rx="6" fill="#e8f4f8" stroke="#1a6faf" stroke-width="2.5"/>
+  <text x="245" y="302" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">BILGE PUMP</text>
+  <text x="245" y="317" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">12V DC Centrifugal</text>
+  <text x="245" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">1000–3500 GPH rated</text>
+  <text x="245" y="343" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">Mount ABOVE sump floor</text>
+  <!-- pump symbol circle -->
+  <circle cx="245" cy="302" r="9" fill="none" stroke="#1a6faf" stroke-width="1.5"/>
+  <text x="245" y="306" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1a6faf">↻</text>
+
+  <!-- Float switch → bilge pump (electrical signal — dashed) -->
+  <line x1="160" y1="316" x2="190" y2="310" stroke="#cc2222" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="175" y="310" font-family="Arial, sans-serif" font-size="7" fill="#cc2222" font-style="italic">trigger</text>
+
+  <!-- Water inlet (from sump to pump) -->
+  <line x1="245" y1="345" x2="245" y2="370" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+  <text x="260" y="360" font-family="Arial, sans-serif" font-size="8" fill="#1a6faf">water in</text>
+
+  <!-- CHECK VALVE -->
+  <rect x="190" y="195" width="110" height="55" rx="6" fill="#e8f4f8" stroke="#1a6faf" stroke-width="2"/>
+  <text x="245" y="217" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">CHECK VALVE</text>
+  <text x="245" y="232" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Prevents backflow</text>
+  <text x="245" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Spring-loaded flapper</text>
+  <!-- check valve symbol -->
+  <path d="M225 210 L265 210 L245 220 Z" fill="#1a6faf" opacity="0.5"/>
+
+  <!-- Pump → check valve -->
+  <line x1="245" y1="280" x2="245" y2="250" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+
+  <!-- THRU-HULL FITTING -->
+  <rect x="190" y="115" width="110" height="55" rx="6" fill="#e8f4f8" stroke="#1a3a5c" stroke-width="2.5"/>
+  <text x="245" y="137" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">THRU-HULL</text>
+  <text x="245" y="152" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">FITTING</text>
+  <text x="245" y="164" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Above waterline</text>
+
+  <!-- Check valve → thru-hull -->
+  <line x1="245" y1="195" x2="245" y2="170" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+
+  <!-- OVERBOARD label -->
+  <text x="245" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">OVERBOARD</text>
+  <line x1="245" y1="115" x2="245" y2="100" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+
+  <!-- Distance note on thru-hull -->
+  <text x="310" y="145" font-family="Arial, sans-serif" font-size="8" fill="#888" font-style="italic">Min. 6" above</text>
+  <text x="310" y="155" font-family="Arial, sans-serif" font-size="8" fill="#888" font-style="italic">waterline</text>
+
+  <!-- ======== RIGHT SIDE: ELECTRICAL CIRCUIT ======== -->
+
+  <!-- BATTERY -->
+  <rect x="440" y="90" width="110" height="70" rx="6" fill="#ffe8e8" stroke="#cc2222" stroke-width="2.5"/>
+  <text x="495" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#4a0000">12V BATTERY</text>
+  <text x="495" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">House Bank</text>
+  <text x="495" y="144" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Always connected</text>
+  <!-- battery symbol -->
+  <line x1="475" y1="108" x2="515" y2="108" stroke="#cc2222" stroke-width="1.5"/>
+  <line x1="480" y1="112" x2="510" y2="112" stroke="#cc2222" stroke-width="1"/>
+  <text x="468" y="108" font-family="Arial, sans-serif" font-size="10" fill="#cc2222">+</text>
+  <text x="520" y="108" font-family="Arial, sans-serif" font-size="10" fill="#333">−</text>
+
+  <!-- Battery positive → fuse (down) -->
+  <line x1="475" y1="160" x2="475" y2="200" stroke="#cc2222" stroke-width="2.5" marker-end="url(#arrowR)"/>
+  <text x="458" y="185" font-family="Arial, sans-serif" font-size="9" fill="#cc2222" font-weight="bold">+12V</text>
+
+  <!-- FUSE -->
+  <rect x="435" y="200" width="80" height="45" rx="6" fill="#ffe8e8" stroke="#cc2222" stroke-width="2"/>
+  <text x="475" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a0000">FUSE</text>
+  <text x="475" y="234" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">30–40A AGC</text>
+  <!-- fuse symbol -->
+  <rect x="461" y="212" width="28" height="10" rx="2" fill="none" stroke="#cc2222" stroke-width="1.5"/>
+  <line x1="449" y1="217" x2="461" y2="217" stroke="#cc2222" stroke-width="1.5"/>
+  <line x1="489" y1="217" x2="501" y2="217" stroke="#cc2222" stroke-width="1.5"/>
+
+  <!-- Fuse → junction: splits to manual switch and auto path -->
+  <line x1="475" y1="245" x2="475" y2="270" stroke="#cc2222" stroke-width="2.5" marker-end="url(#arrowR)"/>
+  <!-- Split point -->
+  <circle cx="475" cy="270" r="4" fill="#cc2222"/>
+  <!-- Branch left to manual switch -->
+  <line x1="475" y1="270" x2="560" y2="270" stroke="#cc2222" stroke-width="2"/>
+  <line x1="560" y1="270" x2="600" y2="270" stroke="#cc2222" stroke-width="2" marker-end="url(#arrowR)"/>
+
+  <!-- Branch right → float switch → pump (auto path) -->
+  <line x1="475" y1="270" x2="475" y2="310" stroke="#cc2222" stroke-width="2" stroke-dasharray="5,3"/>
+  <line x1="475" y1="310" x2="560" y2="310" stroke="#cc2222" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="520" y="298" font-family="Arial, sans-serif" font-size="8" fill="#cc2222" font-style="italic">AUTO</text>
+  <text x="515" y="308" font-family="Arial, sans-serif" font-size="8" fill="#cc2222" font-style="italic">(via float)</text>
+  <line x1="560" y1="310" x2="600" y2="310" stroke="#cc2222" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowR)"/>
+
+  <!-- MANUAL SWITCH -->
+  <rect x="600" y="248" width="110" height="50" rx="6" fill="#ffe8e8" stroke="#cc2222" stroke-width="2"/>
+  <text x="655" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a0000">MANUAL</text>
+  <text x="655" y="281" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a0000">SWITCH</text>
+  <text x="655" y="293" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">Panel-mounted</text>
+  <!-- switch symbol -->
+  <line x1="624" y1="265" x2="638" y2="265" stroke="#cc2222" stroke-width="2"/>
+  <line x1="648" y1="260" x2="638" y2="265" stroke="#cc2222" stroke-width="2"/>
+  <line x1="648" y1="265" x2="665" y2="265" stroke="#cc2222" stroke-width="2"/>
+
+  <!-- Float switch (electrical) -->
+  <rect x="600" y="292" width="110" height="45" rx="6" fill="#ffe8e8" stroke="#cc2222" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="655" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a0000">FLOAT SW.</text>
+  <text x="655" y="326" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">(Auto trigger)</text>
+
+  <!-- Manual switch + float merge → pump -->
+  <line x1="710" y1="273" x2="745" y2="273" stroke="#cc2222" stroke-width="2"/>
+  <line x1="710" y1="315" x2="745" y2="315" stroke="#cc2222" stroke-width="2" stroke-dasharray="4,2"/>
+  <line x1="745" y1="273" x2="745" y2="360" stroke="#cc2222" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="758" y="320" font-family="Arial, sans-serif" font-size="9" fill="#cc2222">+12V</text>
+  <text x="758" y="332" font-family="Arial, sans-serif" font-size="9" fill="#cc2222">to pump</text>
+
+  <!-- BILGE PUMP (electrical side) -->
+  <rect x="620" y="370" width="140" height="65" rx="6" fill="#ffe8e8" stroke="#cc2222" stroke-width="2.5"/>
+  <text x="690" y="392" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#4a0000">BILGE PUMP</text>
+  <text x="690" y="407" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">12VDC Motor</text>
+  <text x="690" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">3–7A draw</text>
+  <text x="690" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">Continuous duty rated</text>
+
+  <!-- +12V line to pump from junction -->
+  <line x1="745" y1="360" x2="745" y2="390" stroke="#cc2222" stroke-width="2"/>
+  <line x1="745" y1="390" x2="760" y2="390" stroke="#cc2222" stroke-width="2" marker-end="url(#arrowR)"/>
+
+  <!-- Ground (negative) from pump back to battery -->
+  <line x1="620" y1="400" x2="590" y2="400" stroke="#333" stroke-width="2"/>
+  <line x1="590" y1="400" x2="590" y2="450" stroke="#333" stroke-width="2"/>
+  <line x1="590" y1="450" x2="495" y2="450" stroke="#333" stroke-width="2"/>
+  <line x1="495" y1="450" x2="495" y2="160" stroke="#333" stroke-width="2" marker-end="url(#arrowBk)"/>
+  <text x="530" y="463" font-family="Arial, sans-serif" font-size="9" fill="#333">NEGATIVE / GROUND RETURN</text>
+
+  <!-- LEGEND -->
+  <rect x="415" y="425" width="190" height="65" rx="6" fill="white" stroke="#ccc" stroke-width="1"/>
+  <text x="510" y="443" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">LEGEND</text>
+  <line x1="425" y1="456" x2="460" y2="456" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+  <text x="465" y="459" font-family="Arial, sans-serif" font-size="9" fill="#333">Water Flow</text>
+  <line x1="425" y1="470" x2="460" y2="470" stroke="#cc2222" stroke-width="2"/>
+  <text x="465" y="473" font-family="Arial, sans-serif" font-size="9" fill="#333">+12V Supply</text>
+  <line x1="425" y1="484" x2="460" y2="484" stroke="#333" stroke-width="2"/>
+  <text x="465" y="487" font-family="Arial, sans-serif" font-size="9" fill="#333">Ground / Negative</text>
+
+  <!-- Wire size note -->
+  <text x="550" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">Wire: min. 12 AWG</text>
+  <text x="550" y="391" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">Fuse within 7" of battery</text>
+</svg>

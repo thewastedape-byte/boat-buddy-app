@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" style="background:#fff;font-family:Arial,sans-serif;">
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#111">Shore Power &amp; Grounding System</text>
+
+  <!-- Shore Power Pedestal -->
+  <rect x="20" y="160" width="100" height="130" rx="5" fill="#e0e8f0" stroke="#333" stroke-width="2"/>
+  <text x="70" y="185" text-anchor="middle" font-size="11" font-weight="bold" fill="#003366">SHORE</text>
+  <text x="70" y="200" text-anchor="middle" font-size="11" font-weight="bold" fill="#003366">POWER</text>
+  <text x="70" y="215" text-anchor="middle" font-size="11" font-weight="bold" fill="#003366">PEDESTAL</text>
+  <text x="70" y="235" text-anchor="middle" font-size="10" fill="#555">120V AC</text>
+  <text x="70" y="250" text-anchor="middle" font-size="10" fill="#555">30A / 50A</text>
+  <!-- outlet symbol -->
+  <circle cx="70" cy="272" r="14" fill="#fff" stroke="#333" stroke-width="2"/>
+  <text x="70" y="277" text-anchor="middle" font-size="14" fill="#333">⏚</text>
+  <!-- wire terminals -->
+  <circle cx="120" cy="180" r="4" fill="#000"/>
+  <circle cx="120" cy="210" r="4" fill="#fff" stroke="#ccc" stroke-width="2"/>
+  <circle cx="120" cy="240" r="4" fill="#006600"/>
+  <text x="126" y="184" font-size="8" fill="#000">L (Hot)</text>
+  <text x="126" y="214" font-size="8" fill="#666">N (Neut)</text>
+  <text x="126" y="244" font-size="8" fill="#006600">G (Gnd)</text>
+
+  <!-- Shore Cord -->
+  <line x1="120" y1="180" x2="180" y2="180" stroke="#000" stroke-width="2"/>
+  <line x1="120" y1="210" x2="180" y2="210" stroke="#ccc" stroke-width="2"/>
+  <line x1="120" y1="240" x2="180" y2="240" stroke="#006600" stroke-width="2"/>
+  <text x="150" y="168" font-size="9" fill="#888">Shore cord</text>
+  <text x="150" y="260" font-size="8" fill="#888">30A / 10 AWG</text>
+
+  <!-- Inlet (Shore Power Inlet on Boat) -->
+  <rect x="180" y="155" width="90" height="110" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="225" y="178" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">SHORE</text>
+  <text x="225" y="192" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">INLET</text>
+  <text x="225" y="207" text-anchor="middle" font-size="9" fill="#555">Marinco or</text>
+  <text x="225" y="220" text-anchor="middle" font-size="9" fill="#555">Hubbell 30A</text>
+  <circle cx="225" cy="248" r="14" fill="#fff" stroke="#333" stroke-width="2"/>
+  <text x="225" y="253" text-anchor="middle" font-size="10" fill="#333">~⏚</text>
+  <!-- output terminals -->
+  <circle cx="270" cy="180" r="4" fill="#000"/>
+  <circle cx="270" cy="205" r="4" fill="#ccc" stroke="#ccc" stroke-width="1"/>
+  <circle cx="270" cy="230" r="4" fill="#006600"/>
+
+  <!-- Wire from shore cord to inlet -->
+  <line x1="180" y1="180" x2="270" y2="180" stroke="#000" stroke-width="2"/>
+  <line x1="180" y1="210" x2="270" y2="205" stroke="#ccc" stroke-width="2"/>
+  <line x1="180" y1="240" x2="270" y2="230" stroke="#006600" stroke-width="2"/>
+
+  <!-- Galvanic Isolator -->
+  <rect x="310" y="155" width="110" height="110" rx="5" fill="#fff0e0" stroke="#cc6600" stroke-width="2"/>
+  <text x="365" y="178" text-anchor="middle" font-size="10" font-weight="bold" fill="#663300">GALVANIC</text>
+  <text x="365" y="193" text-anchor="middle" font-size="10" font-weight="bold" fill="#663300">ISOLATOR</text>
+  <text x="365" y="210" text-anchor="middle" font-size="9" fill="#663300">Blocking diodes</text>
+  <text x="365" y="225" text-anchor="middle" font-size="9" fill="#663300">Passes 120V fault</text>
+  <text x="365" y="240" text-anchor="middle" font-size="9" fill="#663300">Blocks DC corrosion</text>
+  <text x="365" y="255" text-anchor="middle" font-size="9" fill="#888">galvanic current</text>
+  <!-- terminals -->
+  <circle cx="310" cy="230" r="4" fill="#006600"/>
+  <circle cx="420" cy="230" r="4" fill="#006600"/>
+
+  <!-- Hot/Neutral wires bypass isolator -->
+  <line x1="270" y1="180" x2="420" y2="180" stroke="#000" stroke-width="2"/>
+  <line x1="270" y1="205" x2="420" y2="205" stroke="#ccc" stroke-width="2"/>
+  <!-- Ground goes through isolator -->
+  <line x1="270" y1="230" x2="310" y2="230" stroke="#006600" stroke-width="2"/>
+  <line x1="420" y1="230" x2="460" y2="230" stroke="#006600" stroke-width="2"/>
+
+  <!-- Main Breaker -->
+  <rect x="420" y="155" width="100" height="110" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="470" y="178" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">MAIN</text>
+  <text x="470" y="193" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">BREAKER</text>
+  <text x="470" y="210" text-anchor="middle" font-size="9" fill="#555">30A 2-pole</text>
+  <!-- breaker symbol -->
+  <line x1="445" y1="225" x2="457" y2="225" stroke="#000" stroke-width="2"/>
+  <path d="M457,225 Q465,215 473,225" fill="none" stroke="#333" stroke-width="1.5"/>
+  <line x1="473" y1="225" x2="493" y2="225" stroke="#000" stroke-width="2"/>
+  <!-- terminal dots -->
+  <circle cx="420" cy="180" r="4" fill="#000"/>
+  <circle cx="520" cy="180" r="4" fill="#000"/>
+  <circle cx="420" cy="205" r="4" fill="#ccc" stroke="#ccc" stroke-width="1"/>
+  <circle cx="520" cy="205" r="4" fill="#ccc" stroke="#ccc" stroke-width="1"/>
+
+  <!-- Wire to main breaker -->
+  <line x1="420" y1="180" x2="420" y2="180" stroke="#000" stroke-width="2"/>
+  <line x1="420" y1="205" x2="420" y2="205" stroke="#ccc" stroke-width="2"/>
+
+  <!-- AC Distribution Panel -->
+  <rect x="580" y="80" width="160" height="330" rx="8" fill="#1a1a2e" stroke="#333" stroke-width="2.5"/>
+  <text x="660" y="103" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">AC PANEL</text>
+  <text x="660" y="120" text-anchor="middle" font-size="9" fill="#aaa">120V AC Distribution</text>
+
+  <!-- AC Breakers on panel -->
+  <!-- Main input -->
+  <rect x="595" y="128" width="130" height="25" rx="3" fill="#333" stroke="#555" stroke-width="1"/>
+  <text x="660" y="145" text-anchor="middle" font-size="9" fill="#cccc00">30A MAIN IN</text>
+
+  <rect x="595" y="158" width="130" height="22" rx="3" fill="#2a2a3e" stroke="#555" stroke-width="1"/>
+  <text x="660" y="173" text-anchor="middle" font-size="9" fill="#fff">15A — Outlets</text>
+
+  <rect x="595" y="184" width="130" height="22" rx="3" fill="#2a2a3e" stroke="#555" stroke-width="1"/>
+  <text x="660" y="199" text-anchor="middle" font-size="9" fill="#fff">20A — Water Heater</text>
+
+  <rect x="595" y="210" width="130" height="22" rx="3" fill="#2a2a3e" stroke="#555" stroke-width="1"/>
+  <text x="660" y="225" text-anchor="middle" font-size="9" fill="#fff">20A — Battery Charger</text>
+
+  <rect x="595" y="236" width="130" height="22" rx="3" fill="#2a2a3e" stroke="#555" stroke-width="1"/>
+  <text x="660" y="251" text-anchor="middle" font-size="9" fill="#fff">15A — Air Conditioner</text>
+
+  <rect x="595" y="262" width="130" height="22" rx="3" fill="#2a2a3e" stroke="#555" stroke-width="1"/>
+  <text x="660" y="277" text-anchor="middle" font-size="9" fill="#fff">15A — Inverter/Misc</text>
+
+  <!-- panel ground bus -->
+  <rect x="595" y="310" width="130" height="25" rx="3" fill="#003300" stroke="#006600" stroke-width="1.5"/>
+  <text x="660" y="327" text-anchor="middle" font-size="9" fill="#00cc00">GROUND BUS</text>
+  <rect x="595" y="340" width="130" height="25" rx="3" fill="#2a0000" stroke="#cc6600" stroke-width="1.5"/>
+  <text x="660" y="357" text-anchor="middle" font-size="9" fill="#ff6600">NEUTRAL BUS</text>
+  <rect x="595" y="370" width="130" height="30" rx="3" fill="#1a1a2e" stroke="#ccaa00" stroke-width="1.5"/>
+  <text x="660" y="385" text-anchor="middle" font-size="8" fill="#ccaa00">Equipment Ground</text>
+  <text x="660" y="398" text-anchor="middle" font-size="8" fill="#ccaa00">bonded to hull</text>
+
+  <!-- Wires from main breaker to panel -->
+  <line x1="520" y1="180" x2="580" y2="180" stroke="#000" stroke-width="2"/>
+  <line x1="520" y1="205" x2="580" y2="205" stroke="#ccc" stroke-width="2"/>
+  <line x1="460" y1="230" x2="580" y2="325" stroke="#006600" stroke-width="2"/>
+  <text x="545" y="170" font-size="9" fill="#888">Hot (Blk)</text>
+  <text x="545" y="195" font-size="9" fill="#888">Neutral (Wht)</text>
+
+  <!-- Grounding diagram below -->
+  <!-- Shore ground bonding note -->
+  <line x1="660" y1="398" x2="660" y2="500" stroke="#006600" stroke-width="2"/>
+  <line x1="660" y1="500" x2="400" y2="500" stroke="#006600" stroke-width="2"/>
+
+  <!-- Bonding system -->
+  <rect x="200" y="460" width="200" height="60" rx="5" fill="#e0ffe0" stroke="#006600" stroke-width="2"/>
+  <text x="300" y="483" text-anchor="middle" font-size="11" font-weight="bold" fill="#003300">BONDING SYSTEM</text>
+  <text x="300" y="498" text-anchor="middle" font-size="9" fill="#003300">Engine, thru-hulls, tank</text>
+  <text x="300" y="512" text-anchor="middle" font-size="9" fill="#003300">straps → hull copper</text>
+  <line x1="400" y1="490" x2="400" y2="500" stroke="#006600" stroke-width="2"/>
+  <line x1="200" y1="490" x2="200" y2="500" stroke="#006600" stroke-width="2"/>
+  <line x1="200" y1="500" x2="400" y2="500" stroke="#006600" stroke-width="2"/>
+
+  <!-- Warning box -->
+  <rect x="20" y="320" width="270" height="90" rx="5" fill="#fff0f0" stroke="#cc0000" stroke-width="1.5"/>
+  <text x="155" y="340" text-anchor="middle" font-size="10" font-weight="bold" fill="#cc0000">⚠ SHOCK / CORROSION</text>
+  <text x="155" y="356" text-anchor="middle" font-size="9" fill="#550000">Do NOT use AC safety ground</text>
+  <text x="155" y="371" text-anchor="middle" font-size="9" fill="#550000">as DC negative. Install galvanic</text>
+  <text x="155" y="386" text-anchor="middle" font-size="9" fill="#550000">isolator OR isolation transformer.</text>
+  <text x="155" y="401" text-anchor="middle" font-size="9" fill="#770000">Prevent Electric Shock Drowning</text>
+
+  <!-- Isolation transformer option note -->
+  <rect x="20" y="430" width="170" height="55" rx="4" fill="#fffbe6" stroke="#ccaa00" stroke-width="1"/>
+  <text x="105" y="448" text-anchor="middle" font-size="9" font-weight="bold" fill="#665500">Alt: Isolation Xfmr</text>
+  <text x="105" y="463" text-anchor="middle" font-size="8" fill="#665500">Complete galvanic</text>
+  <text x="105" y="476" text-anchor="middle" font-size="8" fill="#665500">isolation, safest option</text>
+
+  <!-- Legend -->
+  <rect x="700" y="440" width="185" height="130" rx="5" fill="#f9f9f9" stroke="#ccc" stroke-width="1"/>
+  <text x="792" y="458" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">AC Wire Colors</text>
+  <line x1="710" y1="472" x2="740" y2="472" stroke="#000" stroke-width="2.5"/>
+  <text x="745" y="476" font-size="10" fill="#333">Hot (Black)</text>
+  <line x1="710" y1="490" x2="740" y2="490" stroke="#ccc" stroke-width="2.5"/>
+  <rect x="710" y="483" width="30" height="14" fill="none" stroke="#aaa" stroke-width="1"/>
+  <text x="745" y="494" font-size="10" fill="#333">Neutral (White)</text>
+  <line x1="710" y1="508" x2="740" y2="508" stroke="#006600" stroke-width="2.5"/>
+  <text x="745" y="512" font-size="10" fill="#333">Safety Ground (Green)</text>
+  <line x1="710" y1="526" x2="740" y2="526" stroke="#cc6600" stroke-width="2.5"/>
+  <text x="745" y="530" font-size="10" fill="#333">Galvanic Isolator</text>
+  <text x="792" y="550" text-anchor="middle" font-size="9" fill="#888">ABYC E-11 / NFPA 303</text>
+  <text x="792" y="563" text-anchor="middle" font-size="8" fill="#888">NEMA L5-30 / SS2-50</text>
+</svg>

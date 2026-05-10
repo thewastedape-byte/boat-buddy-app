@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <marker id="arrowR" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc2222"/>
+    </marker>
+    <marker id="arrowBk" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+    <marker id="arrowG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a8a1a"/>
+    </marker>
+    <marker id="arrowW" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#888"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#f8f8f8"/>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="800" height="55" fill="#1a3a1c"/>
+  <text x="400" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="white">SHORE POWER AC SYSTEM</text>
+  <text x="400" y="46" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#90f090">120VAC Single Phase — 30 Amp Service</text>
+
+  <!-- Wire color legend across top -->
+  <rect x="0" y="55" width="800" height="22" fill="#f0f0f0"/>
+  <rect x="120" y="58" width="16" height="14" rx="2" fill="#cc2222"/>
+  <text x="140" y="69" font-family="Arial, sans-serif" font-size="9" fill="#333">HOT (Black)</text>
+  <rect x="260" y="58" width="16" height="14" rx="2" fill="#ffffff" stroke="#ccc"/>
+  <text x="280" y="69" font-family="Arial, sans-serif" font-size="9" fill="#333">NEUTRAL (White)</text>
+  <rect x="420" y="58" width="16" height="14" rx="2" fill="#1a8a1a"/>
+  <text x="440" y="69" font-family="Arial, sans-serif" font-size="9" fill="#333">GROUND (Green)</text>
+  <text x="10" y="69" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#555">WIRE COLORS:</text>
+
+  <!-- ===== SHORE POWER CORD & INLET ===== -->
+  <!-- Dock power box -->
+  <rect x="15" y="90" width="105" height="90" rx="6" fill="#e0ffe0" stroke="#1a8a1a" stroke-width="2.5"/>
+  <text x="67" y="112" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#003a00">DOCK</text>
+  <text x="67" y="126" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#003a00">POWER</text>
+  <text x="67" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">120VAC 30A</text>
+  <text x="67" y="153" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">NEMA TT-30</text>
+  <text x="67" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Pedestal outlet</text>
+  <!-- outlet symbol -->
+  <circle cx="67" cy="125" r="12" fill="none" stroke="#1a8a1a" stroke-width="1.5"/>
+  <line x1="62" y1="120" x2="62" y2="130" stroke="#1a8a1a" stroke-width="2"/>
+  <line x1="72" y1="120" x2="72" y2="130" stroke="#1a8a1a" stroke-width="2"/>
+
+  <!-- Shore cord -->
+  <line x1="120" y1="135" x2="180" y2="135" stroke="#cc2222" stroke-width="3" marker-end="url(#arrowR)"/>
+  <line x1="120" y1="145" x2="180" y2="145" stroke="#888" stroke-width="2.5" marker-end="url(#arrowW)"/>
+  <line x1="120" y1="155" x2="180" y2="155" stroke="#1a8a1a" stroke-width="2.5" marker-end="url(#arrowG)"/>
+  <text x="150" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Shore Cord</text>
+  <text x="150" y="186" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">(25–50 ft)</text>
+
+  <!-- SHORE POWER INLET -->
+  <rect x="180" y="110" width="110" height="80" rx="6" fill="#e0ffe0" stroke="#1a8a1a" stroke-width="2.5"/>
+  <text x="235" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#003a00">SHORE POWER</text>
+  <text x="235" y="147" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#003a00">INLET</text>
+  <text x="235" y="161" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Deck fitting</text>
+  <text x="235" y="174" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Stainless surround</text>
+  <text x="235" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">Must be ABYC rated</text>
+
+  <!-- Inlet → Galvanic Isolator -->
+  <line x1="290" y1="150" x2="330" y2="150" stroke="#cc2222" stroke-width="3" marker-end="url(#arrowR)"/>
+
+  <!-- GALVANIC ISOLATOR -->
+  <rect x="330" y="128" width="105" height="48" rx="5" fill="#fff9e6" stroke="#888" stroke-width="2"/>
+  <text x="382" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#444">GALVANIC</text>
+  <text x="382" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#444">ISOLATOR</text>
+  <text x="382" y="172" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">Prevents electrolysis</text>
+
+  <!-- Isolator → Main Breaker -->
+  <line x1="435" y1="152" x2="470" y2="152" stroke="#cc2222" stroke-width="3" marker-end="url(#arrowR)"/>
+
+  <!-- MAIN BREAKER / SHORE DISCONNECT -->
+  <rect x="470" y="122" width="115" height="65" rx="6" fill="#ffe8e8" stroke="#cc2222" stroke-width="2.5"/>
+  <text x="527" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a0000">MAIN BREAKER</text>
+  <text x="527" y="157" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a0000">30 AMP</text>
+  <text x="527" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Shore disconnect</text>
+  <text x="527" y="181" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">2-pole breaker</text>
+  <!-- breaker symbol -->
+  <line x1="500" y1="135" x2="513" y2="135" stroke="#cc2222" stroke-width="2"/>
+  <line x1="513" y1="130" x2="522" y2="135" stroke="#cc2222" stroke-width="2"/>
+  <line x1="522" y1="135" x2="535" y2="135" stroke="#cc2222" stroke-width="2"/>
+
+  <!-- Main Breaker → AC Panel -->
+  <line x1="585" y1="155" x2="635" y2="155" stroke="#cc2222" stroke-width="3" marker-end="url(#arrowR)"/>
+
+  <!-- AC DISTRIBUTION PANEL -->
+  <rect x="635" y="100" width="145" height="290" rx="6" fill="#ffe8e8" stroke="#cc2222" stroke-width="2.5"/>
+  <text x="707" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#4a0000">AC DISTRIBUTION</text>
+  <text x="707" y="137" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#4a0000">PANEL</text>
+  <line x1="645" y1="148" x2="770" y2="148" stroke="#cc2222" stroke-width="1"/>
+
+  <!-- Panel circuits -->
+  <!-- Circuit 1: Outlets -->
+  <rect x="645" y="155" width="125" height="32" rx="3" fill="#fff0f0" stroke="#cc2222" stroke-width="1"/>
+  <text x="672" y="170" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#4a0000">CB1 — 15A</text>
+  <text x="672" y="182" font-family="Arial, sans-serif" font-size="9" fill="#555">AC Outlets</text>
+  <text x="756" y="170" font-family="Arial, sans-serif" font-size="9" fill="#888">□</text>
+
+  <!-- Circuit 2: Water Heater -->
+  <rect x="645" y="195" width="125" height="32" rx="3" fill="#fff0f0" stroke="#cc2222" stroke-width="1"/>
+  <text x="672" y="210" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#4a0000">CB2 — 15A</text>
+  <text x="672" y="222" font-family="Arial, sans-serif" font-size="9" fill="#555">Water Heater</text>
+  <text x="756" y="210" font-family="Arial, sans-serif" font-size="9" fill="#888">□</text>
+
+  <!-- Circuit 3: Battery Charger -->
+  <rect x="645" y="235" width="125" height="32" rx="3" fill="#fff0f0" stroke="#cc2222" stroke-width="1"/>
+  <text x="672" y="250" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#4a0000">CB3 — 30A</text>
+  <text x="672" y="262" font-family="Arial, sans-serif" font-size="9" fill="#555">Battery Charger</text>
+  <text x="756" y="250" font-family="Arial, sans-serif" font-size="9" fill="#888">□</text>
+
+  <!-- Circuit 4: A/C -->
+  <rect x="645" y="275" width="125" height="32" rx="3" fill="#fff0f0" stroke="#cc2222" stroke-width="1"/>
+  <text x="672" y="290" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#4a0000">CB4 — 20A</text>
+  <text x="672" y="302" font-family="Arial, sans-serif" font-size="9" fill="#555">Air Conditioning</text>
+  <text x="756" y="290" font-family="Arial, sans-serif" font-size="9" fill="#888">□</text>
+
+  <!-- Circuit 5: Spare -->
+  <rect x="645" y="315" width="125" height="32" rx="3" fill="#f8f8f8" stroke="#ccc" stroke-width="1"/>
+  <text x="672" y="330" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#999">CB5 — SPARE</text>
+  <text x="756" y="330" font-family="Arial, sans-serif" font-size="9" fill="#ccc">□</text>
+
+  <!-- Panel total label -->
+  <text x="707" y="363" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">Total load ≤ 30A (3,600W)</text>
+  <text x="707" y="376" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">at 120VAC</text>
+
+  <!-- GROUNDING SYSTEM -->
+  <!-- Ground bus bar at bottom -->
+  <rect x="100" y="385" width="500" height="35" rx="4" fill="#d0f0d0" stroke="#1a8a1a" stroke-width="2"/>
+  <text x="350" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#003a00">SAFETY GROUND BUS BAR (GREEN WIRE)</text>
+  <text x="350" y="414" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">All green/bare wires bond here → keel bolt / bonding system</text>
+
+  <!-- Ground connections -->
+  <line x1="235" y1="190" x2="235" y2="385" stroke="#1a8a1a" stroke-width="2" marker-end="url(#arrowG)"/>
+  <line x1="382" y1="176" x2="382" y2="385" stroke="#1a8a1a" stroke-width="2" marker-end="url(#arrowG)"/>
+  <line x1="527" y1="187" x2="527" y2="385" stroke="#1a8a1a" stroke-width="2" marker-end="url(#arrowG)"/>
+  <line x1="680" y1="390" x2="680" y2="385" stroke="#1a8a1a" stroke-width="2" marker-end="url(#arrowG)"/>
+  <!-- ground labels -->
+  <text x="242" y="290" font-family="Arial, sans-serif" font-size="7" fill="#1a8a1a" transform="rotate(-90,242,290)">GND</text>
+  <text x="389" y="290" font-family="Arial, sans-serif" font-size="7" fill="#1a8a1a" transform="rotate(-90,389,290)">GND</text>
+  <text x="534" y="290" font-family="Arial, sans-serif" font-size="7" fill="#1a8a1a" transform="rotate(-90,534,290)">GND</text>
+
+  <!-- NEUTRAL return line -->
+  <line x1="527" y1="187" x2="390" y2="198" stroke="#888" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="460" y="192" font-family="Arial, sans-serif" font-size="8" fill="#888" font-style="italic">neutral return</text>
+
+  <!-- ===== POLARITY INDICATOR NOTE ===== -->
+  <rect x="100" y="430" width="200" height="55" rx="5" fill="#fff9e6" stroke="#d4820a" stroke-width="1.5"/>
+  <text x="200" y="448" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#8B5E00">POLARITY CHECK</text>
+  <text x="200" y="462" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">Install reverse polarity indicator</text>
+  <text x="200" y="474" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">at panel — wiring varies by dock</text>
+
+  <!-- LEGEND -->
+  <rect x="320" y="430" width="180" height="60" rx="5" fill="white" stroke="#ccc" stroke-width="1"/>
+  <text x="410" y="447" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#333">LEGEND</text>
+  <line x1="330" y1="459" x2="360" y2="459" stroke="#cc2222" stroke-width="2.5"/>
+  <text x="365" y="462" font-family="Arial, sans-serif" font-size="8" fill="#333">Hot (Black) — 120VAC</text>
+  <line x1="330" y1="472" x2="360" y2="472" stroke="#888" stroke-width="2.5"/>
+  <text x="365" y="475" font-family="Arial, sans-serif" font-size="8" fill="#333">Neutral (White)</text>
+  <line x1="330" y1="484" x2="360" y2="484" stroke="#1a8a1a" stroke-width="2.5"/>
+  <text x="365" y="487" font-family="Arial, sans-serif" font-size="8" fill="#333">Ground (Green)</text>
+</svg>

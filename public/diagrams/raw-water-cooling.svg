@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <marker id="arrowB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a6faf"/>
+    </marker>
+    <marker id="arrowBk" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+    <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b3d9f7"/>
+      <stop offset="100%" stop-color="#5baee0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#f8f8f8"/>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="800" height="55" fill="#1a3a5c"/>
+  <text x="400" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="white">RAW WATER COOLING SYSTEM</text>
+  <text x="400" y="46" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a0c4e8">Marine Diesel Engine — Sea Water Circuit</text>
+
+  <!-- Ocean band at bottom -->
+  <rect x="0" y="415" width="800" height="85" fill="url(#oceanGrad)" rx="0"/>
+  <text x="400" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1a3a5c">SEA WATER (OCEAN / HULL EXTERIOR)</text>
+  <!-- Wave marks -->
+  <path d="M0 420 Q40 415 80 420 Q120 425 160 420 Q200 415 240 420 Q280 425 320 420 Q360 415 400 420 Q440 425 480 420 Q520 415 560 420 Q600 425 640 420 Q680 415 720 420 Q760 425 800 420" stroke="white" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+  <!-- Vertical pipes to/from sea (thru-hulls) -->
+  <!-- Intake pipe from sea cock down to ocean -->
+  <line x1="95" y1="330" x2="95" y2="415" stroke="#1a6faf" stroke-width="3"/>
+  <line x1="88" y1="395" x2="95" y2="415" stroke="#1a6faf" stroke-width="3" marker-end="url(#arrowB)"/>
+  <!-- Return pipe at right going to ocean -->
+  <line x1="720" y1="280" x2="720" y2="415" stroke="#1a6faf" stroke-width="3" marker-end="url(#arrowB)"/>
+
+  <!-- THRU-HULL label -->
+  <text x="70" y="408" font-family="Arial, sans-serif" font-size="9" fill="#1a3a5c" font-style="italic">THRU-HULL</text>
+  <text x="695" y="408" font-family="Arial, sans-serif" font-size="9" fill="#1a3a5c" font-style="italic">THRU-HULL</text>
+
+  <!-- === COMPONENT 1: SEA COCK === -->
+  <rect x="50" y="245" width="90" height="55" rx="6" fill="#e8f4f8" stroke="#1a6faf" stroke-width="2"/>
+  <text x="95" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">SEA COCK</text>
+  <text x="95" y="281" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">(Ball Valve)</text>
+  <text x="95" y="294" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Below Waterline</text>
+  <!-- valve symbol -->
+  <line x1="95" y1="245" x2="95" y2="265" stroke="#1a6faf" stroke-width="2"/>
+
+  <!-- flow line: sea cock → strainer -->
+  <line x1="140" y1="272" x2="185" y2="272" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+
+  <!-- === COMPONENT 2: SEA STRAINER === -->
+  <rect x="185" y="245" width="100" height="55" rx="6" fill="#e8f4f8" stroke="#1a6faf" stroke-width="2"/>
+  <text x="235" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">SEA STRAINER</text>
+  <text x="235" y="281" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">(Basket Filter)</text>
+  <text x="235" y="294" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Service Regularly</text>
+  <!-- strainer basket symbol -->
+  <path d="M215 258 L215 270 L255 270 L255 258" stroke="#1a6faf" stroke-width="1.5" fill="none"/>
+
+  <!-- flow line: strainer → impeller pump -->
+  <line x1="285" y1="272" x2="330" y2="272" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+
+  <!-- === COMPONENT 3: IMPELLER PUMP === -->
+  <rect x="330" y="235" width="110" height="75" rx="6" fill="#e8f4f8" stroke="#1a6faf" stroke-width="2"/>
+  <text x="385" y="257" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">IMPELLER</text>
+  <text x="385" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">PUMP</text>
+  <text x="385" y="284" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Belt or Direct Drive</text>
+  <text x="385" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d4110a">Replace Annually</text>
+  <!-- impeller circle symbol -->
+  <circle cx="385" cy="262" r="8" fill="none" stroke="#1a6faf" stroke-width="1.5"/>
+  <line x1="378" y1="258" x2="392" y2="266" stroke="#1a6faf" stroke-width="1"/>
+  <line x1="392" y1="258" x2="378" y2="266" stroke="#1a6faf" stroke-width="1"/>
+
+  <!-- flow line: pump → heat exchanger -->
+  <line x1="440" y1="272" x2="490" y2="235" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+
+  <!-- === COMPONENT 4: HEAT EXCHANGER === -->
+  <rect x="490" y="180" width="130" height="100" rx="6" fill="#cce8f4" stroke="#1a6faf" stroke-width="2.5"/>
+  <text x="555" y="202" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">HEAT EXCHANGER</text>
+  <text x="555" y="217" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Raw Water Side</text>
+  <!-- divider line in heat exchanger -->
+  <line x1="490" y1="235" x2="620" y2="235" stroke="#1a6faf" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="555" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Coolant Side →</text>
+  <text x="555" y="263" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1a6faf">← Raw Water →</text>
+  <text x="555" y="276" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Heat Transfer</text>
+
+  <!-- flow line: heat exchanger → exhaust elbow -->
+  <line x1="620" y1="230" x2="650" y2="230" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+
+  <!-- === COMPONENT 5: EXHAUST ELBOW === -->
+  <rect x="650" y="200" width="110" height="60" rx="6" fill="#e8f4f8" stroke="#1a6faf" stroke-width="2"/>
+  <text x="705" y="222" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">EXHAUST</text>
+  <text x="705" y="237" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">ELBOW</text>
+  <text x="705" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Water Injection Point</text>
+  <!-- water injection arrow symbol -->
+  <path d="M695 215 L715 215 L705 205 Z" fill="#1a6faf" opacity="0.6"/>
+
+  <!-- flow line: exhaust elbow → overboard (down) -->
+  <line x1="720" y1="260" x2="720" y2="285" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+
+  <!-- OVERBOARD label box -->
+  <rect x="678" y="280" width="90" height="40" rx="5" fill="#d0e8f4" stroke="#1a6faf" stroke-width="1.5"/>
+  <text x="723" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a3a5c">OVERBOARD</text>
+  <text x="723" y="313" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Exhaust &amp; Cooling</text>
+
+  <!-- Note annotations -->
+  <text x="95" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">①</text>
+  <text x="235" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">②</text>
+  <text x="385" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">③</text>
+  <text x="555" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">④</text>
+  <text x="705" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">⑤</text>
+  <text x="723" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#888">⑥</text>
+
+  <!-- Intake line from ocean to sea cock (going up) -->
+  <line x1="95" y1="300" x2="95" y2="340" stroke="#1a6faf" stroke-width="3"/>
+  <line x1="95" y1="290" x2="95" y2="300" stroke="#1a6faf" stroke-width="3" marker-end="url(#arrowB)"/>
+
+  <!-- LEGEND -->
+  <rect x="20" y="100" width="175" height="100" rx="6" fill="white" stroke="#ccc" stroke-width="1"/>
+  <text x="107" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">LEGEND</text>
+  <line x1="32" y1="130" x2="68" y2="130" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+  <text x="75" y="134" font-family="Arial, sans-serif" font-size="9" fill="#333">Raw Water Flow</text>
+  <rect x="32" y="143" width="36" height="14" rx="3" fill="#e8f4f8" stroke="#1a6faf" stroke-width="1.5"/>
+  <text x="75" y="153" font-family="Arial, sans-serif" font-size="9" fill="#333">Water Component</text>
+  <line x1="32" y1="167" x2="68" y2="167" stroke="#333" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="75" y="171" font-family="Arial, sans-serif" font-size="9" fill="#333">Internal Division</text>
+  <text x="32" y="190" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">⚠ Check impeller annually or every 200hrs</text>
+
+  <!-- Flow direction note -->
+  <text x="300" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1a6faf" font-weight="bold">FLOW DIRECTION: SEA → ENGINE → OVERBOARD</text>
+  <line x1="170" y1="97" x2="430" y2="97" stroke="#1a6faf" stroke-width="1" stroke-dasharray="5,4" opacity="0.5"/>
+
+  <!-- Component numbering guide at bottom -->
+  <text x="95" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">① Sea Cock</text>
+  <text x="235" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">② Strainer</text>
+  <text x="385" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">③ Imp. Pump</text>
+  <text x="555" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">④ Heat Exch.</text>
+  <text x="705" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">⑤ Exh. Elbow</text>
+  <text x="723" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">⑥ Overboard</text>
+</svg>

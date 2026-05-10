@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" style="background:#fff;font-family:Arial,sans-serif;">
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#111">NMEA 2000 Network Topology</text>
+
+  <!-- Backbone cable (horizontal) -->
+  <line x1="100" y1="280" x2="800" y2="280" stroke="#333" stroke-width="5"/>
+  <text x="450" y="268" text-anchor="middle" font-size="10" fill="#555">NMEA 2000 Backbone (DeviceNet Micro-C cable)</text>
+  <text x="450" y="255" text-anchor="middle" font-size="9" fill="#888">5-conductor: PWR+ / PWR− / CAN-H / CAN-L / Shield</text>
+
+  <!-- Left Terminator -->
+  <rect x="60" y="265" width="40" height="30" rx="4" fill="#333" stroke="#555" stroke-width="2"/>
+  <text x="80" y="284" text-anchor="middle" font-size="9" fill="#fff">120Ω</text>
+  <text x="80" y="258" text-anchor="middle" font-size="9" fill="#555">Term</text>
+  <line x1="100" y1="280" x2="100" y2="280" stroke="#333" stroke-width="2"/>
+
+  <!-- Right Terminator -->
+  <rect x="800" y="265" width="40" height="30" rx="4" fill="#333" stroke="#555" stroke-width="2"/>
+  <text x="820" y="284" text-anchor="middle" font-size="9" fill="#fff">120Ω</text>
+  <text x="820" y="258" text-anchor="middle" font-size="9" fill="#555">Term</text>
+
+  <!-- Power Tap -->
+  <rect x="220" y="265" width="40" height="30" rx="4" fill="#ccaa00" stroke="#996600" stroke-width="2"/>
+  <text x="240" y="284" text-anchor="middle" font-size="8" fill="#333" font-weight="bold">PWR</text>
+  <text x="240" y="258" text-anchor="middle" font-size="8" fill="#888">Tap</text>
+  <!-- Power tap wire up to power source -->
+  <line x1="240" y1="265" x2="240" y2="180" stroke="#ccaa00" stroke-width="2"/>
+  <rect x="190" y="140" width="100" height="40" rx="4" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="240" y="158" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">POWER SOURCE</text>
+  <text x="240" y="172" text-anchor="middle" font-size="9" fill="#555">12V / 3A fused</text>
+  <!-- fuse on power tap -->
+  <rect x="228" y="215" width="24" height="16" rx="3" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="240" y="227" text-anchor="middle" font-size="8" fill="#555">3A</text>
+
+  <!-- T-Connectors and devices -->
+  <!-- T1: GPS Plotter -->
+  <rect x="155" y="264" width="30" height="32" rx="3" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <line x1="170" y1="264" x2="170" y2="220" stroke="#666" stroke-width="2"/>
+  <rect x="130" y="190" width="120" height="30" rx="4" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="190" y="209" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">GPS / PLOTTER</text>
+  <text x="170" y="254" text-anchor="middle" font-size="7" fill="#555">T</text>
+
+  <!-- T2: VHF Radio -->
+  <rect x="335" y="264" width="30" height="32" rx="3" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <line x1="350" y1="264" x2="350" y2="190" stroke="#666" stroke-width="2"/>
+  <rect x="290" y="160" width="120" height="30" rx="4" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="350" y="179" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">VHF RADIO</text>
+  <text x="350" y="254" text-anchor="middle" font-size="7" fill="#555">T</text>
+  <!-- drop label -->
+  <text x="370" y="230" font-size="8" fill="#888">0.3m drop</text>
+
+  <!-- T3: Autopilot -->
+  <rect x="455" y="264" width="30" height="32" rx="3" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <line x1="470" y1="264" x2="470" y2="190" stroke="#666" stroke-width="2"/>
+  <rect x="410" y="160" width="120" height="30" rx="4" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="470" y="179" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">AUTOPILOT</text>
+  <text x="470" y="254" text-anchor="middle" font-size="7" fill="#555">T</text>
+
+  <!-- T4: Wind/Depth sensor -->
+  <rect x="575" y="264" width="30" height="32" rx="3" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <line x1="590" y1="264" x2="590" y2="190" stroke="#666" stroke-width="2"/>
+  <rect x="530" y="160" width="120" height="30" rx="4" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="590" y="172" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">WIND / DEPTH</text>
+  <text x="590" y="185" text-anchor="middle" font-size="9" fill="#555">Transducers</text>
+  <text x="590" y="254" text-anchor="middle" font-size="7" fill="#555">T</text>
+
+  <!-- T5: Engine interface -->
+  <rect x="695" y="264" width="30" height="32" rx="3" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <line x1="710" y1="264" x2="710" y2="190" stroke="#666" stroke-width="2"/>
+  <rect x="650" y="160" width="120" height="30" rx="4" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="710" y="172" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">ENGINE</text>
+  <text x="710" y="185" text-anchor="middle" font-size="9" fill="#555">Gateway / ECU</text>
+  <text x="710" y="254" text-anchor="middle" font-size="7" fill="#555">T</text>
+
+  <!-- Devices below backbone -->
+  <!-- AIS -->
+  <rect x="155" y="296" width="30" height="32" rx="3" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <line x1="170" y1="296" x2="170" y2="370" stroke="#666" stroke-width="2"/>
+  <rect x="120" y="370" width="100" height="30" rx="4" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="170" y="389" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">AIS</text>
+  <text x="170" y="306" text-anchor="middle" font-size="7" fill="#555">T</text>
+  <text x="170" y="360" font-size="8" fill="#888">drop</text>
+
+  <!-- Display MFD -->
+  <rect x="455" y="296" width="30" height="32" rx="3" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <line x1="470" y1="296" x2="470" y2="380" stroke="#666" stroke-width="2"/>
+  <rect x="420" y="380" width="100" height="30" rx="4" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="470" y="399" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">MFD / HELM</text>
+  <text x="470" y="306" text-anchor="middle" font-size="7" fill="#555">T</text>
+
+  <!-- 5-wire cable detail -->
+  <rect x="50" y="420" width="380" height="140" rx="6" fill="#f8f8f8" stroke="#999" stroke-width="1.5"/>
+  <text x="240" y="442" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">N2K Cable — 5 Conductors</text>
+  <line x1="70" y1="458" x2="100" y2="458" stroke="#cc0000" stroke-width="3"/>
+  <text x="108" y="462" font-size="10" fill="#333">RED — Power + (12V)</text>
+  <line x1="70" y1="478" x2="100" y2="478" stroke="#000" stroke-width="3"/>
+  <text x="108" y="482" font-size="10" fill="#333">BLACK — Power − (GND)</text>
+  <line x1="70" y1="498" x2="100" y2="498" stroke="#fff" stroke-width="3"/>
+  <rect x="70" y="491" width="30" height="14" fill="none" stroke="#aaa" stroke-width="1"/>
+  <text x="108" y="502" font-size="10" fill="#333">WHITE — CAN-H</text>
+  <line x1="70" y1="518" x2="100" y2="518" stroke="#0000cc" stroke-width="3"/>
+  <text x="108" y="522" font-size="10" fill="#333">BLUE — CAN-L</text>
+  <line x1="70" y1="538" x2="100" y2="538" stroke="#888" stroke-width="3"/>
+  <text x="108" y="542" font-size="10" fill="#333">DRAIN (bare) — Shield</text>
+  <text x="240" y="556" text-anchor="middle" font-size="9" fill="#888">250 kbit/s | Max 32 nodes | 200m max length</text>
+
+  <!-- Rules box -->
+  <rect x="460" y="420" width="420" height="140" rx="6" fill="#fffbe6" stroke="#ccaa00" stroke-width="1.5"/>
+  <text x="670" y="440" text-anchor="middle" font-size="11" font-weight="bold" fill="#665500">NMEA 2000 Network Rules</text>
+  <text x="670" y="458" text-anchor="middle" font-size="9" fill="#665500">• Always need TWO 120Ω terminators</text>
+  <text x="670" y="474" text-anchor="middle" font-size="9" fill="#665500">• Max drop cable length: 6 meters</text>
+  <text x="670" y="490" text-anchor="middle" font-size="9" fill="#665500">• Total backbone: up to 100 meters</text>
+  <text x="670" y="506" text-anchor="middle" font-size="9" fill="#665500">• Power tap must be fused (max 3A)</text>
+  <text x="670" y="522" text-anchor="middle" font-size="9" fill="#665500">• One power tap per network</text>
+  <text x="670" y="538" text-anchor="middle" font-size="9" fill="#665500">• Compatible: Simrad, Garmin, Lowrance,</text>
+  <text x="670" y="552" text-anchor="middle" font-size="9" fill="#665500">  Furuno, B&amp;G, Airmar (all use same cable)</text>
+</svg>

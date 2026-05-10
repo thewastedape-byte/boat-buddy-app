@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <marker id="arrowB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a6faf"/>
+    </marker>
+    <marker id="arrowBk" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+    <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#90c8f0"/>
+      <stop offset="100%" stop-color="#2070b0"/>
+    </linearGradient>
+    <linearGradient id="hullGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b0b0b0"/>
+      <stop offset="100%" stop-color="#808080"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#f8f8f8"/>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="800" height="55" fill="#1a3a5c"/>
+  <text x="400" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="white">SEA COCK &amp; STRAINER ASSEMBLY</text>
+  <text x="400" y="46" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a0c4e8">Thru-Hull Fitting — Sea Cock — Basket Strainer — System Connection</text>
+
+  <!-- ===== CROSS-SECTION VIEW (LEFT SIDE) ===== -->
+  <!-- Hull cross-section -->
+  <rect x="30" y="60" width="350" height="420" rx="10" fill="white" stroke="#ccc" stroke-width="1"/>
+  <text x="205" y="82" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">CROSS-SECTION VIEW</text>
+  <text x="205" y="96" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#888">(side view through hull)</text>
+
+  <!-- Ocean (below waterline) -->
+  <rect x="40" y="380" width="330" height="90" rx="6" fill="url(#oceanGrad)" opacity="0.9"/>
+  <text x="205" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">OCEAN</text>
+  <path d="M40 382 Q80 378 120 382 Q160 386 200 382 Q240 378 280 382 Q320 386 370 382" stroke="white" stroke-width="1.5" fill="none" opacity="0.7"/>
+  <!-- Waterline label -->
+  <line x1="40" y1="378" x2="370" y2="378" stroke="#1a6faf" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="355" y="374" text-anchor="right" font-family="Arial, sans-serif" font-size="9" fill="#1a6faf">WL</text>
+
+  <!-- Hull bottom (fiberglass thickness) -->
+  <rect x="170" y="355" width="70" height="30" rx="3" fill="url(#hullGrad)" stroke="#555" stroke-width="2"/>
+  <text x="205" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">HULL</text>
+  <text x="205" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">FRP/GRP</text>
+
+  <!-- THRU-HULL FITTING (bronze/ss pipe through hull) -->
+  <!-- pipe going through hull wall -->
+  <rect x="195" y="310" width="20" height="50" rx="2" fill="#c8a050" stroke="#8B5E00" stroke-width="2"/>
+  <text x="230" y="337" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#8B5E00">THRU-HULL</text>
+  <text x="230" y="349" font-family="Arial, sans-serif" font-size="8" fill="#555">Bronze threaded</text>
+  <text x="230" y="360" font-family="Arial, sans-serif" font-size="8" fill="#555">fitting w/nut</text>
+  <!-- backing plate -->
+  <rect x="188" y="355" width="34" height="6" rx="2" fill="#c8a050" stroke="#8B5E00" stroke-width="1.5"/>
+  <text x="143" y="358" font-family="Arial, sans-serif" font-size="7" fill="#888">backing nut →</text>
+  <!-- water flow arrow through thru-hull -->
+  <line x1="205" y1="378" x2="205" y2="314" stroke="#1a6faf" stroke-width="2" marker-end="url(#arrowB)"/>
+  <text x="155" y="348" font-family="Arial, sans-serif" font-size="8" fill="#1a6faf">water flow</text>
+
+  <!-- SEA COCK BODY -->
+  <rect x="170" y="255" width="70" height="55" rx="5" fill="#c8a050" stroke="#8B5E00" stroke-width="2.5"/>
+  <text x="205" y="274" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#2a1800">SEA</text>
+  <text x="205" y="287" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#2a1800">COCK</text>
+  <text x="205" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#555">Bronze ball valve</text>
+  <!-- valve internals (ball symbol) -->
+  <circle cx="205" cy="280" r="12" fill="none" stroke="#8B5E00" stroke-width="1.5"/>
+  <circle cx="205" cy="280" r="6" fill="#c8a050" stroke="#8B5E00" stroke-width="1"/>
+  <line x1="205" y1="268" x2="205" y2="256" stroke="#8B5E00" stroke-width="2"/>
+  <line x1="205" y1="310" x2="205" y2="314" stroke="#1a6faf" stroke-width="2.5"/>
+
+  <!-- HANDLE / LEVER (sea cock handle) -->
+  <line x1="205" y1="255" x2="205" y2="230" stroke="#8B5E00" stroke-width="3"/>
+  <line x1="185" y1="220" x2="225" y2="220" stroke="#8B5E00" stroke-width="4" stroke-linecap="round"/>
+  <text x="240" y="226" font-family="Arial, sans-serif" font-size="9" fill="#555">HANDLE</text>
+  <text x="240" y="237" font-family="Arial, sans-serif" font-size="8" fill="#888">OPEN: parallel to pipe</text>
+  <text x="240" y="248" font-family="Arial, sans-serif" font-size="8" fill="#888">CLOSED: 90° to pipe</text>
+
+  <!-- CLOSED POSITION indicator (dashed) -->
+  <line x1="205" y1="247" x2="170" y2="222" stroke="#888" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="130" y="218" font-family="Arial, sans-serif" font-size="7" fill="#888" font-style="italic">closed pos.</text>
+
+  <!-- Sea cock → strainer connection pipe -->
+  <line x1="205" y1="255" x2="205" y2="210" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+
+  <!-- STRAINER -->
+  <rect x="155" y="150" width="100" height="65" rx="5" fill="#e8f4f8" stroke="#1a6faf" stroke-width="2.5"/>
+  <text x="205" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1a3a5c">STRAINER</text>
+  <text x="205" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1a3a5c">BASKET</text>
+  <text x="205" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">20-mesh stainless</text>
+  <text x="205" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">Clean weekly in season</text>
+  <!-- basket mesh lines -->
+  <line x1="165" y1="192" x2="245" y2="192" stroke="#1a6faf" stroke-width="1" opacity="0.4"/>
+  <line x1="175" y1="162" x2="175" y2="207" stroke="#1a6faf" stroke-width="0.5" opacity="0.3"/>
+  <line x1="195" y1="162" x2="195" y2="207" stroke="#1a6faf" stroke-width="0.5" opacity="0.3"/>
+  <line x1="215" y1="162" x2="215" y2="207" stroke="#1a6faf" stroke-width="0.5" opacity="0.3"/>
+  <line x1="235" y1="162" x2="235" y2="207" stroke="#1a6faf" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- Strainer output to pump -->
+  <line x1="205" y1="150" x2="205" y2="120" stroke="#1a6faf" stroke-width="2.5" marker-end="url(#arrowB)"/>
+  <rect x="155" y="103" width="100" height="25" rx="4" fill="#e8f4f8" stroke="#1a6faf" stroke-width="1.5"/>
+  <text x="205" y="119" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1a3a5c">TO PUMP / SYSTEM</text>
+
+  <!-- ===== RIGHT SIDE: COMPONENT DETAIL ===== -->
+  <rect x="410" y="60" width="370" height="420" rx="10" fill="white" stroke="#ccc" stroke-width="1"/>
+  <text x="595" y="82" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">COMPONENT DETAIL &amp; SERVICE NOTES</text>
+
+  <!-- THRU-HULL DETAIL -->
+  <rect x="420" y="95" width="160" height="105" rx="5" fill="#fff9e6" stroke="#8B5E00" stroke-width="1.5"/>
+  <text x="500" y="114" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a2800">THRU-HULL FITTING</text>
+  <line x1="430" y1="118" x2="570" y2="118" stroke="#8B5E00" stroke-width="0.5"/>
+  <text x="430" y="130" font-family="Arial, sans-serif" font-size="8" fill="#333">• Bronze or Marelon (no iron)</text>
+  <text x="430" y="143" font-family="Arial, sans-serif" font-size="8" fill="#333">• ABYC requires sea cock on every</text>
+  <text x="430" y="154" font-family="Arial, sans-serif" font-size="8" fill="#333">  fitting below waterline</text>
+  <text x="430" y="167" font-family="Arial, sans-serif" font-size="8" fill="#333">• Backing plate required ≥ 2" from</text>
+  <text x="430" y="178" font-family="Arial, sans-serif" font-size="8" fill="#333">  the hull inner surface</text>
+  <text x="430" y="191" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">• Replace if pitting/dezincification</text>
+
+  <!-- SEA COCK DETAIL -->
+  <rect x="595" y="95" width="175" height="105" rx="5" fill="#fff9e6" stroke="#8B5E00" stroke-width="1.5"/>
+  <text x="682" y="114" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a2800">SEA COCK</text>
+  <line x1="605" y1="118" x2="762" y2="118" stroke="#8B5E00" stroke-width="0.5"/>
+  <text x="605" y="130" font-family="Arial, sans-serif" font-size="8" fill="#333">• Must be operable by hand only</text>
+  <text x="605" y="143" font-family="Arial, sans-serif" font-size="8" fill="#333">• Bonding wire required (ABYC)</text>
+  <text x="605" y="156" font-family="Arial, sans-serif" font-size="8" fill="#333">• Open/close test every 6 months</text>
+  <text x="605" y="169" font-family="Arial, sans-serif" font-size="8" fill="#333">• Grease with waterproof grease</text>
+  <text x="605" y="182" font-family="Arial, sans-serif" font-size="8" fill="#333">• Inspect for crystallization</text>
+  <text x="605" y="195" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">• Replace every 10 yrs or if seized</text>
+
+  <!-- STRAINER DETAIL -->
+  <rect x="420" y="212" width="160" height="115" rx="5" fill="#e8f4f8" stroke="#1a6faf" stroke-width="1.5"/>
+  <text x="500" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1a3a5c">STRAINER</text>
+  <line x1="430" y1="234" x2="570" y2="234" stroke="#1a6faf" stroke-width="0.5"/>
+  <text x="430" y="246" font-family="Arial, sans-serif" font-size="8" fill="#333">• Clear bowl — inspect visually</text>
+  <text x="430" y="259" font-family="Arial, sans-serif" font-size="8" fill="#333">• Remove basket to clean</text>
+  <text x="430" y="272" font-family="Arial, sans-serif" font-size="8" fill="#333">• CLOSE sea cock first!</text>
+  <text x="430" y="285" font-family="Arial, sans-serif" font-size="8" fill="#333">• Flush with fresh water</text>
+  <text x="430" y="298" font-family="Arial, sans-serif" font-size="8" fill="#333">• Check O-ring / gasket seals</text>
+  <text x="430" y="311" font-family="Arial, sans-serif" font-size="8" fill="#333">• Replace basket if corroded</text>
+  <text x="430" y="318" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">• Clogged = overheating risk!</text>
+
+  <!-- ASSEMBLY ORDER -->
+  <rect x="595" y="212" width="175" height="115" rx="5" fill="#f0f8f0" stroke="#2d7a3a" stroke-width="1.5"/>
+  <text x="682" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#003a00">ASSEMBLY ORDER</text>
+  <line x1="605" y1="234" x2="762" y2="234" stroke="#2d7a3a" stroke-width="0.5"/>
+  <text x="615" y="246" font-family="Arial, sans-serif" font-size="8" fill="#333">①  Thru-hull fitting (below)</text>
+  <text x="615" y="259" font-family="Arial, sans-serif" font-size="8" fill="#333">②  Backing plate + nut (inside)</text>
+  <text x="615" y="272" font-family="Arial, sans-serif" font-size="8" fill="#333">③  Sea cock (bolts direct to</text>
+  <text x="625" y="283" font-family="Arial, sans-serif" font-size="8" fill="#333">    thru-hull flange)</text>
+  <text x="615" y="296" font-family="Arial, sans-serif" font-size="8" fill="#333">④  Hose barb nipple</text>
+  <text x="615" y="309" font-family="Arial, sans-serif" font-size="8" fill="#333">⑤  Strainer (near sea cock)</text>
+  <text x="615" y="322" font-family="Arial, sans-serif" font-size="8" fill="#333">⑥  Hose to pump/system</text>
+
+  <!-- COMMON FAILURES BOX -->
+  <rect x="420" y="340" width="350" height="120" rx="5" fill="#ffe8e8" stroke="#cc2222" stroke-width="1.5"/>
+  <text x="595" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4a0000">⚠ COMMON FAILURES &amp; WARNING SIGNS</text>
+  <line x1="430" y1="364" x2="760" y2="364" stroke="#cc2222" stroke-width="0.5"/>
+  <text x="430" y="378" font-family="Arial, sans-serif" font-size="8" fill="#333">Seized sea cock: grease annually, exercise every haulout</text>
+  <text x="430" y="392" font-family="Arial, sans-serif" font-size="8" fill="#333">Clogged strainer: reduced flow → overheating → impeller damage</text>
+  <text x="430" y="406" font-family="Arial, sans-serif" font-size="8" fill="#333">Dezincification: pink/red staining on brass = replace immediately</text>
+  <text x="430" y="420" font-family="Arial, sans-serif" font-size="8" fill="#333">Hose failure: check for cracks/hardening — replace every 5–10 yrs</text>
+  <text x="430" y="434" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">EMERGENCY: close sea cock immediately if hose fails below waterline</text>
+  <text x="430" y="448" font-family="Arial, sans-serif" font-size="8" fill="#d4110a">Keep a wooden plug taped to every sea cock below waterline!</text>
+</svg>

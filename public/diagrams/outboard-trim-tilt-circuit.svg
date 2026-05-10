@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" style="background:#fff;font-family:Arial,sans-serif;">
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#111">Outboard Trim / Tilt Circuit</text>
+
+  <!-- Battery -->
+  <rect x="30" y="230" width="100" height="65" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="80" y="253" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">BATTERY</text>
+  <text x="80" y="268" text-anchor="middle" font-size="9" fill="#555">12V DC</text>
+  <line x1="45" y1="278" x2="68" y2="278" stroke="#333" stroke-width="3"/>
+  <line x1="49" y1="285" x2="64" y2="285" stroke="#333" stroke-width="1.5"/>
+  <text x="33" y="248" font-size="12" fill="#cc0000" font-weight="bold">+</text>
+  <text x="33" y="295" font-size="12" fill="#000" font-weight="bold">−</text>
+
+  <!-- Main fuse from battery -->
+  <line x1="80" y1="230" x2="80" y2="160" stroke="#cc0000" stroke-width="2.5"/>
+  <line x1="80" y1="160" x2="155" y2="160" stroke="#cc0000" stroke-width="2.5"/>
+  <rect x="155" y="150" width="30" height="20" rx="3" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="170" y="146" text-anchor="middle" font-size="9" fill="#555">30A</text>
+  <line x1="185" y1="160" x2="300" y2="160" stroke="#cc0000" stroke-width="2.5"/>
+  <circle cx="300" cy="160" r="4" fill="#333"/>
+  <text x="230" y="148" text-anchor="middle" font-size="9" fill="#888">10 AWG RED</text>
+
+  <!-- UP Relay -->
+  <rect x="300" y="120" width="130" height="80" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="365" y="148" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">UP RELAY</text>
+  <text x="365" y="163" text-anchor="middle" font-size="9" fill="#555">SPDT 30A</text>
+  <!-- coil terminals -->
+  <text x="305" y="190" font-size="9" fill="#006600">+coil</text>
+  <text x="355" y="190" font-size="9" fill="#000">−coil</text>
+  <!-- switch terminals -->
+  <text x="305" y="115" font-size="9" fill="#cc0000">COM</text>
+  <text x="395" y="115" font-size="9" fill="#cc0000">NO</text>
+  <circle cx="320" cy="120" r="4" fill="#cc0000"/>
+  <circle cx="415" cy="120" r="4" fill="#cc0000"/>
+  <circle cx="320" cy="200" r="4" fill="#006600"/>
+  <circle cx="370" cy="200" r="4" fill="#000"/>
+
+  <!-- DOWN Relay -->
+  <rect x="300" y="300" width="130" height="80" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="365" y="328" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">DOWN RELAY</text>
+  <text x="365" y="343" text-anchor="middle" font-size="9" fill="#555">SPDT 30A</text>
+  <!-- coil terminals -->
+  <text x="305" y="375" font-size="9" fill="#0000cc">+coil</text>
+  <text x="355" y="375" font-size="9" fill="#000">−coil</text>
+  <!-- switch terminals -->
+  <text x="305" y="298" font-size="9" fill="#cc0000">COM</text>
+  <text x="395" y="298" font-size="9" fill="#cc0000">NO</text>
+  <circle cx="320" cy="300" r="4" fill="#cc0000"/>
+  <circle cx="415" cy="300" r="4" fill="#cc0000"/>
+  <circle cx="320" cy="380" r="4" fill="#0000cc"/>
+  <circle cx="370" cy="380" r="4" fill="#000"/>
+
+  <!-- Power to relay COM terminals -->
+  <line x1="300" y1="160" x2="300" y2="120" stroke="#cc0000" stroke-width="2.5"/>
+  <line x1="300" y1="160" x2="300" y2="300" stroke="#cc0000" stroke-width="2.5"/>
+  <circle cx="300" cy="160" r="4" fill="#333"/>
+
+  <!-- Trim / Tilt Motor -->
+  <rect x="580" y="200" width="140" height="100" rx="8" fill="#e8e8f0" stroke="#333" stroke-width="2"/>
+  <text x="650" y="228" text-anchor="middle" font-size="12" font-weight="bold" fill="#222">TRIM/TILT</text>
+  <text x="650" y="244" text-anchor="middle" font-size="12" font-weight="bold" fill="#222">MOTOR</text>
+  <text x="650" y="260" text-anchor="middle" font-size="9" fill="#555">Hydraulic pump motor</text>
+  <text x="650" y="275" text-anchor="middle" font-size="9" fill="#888">Reversible polarity</text>
+  <!-- Motor terminal labels -->
+  <text x="588" y="215" font-size="9" fill="#006600">UP+</text>
+  <text x="588" y="285" font-size="9" fill="#0000cc">DN+</text>
+  <circle cx="580" cy="220" r="4" fill="#006600"/>
+  <circle cx="580" cy="280" r="4" fill="#0000cc"/>
+
+  <!-- Relay NO terminals to motor -->
+  <!-- UP relay NO → motor UP -->
+  <line x1="415" y1="120" x2="500" y2="120" stroke="#006600" stroke-width="2"/>
+  <line x1="500" y1="120" x2="500" y2="220" stroke="#006600" stroke-width="2"/>
+  <line x1="500" y1="220" x2="580" y2="220" stroke="#006600" stroke-width="2"/>
+  <text x="455" y="110" font-size="9" fill="#006600">10 AWG GRN</text>
+
+  <!-- DOWN relay NO → motor DOWN -->
+  <line x1="415" y1="300" x2="530" y2="300" stroke="#0000cc" stroke-width="2"/>
+  <line x1="530" y1="300" x2="530" y2="280" stroke="#0000cc" stroke-width="2"/>
+  <line x1="530" y1="280" x2="580" y2="280" stroke="#0000cc" stroke-width="2"/>
+  <text x="455" y="292" font-size="9" fill="#0000cc">10 AWG BLU</text>
+
+  <!-- Helm Switch -->
+  <rect x="30" y="100" width="130" height="100" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="95" y="120" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">HELM TRIM</text>
+  <text x="95" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">SWITCH</text>
+  <rect x="50" y="143" width="90" height="22" rx="3" fill="#006600" stroke="#333" stroke-width="1"/>
+  <text x="95" y="159" text-anchor="middle" font-size="10" fill="#fff">▲ TRIM UP</text>
+  <rect x="50" y="169" width="90" height="22" rx="3" fill="#0000cc" stroke="#333" stroke-width="1"/>
+  <text x="95" y="185" text-anchor="middle" font-size="10" fill="#fff">▼ TRIM DOWN</text>
+
+  <!-- Engine Trim Switch -->
+  <rect x="30" y="390" width="130" height="80" rx="5" fill="#f0f0f0" stroke="#333" stroke-width="1.5"/>
+  <text x="95" y="410" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">ENGINE</text>
+  <text x="95" y="425" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">TRIM SWITCH</text>
+  <rect x="50" y="435" width="90" height="20" rx="3" fill="#006600" stroke="#333" stroke-width="1"/>
+  <text x="95" y="450" text-anchor="middle" font-size="9" fill="#fff">▲ UP</text>
+  <rect x="50" y="458" width="90" height="20" rx="3" fill="#0000cc" stroke="#333" stroke-width="1"/>
+  <text x="95" y="473" text-anchor="middle" font-size="9" fill="#fff">▼ DOWN</text>
+
+  <!-- Helm switch to relay coils -->
+  <!-- UP coil -->
+  <line x1="160" y1="153" x2="250" y2="153" stroke="#006600" stroke-width="1.5"/>
+  <line x1="250" y1="153" x2="320" y2="153" stroke="#006600" stroke-width="1.5"/>
+  <line x1="320" y1="153" x2="320" y2="200" stroke="#006600" stroke-width="1.5"/>
+  <!-- DOWN coil -->
+  <line x1="160" y1="179" x2="240" y2="179" stroke="#0000cc" stroke-width="1.5"/>
+  <line x1="240" y1="179" x2="240" y2="380" stroke="#0000cc" stroke-width="1.5"/>
+  <line x1="240" y1="380" x2="320" y2="380" stroke="#0000cc" stroke-width="1.5"/>
+
+  <!-- Engine switch parallel to helm switch -->
+  <line x1="160" y1="445" x2="250" y2="445" stroke="#006600" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="250" y1="445" x2="250" y2="153" stroke="#006600" stroke-width="1" stroke-dasharray="4,2"/>
+  <line x1="160" y1="463" x2="240" y2="463" stroke="#0000cc" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="240" y1="463" x2="240" y2="380" stroke="#0000cc" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="200" y="530" text-anchor="middle" font-size="9" fill="#555">Both switches in parallel</text>
+
+  <!-- Relay coil negative (ground) -->
+  <line x1="370" y1="200" x2="450" y2="200" stroke="#000" stroke-width="1.5"/>
+  <line x1="450" y1="200" x2="450" y2="560" stroke="#000" stroke-width="1.5"/>
+  <line x1="370" y1="380" x2="450" y2="380" stroke="#000" stroke-width="1.5"/>
+  <circle cx="450" cy="380" r="4" fill="#333"/>
+  <!-- motor ground -->
+  <line x1="650" y1="300" x2="650" y2="560" stroke="#000" stroke-width="2"/>
+  <circle cx="650" cy="560" r="4" fill="#333"/>
+  <line x1="80" y1="295" x2="80" y2="560" stroke="#000" stroke-width="2.5"/>
+  <line x1="80" y1="560" x2="650" y2="560" stroke="#000" stroke-width="2.5"/>
+  <circle cx="450" cy="560" r="4" fill="#333"/>
+  <text x="365" y="575" text-anchor="middle" font-size="9" fill="#888">Common Ground 10 AWG BLK</text>
+
+  <!-- Ground symbol -->
+  <line x1="80" y1="560" x2="80" y2="585" stroke="#000" stroke-width="2"/>
+  <line x1="63" y1="585" x2="97" y2="585" stroke="#000" stroke-width="2.5"/>
+  <line x1="68" y1="592" x2="92" y2="592" stroke="#000" stroke-width="2"/>
+  <line x1="73" y1="599" x2="87" y2="599" stroke="#000" stroke-width="1.5"/>
+
+  <!-- Legend -->
+  <rect x="700" y="380" width="185" height="140" rx="5" fill="#f9f9f9" stroke="#ccc" stroke-width="1"/>
+  <text x="792" y="398" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Wire Colors</text>
+  <line x1="710" y1="412" x2="740" y2="412" stroke="#cc0000" stroke-width="2.5"/>
+  <text x="745" y="416" font-size="10" fill="#333">Power (Red)</text>
+  <line x1="710" y1="430" x2="740" y2="430" stroke="#000" stroke-width="2.5"/>
+  <text x="745" y="434" font-size="10" fill="#333">Ground (Black)</text>
+  <line x1="710" y1="448" x2="740" y2="448" stroke="#006600" stroke-width="2.5"/>
+  <text x="745" y="452" font-size="10" fill="#333">Tilt Up (Green)</text>
+  <line x1="710" y1="466" x2="740" y2="466" stroke="#0000cc" stroke-width="2.5"/>
+  <text x="745" y="470" font-size="10" fill="#333">Tilt Down (Blue)</text>
+  <line x1="710" y1="484" x2="740" y2="484" stroke="#555" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="745" y="488" font-size="10" fill="#333">Parallel switch (dash)</text>
+  <text x="792" y="508" text-anchor="middle" font-size="9" fill="#555">Relay coils: 12V trigger</text>
+</svg>

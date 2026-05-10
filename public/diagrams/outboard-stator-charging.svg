@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" style="background:#fff;font-family:Arial,sans-serif;">
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#111">Outboard Stator Charging System</text>
+
+  <!-- Flywheel / Stator -->
+  <rect x="40" y="180" width="150" height="160" rx="8" fill="#e8e8e8" stroke="#333" stroke-width="2"/>
+  <text x="115" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="#222">STATOR</text>
+  <text x="115" y="220" text-anchor="middle" font-size="10" fill="#333">Under Flywheel</text>
+  <!-- AC coil windings -->
+  <ellipse cx="115" cy="275" rx="50" ry="40" fill="none" stroke="#666" stroke-width="2"/>
+  <text x="115" y="272" text-anchor="middle" font-size="10" fill="#555">AC Coils</text>
+  <text x="115" y="285" text-anchor="middle" font-size="9" fill="#888">Multi-phase</text>
+  <!-- stator output wires (AC) -->
+  <circle cx="190" cy="240" r="4" fill="#cc6600"/>
+  <circle cx="190" cy="270" r="4" fill="#cc6600"/>
+  <circle cx="190" cy="300" r="4" fill="#cc6600"/>
+  <text x="195" y="244" font-size="8" fill="#cc6600">AC1</text>
+  <text x="195" y="274" font-size="8" fill="#cc6600">AC2</text>
+  <text x="195" y="304" font-size="8" fill="#cc6600">AC3</text>
+
+  <!-- Test point: stator AC output -->
+  <rect x="40" y="360" width="150" height="55" rx="4" fill="#fffbe6" stroke="#ccaa00" stroke-width="1.5"/>
+  <text x="115" y="378" text-anchor="middle" font-size="10" font-weight="bold" fill="#665500">TEST POINT 1</text>
+  <text x="115" y="393" text-anchor="middle" font-size="9" fill="#665500">Stator AC output</text>
+  <text x="115" y="408" text-anchor="middle" font-size="9" fill="#665500">Expected: 18–60V AC</text>
+
+  <!-- Rectifier / Regulator -->
+  <rect x="340" y="180" width="180" height="160" rx="8" fill="#e0f0e0" stroke="#333" stroke-width="2"/>
+  <text x="430" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="#003300">RECTIFIER /</text>
+  <text x="430" y="228" text-anchor="middle" font-size="12" font-weight="bold" fill="#003300">REGULATOR</text>
+  <text x="430" y="248" text-anchor="middle" font-size="9" fill="#555">(Combined unit)</text>
+  <!-- internal diagram -->
+  <text x="430" y="268" text-anchor="middle" font-size="9" fill="#333">AC → DC conversion</text>
+  <text x="430" y="283" text-anchor="middle" font-size="9" fill="#333">Regulates to 14.0–14.5V</text>
+  <text x="430" y="298" text-anchor="middle" font-size="9" fill="#cc0000">Shunt-type: excess</text>
+  <text x="430" y="311" text-anchor="middle" font-size="9" fill="#cc0000">energy → heat</text>
+  <!-- terminal labels -->
+  <circle cx="340" cy="235" r="4" fill="#cc6600"/>
+  <circle cx="340" cy="255" r="4" fill="#cc6600"/>
+  <circle cx="340" cy="275" r="4" fill="#cc6600"/>
+  <text x="322" y="239" font-size="8" fill="#cc6600">AC1</text>
+  <text x="322" y="259" font-size="8" fill="#cc6600">AC2</text>
+  <text x="322" y="279" font-size="8" fill="#cc6600">AC3</text>
+  <circle cx="520" cy="240" r="4" fill="#ccaa00"/>
+  <circle cx="520" cy="260" r="4" fill="#000"/>
+  <text x="525" y="244" font-size="8" fill="#ccaa00">DC+</text>
+  <text x="525" y="264" font-size="8" fill="#000">GND</text>
+  <!-- Heat sink fins -->
+  <line x1="380" y1="320" x2="380" y2="340" stroke="#666" stroke-width="2"/>
+  <line x1="395" y1="320" x2="395" y2="345" stroke="#666" stroke-width="2"/>
+  <line x1="410" y1="320" x2="410" y2="340" stroke="#666" stroke-width="2"/>
+  <line x1="425" y1="320" x2="425" y2="345" stroke="#666" stroke-width="2"/>
+  <line x1="440" y1="320" x2="440" y2="340" stroke="#666" stroke-width="2"/>
+  <line x1="455" y1="320" x2="455" y2="345" stroke="#666" stroke-width="2"/>
+  <line x1="470" y1="320" x2="470" y2="340" stroke="#666" stroke-width="2"/>
+  <line x1="485" y1="320" x2="485" y2="345" stroke="#666" stroke-width="2"/>
+  <line x1="500" y1="320" x2="500" y2="340" stroke="#666" stroke-width="2"/>
+  <text x="430" y="360" text-anchor="middle" font-size="8" fill="#888">Heat sink (must be grounded)</text>
+
+  <!-- AC wires from stator to reg/rect -->
+  <line x1="190" y1="240" x2="340" y2="235" stroke="#cc6600" stroke-width="1.5"/>
+  <line x1="190" y1="270" x2="340" y2="255" stroke="#cc6600" stroke-width="1.5"/>
+  <line x1="190" y1="300" x2="340" y2="275" stroke="#cc6600" stroke-width="1.5"/>
+  <text x="265" y="230" font-size="9" fill="#cc6600">AC input wires</text>
+
+  <!-- DC output from regulator to battery -->
+  <!-- DC+ wire -->
+  <line x1="520" y1="240" x2="650" y2="240" stroke="#ccaa00" stroke-width="2.5"/>
+  <line x1="650" y1="240" x2="650" y2="200" stroke="#ccaa00" stroke-width="2.5"/>
+  <line x1="650" y1="200" x2="720" y2="200" stroke="#ccaa00" stroke-width="2.5"/>
+  <text x="600" y="230" font-size="9" fill="#888">14 AWG YEL</text>
+
+  <!-- Battery -->
+  <rect x="720" y="160" width="130" height="110" rx="8" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="785" y="188" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">BATTERY</text>
+  <text x="785" y="206" text-anchor="middle" font-size="10" fill="#555">12V Marine</text>
+  <!-- battery symbol -->
+  <line x1="750" y1="218" x2="820" y2="218" stroke="#333" stroke-width="3"/>
+  <line x1="757" y1="226" x2="813" y2="226" stroke="#333" stroke-width="1.5"/>
+  <line x1="750" y1="234" x2="820" y2="234" stroke="#333" stroke-width="3"/>
+  <line x1="757" y1="242" x2="813" y2="242" stroke="#333" stroke-width="1.5"/>
+  <text x="730" y="215" font-size="12" fill="#cc0000" font-weight="bold">+</text>
+  <text x="826" y="215" font-size="12" fill="#000" font-weight="bold">−</text>
+
+  <!-- Test point 2: battery charging voltage -->
+  <rect x="640" y="380" width="200" height="60" rx="4" fill="#fffbe6" stroke="#ccaa00" stroke-width="1.5"/>
+  <text x="740" y="398" text-anchor="middle" font-size="10" font-weight="bold" fill="#665500">TEST POINT 2</text>
+  <text x="740" y="413" text-anchor="middle" font-size="9" fill="#665500">Battery charging voltage</text>
+  <text x="740" y="428" text-anchor="middle" font-size="9" fill="#665500">Expected: 13.8–14.5V DC</text>
+  <line x1="785" y1="270" x2="785" y2="380" stroke="#ccaa00" stroke-width="1" stroke-dasharray="4,2"/>
+
+  <!-- Ground wire from regulator -->
+  <line x1="520" y1="260" x2="600" y2="260" stroke="#000" stroke-width="2"/>
+  <line x1="600" y1="260" x2="600" y2="480" stroke="#000" stroke-width="2"/>
+  <!-- Engine ground from battery -->
+  <line x1="850" y1="210" x2="880" y2="210" stroke="#000" stroke-width="2"/>
+  <line x1="880" y1="210" x2="880" y2="480" stroke="#000" stroke-width="2"/>
+  <line x1="880" y1="480" x2="115" y2="480" stroke="#000" stroke-width="2"/>
+  <line x1="115" y1="480" x2="115" y2="340" stroke="#000" stroke-width="2"/>
+  <circle cx="600" cy="480" r="4" fill="#333"/>
+  <text x="490" y="498" text-anchor="middle" font-size="9" fill="#888">Common Ground — Engine/Battery</text>
+
+  <!-- Ground symbol -->
+  <line x1="115" y1="480" x2="115" y2="510" stroke="#000" stroke-width="2"/>
+  <line x1="98" y1="510" x2="132" y2="510" stroke="#000" stroke-width="2.5"/>
+  <line x1="103" y1="518" x2="127" y2="518" stroke="#000" stroke-width="2"/>
+  <line x1="108" y1="526" x2="122" y2="526" stroke="#000" stroke-width="1.5"/>
+
+  <!-- Test point 3: stator resistance test -->
+  <rect x="40" y="450" width="270" height="60" rx="4" fill="#e0f0ff" stroke="#0000cc" stroke-width="1.5"/>
+  <text x="175" y="468" text-anchor="middle" font-size="10" font-weight="bold" fill="#003399">TEST POINT 3 — Stator Resistance</text>
+  <text x="175" y="483" text-anchor="middle" font-size="9" fill="#003399">Measure between stator leads (ohms)</text>
+  <text x="175" y="498" text-anchor="middle" font-size="9" fill="#003399">Expected: 0.1–1.0 Ω (check spec sheet)</text>
+
+  <!-- Troubleshooting note -->
+  <rect x="340" y="450" width="270" height="100" rx="4" fill="#fff0f0" stroke="#cc0000" stroke-width="1"/>
+  <text x="475" y="468" text-anchor="middle" font-size="10" font-weight="bold" fill="#cc0000">Common Faults</text>
+  <text x="475" y="484" text-anchor="middle" font-size="9" fill="#550000">Low charge → check AC output first</text>
+  <text x="475" y="499" text-anchor="middle" font-size="9" fill="#550000">Overcharge → regulator failure</text>
+  <text x="475" y="514" text-anchor="middle" font-size="9" fill="#550000">No output → open stator winding</text>
+  <text x="475" y="529" text-anchor="middle" font-size="9" fill="#550000">Short to ground → shorted diode</text>
+
+  <!-- Legend -->
+  <rect x="640" y="460" width="240" height="100" rx="5" fill="#f9f9f9" stroke="#ccc" stroke-width="1"/>
+  <text x="760" y="478" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Wire Colors</text>
+  <line x1="650" y1="492" x2="680" y2="492" stroke="#cc6600" stroke-width="2.5"/>
+  <text x="685" y="496" font-size="10" fill="#333">AC stator (Orange)</text>
+  <line x1="650" y1="510" x2="680" y2="510" stroke="#ccaa00" stroke-width="2.5"/>
+  <text x="685" y="514" font-size="10" fill="#333">DC charging (Yellow)</text>
+  <line x1="650" y1="528" x2="680" y2="528" stroke="#000" stroke-width="2.5"/>
+  <text x="685" y="532" font-size="10" fill="#333">Ground (Black)</text>
+  <line x1="650" y1="546" x2="680" y2="546" stroke="#ccaa00" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="685" y="550" font-size="10" fill="#333">Test lead (dashed)</text>
+</svg>
