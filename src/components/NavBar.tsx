@@ -21,9 +21,9 @@ export default function NavBar() {
           <span className="nav-icon">🔩</span>
           <span>Service</span>
         </Link>
-        <Link href="/groupchat" className={`nav-item ${pathname === '/groupchat' ? 'active' : ''}`}>
-          <span className="nav-icon">💬</span>
-          <span>Team Chat</span>
+        <Link href="/yard" className={`nav-item ${pathname === '/yard' ? 'active' : ''}`}>
+          <span className="nav-icon">⚓</span>
+          <span>Yard</span>
         </Link>
         <Link href="/inventory" className={`nav-item ${pathname === '/inventory' ? 'active' : ''}`}>
           <span className="nav-icon">📦</span>
@@ -37,7 +37,7 @@ export default function NavBar() {
     )
   }
 
-  // Default nav — Stow Away / First Mate
+  // Default nav — Sailor / First Mate (locked Yard)
   return (
     <nav className="nav-bar fixed bottom-0 left-0 right-0 z-50" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
       <Link href="/" className={`nav-item ${pathname === '/' ? 'active' : ''}`}>
@@ -52,9 +52,9 @@ export default function NavBar() {
         <span className="nav-icon">⚓</span>
         <span>Vessel</span>
       </Link>
-      <Link href="/log" className={`nav-item ${pathname === '/log' ? 'active' : ''}`}>
-        <span className="nav-icon">🔧</span>
-        <span>Log</span>
+      <Link href="/yard" className={`nav-item ${pathname === '/yard' ? 'active' : ''}`}>
+        <span className="nav-icon">🔒</span>
+        <span>Yard</span>
       </Link>
       <Link href="/settings" className={`nav-item ${pathname === '/settings' ? 'active' : ''}`}>
         <span className="nav-icon">⚙️</span>
