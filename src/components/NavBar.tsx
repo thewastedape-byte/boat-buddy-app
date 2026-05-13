@@ -25,9 +25,9 @@ export default function NavBar() {
           <span className="nav-icon">⚓</span>
           <span>Yard</span>
         </Link>
-        <Link href="/inventory" className={`nav-item ${pathname === '/inventory' ? 'active' : ''}`}>
-          <span className="nav-icon">📦</span>
-          <span>Inventory</span>
+        <Link href="/marina" className={`nav-item ${pathname === '/marina' ? 'active' : ''}`}>
+          <span className="nav-icon">⚓</span>
+          <span>Marina</span>
         </Link>
         <Link href="/settings" className={`nav-item ${pathname === '/settings' ? 'active' : ''}`}>
           <span className="nav-icon">⚙️</span>
@@ -55,6 +55,10 @@ export default function NavBar() {
       <Link href="/yard" className={`nav-item ${pathname === '/yard' ? 'active' : ''}`}>
         <span className="nav-icon">🔒</span>
         <span>Yard</span>
+      </Link>
+      <Link href="/marina" className={`nav-item ${pathname === '/marina' ? 'active' : ''}`}>
+        <span className="nav-icon">🔒</span>
+        <span>Marina</span>
       </Link>
       <Link href="/settings" className={`nav-item ${pathname === '/settings' ? 'active' : ''}`}>
         <span className="nav-icon">⚙️</span>
