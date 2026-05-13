@@ -691,6 +691,7 @@ export default function MarinaPage() {
   const isCaptainPlus = sub === 'captain' || sub === 'admiral'
 
   const [activeTab, setActiveTab] = useState<TabType>('slips')
+  const [searchQuery, setSearchQuery] = useState('')
   const [slips, setSlips] = useState<Slip[]>([])
   const [rentals, setRentals] = useState<Rental[]>([])
   const [transient, setTransient] = useState<TransientBooking[]>([])
@@ -901,6 +902,22 @@ export default function MarinaPage() {
       </header>
 
       <main className="flex-1 overflow-y-auto px-3 py-4 pb-28">
+        {/* Search bar */}
+        <div className="relative mb-3">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm" style={{ color: 'rgba(245,240,232,0.4)' }}>🔍</span>
+          <input
+            type="text"
+            placeholder="Search by vessel or owner name..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            className="w-full pl-8 pr-4 py-2 rounded-xl text-sm"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(74,144,226,0.25)', color: '#F5F0E8', fontFamily: 'system-ui, sans-serif', outline: 'none' }}
+          />
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs" style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', cursor: 'pointer' }}>✕</button>
+          )}
+        </div>
+
         {/* Tab pills */}
         <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
           <TabPill label="⚓ Slips" active={activeTab === 'slips'} onClick={() => setActiveTab('slips')} />
@@ -943,7 +960,7 @@ export default function MarinaPage() {
               </div>
             ) : (
               <div className="flex flex-col gap-3">
-                {slips.map(slip => {
+                {slips.filter(slip => !searchQuery || slip.name.toLowerCase().includes(searchQuery.toLowerCase()) || (rentals.find(r => r.slipId === slip.id)?.vesselName || '').toLowerCase().includes(searchQuery.toLowerCase()) || (rentals.find(r => r.slipId === slip.id)?.ownerName || '').toLowerCase().includes(searchQuery.toLowerCase())).map(slip => {
                   const linkedRental = slip.rentalId ? rentals.find(r => r.id === slip.rentalId) : null
                   const amenityList = [
                     slip.amenities.amp30 && '30A',
@@ -1000,7 +1017,7 @@ export default function MarinaPage() {
               </div>
             ) : (
               <div className="flex flex-col gap-3">
-                {rentals.map(rental => {
+                {rentals.filter(rental => !searchQuery || rental.vesselName.toLowerCase().includes(searchQuery.toLowerCase()) || rental.ownerName.toLowerCase().includes(searchQuery.toLowerCase())).map(rental => {
                   const slip = slips.find(s => s.id === rental.slipId)
                   const lastPayment = rental.payments[rental.payments.length - 1]
                   const payStatus: PaymentStatus = lastPayment?.status || 'due_soon'
@@ -1058,7 +1075,7 @@ export default function MarinaPage() {
               </div>
             ) : (
               <div className="flex flex-col gap-3">
-                {transient.map(booking => {
+                {transient.filter(booking => !searchQuery || booking.vesselName.toLowerCase().includes(searchQuery.toLowerCase()) || booking.captainName.toLowerCase().includes(searchQuery.toLowerCase())).map(booking => {
                   const slip = slips.find(s => s.id === booking.slipId)
                   const nights = booking.checkin && booking.checkout ? diffDays(booking.checkin, booking.checkout) : 0
                   const total = nights * booking.nightlyRate
@@ -1123,7 +1140,7 @@ export default function MarinaPage() {
               </div>
             ) : (
               <div className="flex flex-col gap-3">
-                {waitlist.map((entry, idx) => (
+                {waitlist.filter(entry => !searchQuery || entry.name.toLowerCase().includes(searchQuery.toLowerCase()) || entry.vesselName.toLowerCase().includes(searchQuery.toLowerCase())).map((entry, idx) => (
                   <div key={entry.id} className="rounded-xl p-4"
                     style={{ background: 'rgba(10,20,40,0.7)', border: '1px solid rgba(74,144,226,0.18)' }}>
                     <div className="flex items-start justify-between gap-2 mb-2">
