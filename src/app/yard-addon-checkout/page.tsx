@@ -1,11 +1,30 @@
 'use client'
+import { useState } from 'react'
 import Link from 'next/link'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
+import { getAuth } from '@/lib/auth'
 
 export default function YardAddonCheckoutPage() {
+  const [loading, setLoading] = useState(false)
   const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
   const headStyle = { color: '#F5F0E8', fontFamily: 'Georgia, serif' }
+
+  const handleCheckout = async (tier: 'yard_addon' | 'yard_standalone') => {
+    setLoading(true)
+    try {
+      const auth = getAuth()
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: auth?.email, tier })
+      })
+      const data = await res.json()
+      if (data.url) window.location.href = data.url
+      else alert('Checkout error. Please try again.')
+    } catch { alert('Checkout failed. Please try again.') }
+    finally { setLoading(false) }
+  }
 
   return (
     <div className="bg-wood min-h-screen flex flex-col">
@@ -54,20 +73,16 @@ export default function YardAddonCheckoutPage() {
             ))}
           </div>
 
-          <div className="rounded-xl p-4 mb-6 text-center"
-            style={{ background: 'rgba(232,193,112,0.1)', border: '1px dashed rgba(198,139,58,0.4)' }}>
-            <p className="text-2xl mb-2">🚧</p>
-            <p className="text-sm font-bold mb-1" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>Coming Soon</p>
-            <p className="text-xs leading-relaxed" style={dimStyle}>
-              Stripe checkout for this add-on is in progress. Check back shortly or upgrade to a Captain or Admiral plan to get Yard Manager included.
-            </p>
-          </div>
-
           <div className="flex flex-col gap-3">
+            <button onClick={() => handleCheckout('yard_addon')} disabled={loading}
+              className="text-sm px-5 py-3 rounded-xl text-center font-bold"
+              style={{ background: '#4A90E2', color: '#fff', fontFamily: 'Georgia, serif', border: 'none', cursor: 'pointer', opacity: loading ? 0.7 : 1 }}>
+              {loading ? 'Loading...' : '⚓ Add Yard Manager — $29/mo'}
+            </button>
             <Link href="/upgrade"
               className="text-sm px-5 py-3 rounded-xl text-center font-bold"
               style={{ background: '#C68B3A', color: '#3D1C02', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
-              ⬆️ Upgrade Plan Instead
+              ⬆️ Upgrade to Captain (Included Free)
             </Link>
             <Link href="/yard"
               className="text-sm px-5 py-3 rounded-xl text-center"
