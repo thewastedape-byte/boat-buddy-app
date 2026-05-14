@@ -11,6 +11,7 @@ function SignupContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const inviteToken = searchParams.get('invite')
+  const tierParam = searchParams.get('tier')
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -48,6 +49,20 @@ function SignupContent() {
     try {
       const result = signup(email.trim().toLowerCase(), password)
       if (!result.success) { setError(result.error || 'Sign up failed.'); return }
+
+      // If a paid tier was selected, go straight to Stripe checkout
+      if (tierParam && !inviteToken) {
+        login(email.trim().toLowerCase(), password)
+        try {
+          const res = await fetch('/api/stripe/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tier: tierParam, email: email.trim().toLowerCase() }),
+          })
+          const data = await res.json()
+          if (data.url) { window.location.href = data.url; return }
+        } catch { /* fall through to normal flow */ }
+      }
 
       // Track signup in Supabase
       try {

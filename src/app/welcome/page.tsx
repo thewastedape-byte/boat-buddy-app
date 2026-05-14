@@ -132,41 +132,49 @@ export default function WelcomePage() {
           </div>
         </div>
 
-        {/* Pricing */}
-        <div className="w-full max-w-sm panel p-5 mb-8">
+        {/* Pricing — clickable tiers */}
+        <div className="w-full max-w-sm mb-8">
           <p className="text-xs uppercase tracking-wider mb-4 text-center"
             style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>
-            Plans & Pricing
+            Choose Your Plan
           </p>
-          <div className="flex flex-col gap-0">
+          <div className="flex flex-col gap-3">
             {[
-              { name: 'Stow Away', price: 'Free', desc: '1 question every 6 hours', color: 'rgba(245,240,232,0.5)' },
-              { name: 'First Mate', price: '$19.99/mo', desc: 'Unlimited AI + work orders', color: '#7aafd4' },
-              { name: 'Captain', price: '$39.99/mo', desc: 'Full shop tools · 5 team seats', color: '#C68B3A' },
-              { name: 'Admiral', price: '$79.99/mo', desc: 'Everything · 10 team seats', color: '#C68B3A' },
-            ].map((tier, i, arr) => (
-              <div key={i} className="flex items-center justify-between py-2.5"
-                style={{ borderBottom: i < arr.length - 1 ? '1px solid rgba(198,139,58,0.1)' : 'none' }}>
-                <div>
-                  <span className="text-sm font-bold" style={{ color: tier.color, fontFamily: 'Georgia, serif' }}>{tier.name}</span>
-                  <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.45)', fontFamily: 'Georgia, serif' }}>{tier.desc}</p>
+              { name: 'Stow Away', tier: null, price: 'Free', desc: '1 question every 6 hours', color: 'rgba(245,240,232,0.5)', border: 'rgba(245,240,232,0.1)' },
+              { name: 'First Mate', tier: 'first_mate', price: '$19.99/mo', desc: 'Unlimited AI · Work orders · Diagrams', color: '#7aafd4', border: 'rgba(122,175,212,0.4)', badge: 'MOST POPULAR' },
+              { name: 'Captain', tier: 'captain', price: '$39.99/mo', desc: 'Full shop tools · 5 team seats', color: '#C68B3A', border: 'rgba(198,139,58,0.4)' },
+              { name: 'Admiral', tier: 'admiral', price: '$79.99/mo', desc: 'Everything · 10 team seats', color: '#C68B3A', border: 'rgba(198,139,58,0.4)' },
+            ].map((t, i) => (
+              <Link
+                key={i}
+                href={t.tier ? `/signup?tier=${t.tier}` : '/signup'}
+                style={{ textDecoration: 'none' }}
+              >
+                <div className="panel p-4 flex items-center justify-between"
+                  style={{ border: `1px solid ${t.border}`, cursor: 'pointer', position: 'relative' }}>
+                  {(t as any).badge && (
+                    <span className="absolute text-xs font-bold px-2 py-0.5 rounded-full"
+                      style={{ top: -10, right: 12, background: '#7aafd4', color: '#1A0A00', fontSize: '10px' }}>
+                      {(t as any).badge}
+                    </span>
+                  )}
+                  <div>
+                    <p className="text-sm font-bold" style={{ color: t.color, fontFamily: 'Georgia, serif' }}>{t.name}</p>
+                    <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.45)', fontFamily: 'Georgia, serif' }}>{t.desc}</p>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <span className="text-sm font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>{t.price}</span>
+                    {t.tier && <span style={{ color: t.color }}>→</span>}
+                  </div>
                 </div>
-                <span className="text-sm font-bold ml-4 flex-shrink-0" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>{tier.price}</span>
-              </div>
+              </Link>
             ))}
           </div>
+          <p className="text-xs text-center mt-3 mb-8"
+            style={{ color: 'rgba(245,240,232,0.3)', fontFamily: 'Georgia, serif' }}>
+            No credit card required for free tier · Cancel anytime
+          </p>
         </div>
-
-        {/* Bottom CTA */}
-        <Link href="/signup"
-          className="btn-primary text-center font-bold px-12 py-4 mb-3"
-          style={{ textDecoration: 'none', fontSize: '16px' }}>
-          Get Started Free →
-        </Link>
-        <p className="text-xs text-center mb-8"
-          style={{ color: 'rgba(245,240,232,0.3)', fontFamily: 'Georgia, serif' }}>
-          No credit card required · Cancel anytime
-        </p>
       </main>
     </div>
   )
