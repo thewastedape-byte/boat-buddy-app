@@ -516,7 +516,7 @@ export default function YardPage() {
               <div className="flex gap-2">
                 <button onClick={() => { setDraftConfig(config); setShowEditLayout(true) }}
                   className="text-xs px-3 py-1.5 rounded-lg"
-                  style={{ background: 'rgba(74,144,226,0.15)', color: '#4A90E2', border: '1px solid rgba(74,144,226,0.3)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
+                  style={{ background: '#1B3A5C', color: '#FFFFFF', border: '2px solid #4A90E2', fontFamily: 'Georgia, serif', cursor: 'pointer', fontWeight: '600' }}>
                   ✏️ Edit Layout
                 </button>
                 <button onClick={() => setShowClearConfirm(true)}
