@@ -502,7 +502,7 @@ export default function YardPage() {
           {isAdmiral && (
             <Link href="/yard/import"
               className="text-xs px-4 py-2 rounded-full ml-auto"
-              style={{ background: 'rgba(198,139,58,0.18)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              style={{ background: '#C68B3A', color: '#3D1C02', border: '2px solid #C68B3A', fontFamily: 'Georgia, serif', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '700' }}>
               📥 Import Data
             </Link>
           )}
@@ -527,14 +527,14 @@ export default function YardPage() {
               </div>
             </div>
 
-            <div className="flex gap-3 mb-4 text-xs" style={{ color: 'rgba(245,240,232,0.55)', fontFamily: 'Georgia, serif' }}>
+            <div className="flex gap-3 mb-4 text-xs font-bold" style={{ background: 'rgba(255,255,255,0.75)', borderRadius: '8px', padding: '6px 10px', fontFamily: 'Georgia, serif', color: '#1A0A00' }}>
               <span>{totalSlips} slips</span>
-              <span style={{ color: '#4A90E2' }}>● {occupiedCount} occupied</span>
-              <span style={{ color: '#C68B3A' }}>● {reservedCount} reserved</span>
+              <span style={{ color: '#1B3A5C' }}>● {occupiedCount} occupied</span>
+              <span style={{ color: '#8B4500' }}>● {reservedCount} reserved</span>
               <span>● {totalSlips - occupiedCount - reservedCount} open</span>
             </div>
 
-            <div className="flex gap-3 mb-3 text-xs flex-wrap">
+            <div className="flex gap-3 mb-3 text-xs flex-wrap" style={{ background: 'rgba(255,255,255,0.75)', borderRadius: '8px', padding: '6px 10px' }}>
               {[
                 { color: 'rgba(20,40,80,0.8)', border: 'rgba(74,144,226,0.25)', label: 'Available' },
                 { color: '#4A90E2', border: '#4A90E2', label: 'Occupied' },
@@ -542,7 +542,7 @@ export default function YardPage() {
               ].map(item => (
                 <div key={item.label} className="flex items-center gap-1.5">
                   <div style={{ width: 14, height: 14, borderRadius: 3, background: item.color, border: `1px solid ${item.border}` }} />
-                  <span style={{ color: 'rgba(245,240,232,0.6)', fontFamily: 'Georgia, serif' }}>{item.label}</span>
+                  <span style={{ color: '#1A0A00', fontFamily: 'Georgia, serif', fontWeight: '600' }}>{item.label}</span>
                 </div>
               ))}
             </div>
