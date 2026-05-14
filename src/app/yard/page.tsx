@@ -520,8 +520,8 @@ export default function YardPage() {
                   ✏️ Edit Layout
                 </button>
                 <button onClick={() => setShowClearConfirm(true)}
-                  className="text-xs px-3 py-1.5 rounded-lg"
-                  style={{ background: 'rgba(232,112,112,0.12)', color: '#e87070', border: '1px solid rgba(232,112,112,0.3)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
+                  className="text-xs px-3 py-1.5 rounded-lg font-bold"
+                  style={{ background: '#8B1A1A', color: '#FFFFFF', border: '2px solid #e87070', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
                   🗑 Clear All
                 </button>
               </div>
@@ -583,8 +583,8 @@ export default function YardPage() {
               <div className="flex gap-2">
                 {yardImage && (
                   <button onClick={() => setShowClearPinsConfirm(true)}
-                    className="text-xs px-3 py-1.5 rounded-lg"
-                    style={{ background: 'rgba(232,112,112,0.12)', color: '#e87070', border: '1px solid rgba(232,112,112,0.3)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
+                    className="text-xs px-3 py-1.5 rounded-lg font-bold"
+                    style={{ background: '#8B1A1A', color: '#FFFFFF', border: '2px solid #e87070', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
                     🗑 Clear Pins
                   </button>
                 )}
