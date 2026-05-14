@@ -40,7 +40,7 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (!isLoggedIn()) {
-      router.replace('/login')
+      router.replace('/welcome')
       return
     }
     if (!hasAcceptedTerms()) {
@@ -459,7 +459,7 @@ export default function ChatPage() {
           </a>
           <a href="/help" className="text-xs px-3 py-1.5 rounded-lg"
             style={{ background: 'rgba(0,0,0,0.45)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
-            ?
+            ❓ Help
           </a>
           <button onClick={handleNewChat} className="text-xs px-3 py-1.5 rounded-lg"
             style={{ background: 'rgba(0,0,0,0.45)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)', fontFamily: 'Georgia, serif' }}>

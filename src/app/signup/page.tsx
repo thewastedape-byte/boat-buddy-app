@@ -49,6 +49,27 @@ function SignupContent() {
       const result = signup(email.trim().toLowerCase(), password)
       if (!result.success) { setError(result.error || 'Sign up failed.'); return }
 
+      // Track signup in Supabase
+      try {
+        const SUPABASE_URL = 'https://yruuzkxpnbgruwuivchy.supabase.co'
+        const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_KEY || ''
+        if (SUPABASE_KEY) {
+          await fetch(`${SUPABASE_URL}/rest/v1/users`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_KEY,
+              'Authorization': `Bearer ${SUPABASE_KEY}`,
+              'Prefer': 'return=minimal',
+            },
+            body: JSON.stringify({
+              email: email.trim().toLowerCase(),
+              created_at: new Date().toISOString(),
+            }),
+          })
+        }
+      } catch { /* non-fatal */ }
+
       // If invited, accept the invite and link to team
       if (inviteToken && inviteInfo) {
         await fetch(`${API_URL}/api/invites/${inviteToken}/accept`, {
