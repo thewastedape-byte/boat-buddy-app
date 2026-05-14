@@ -42,6 +42,9 @@ export default function ServicePage() {
   const [loading, setLoading] = useState(true)
   const [expanded, setExpanded] = useState<string | null>(null)
   const [filter, setFilter] = useState('all')
+  const [showAddJob, setShowAddJob] = useState(false)
+  const [addJobForm, setAddJobForm] = useState({ symptom: '', notes: '' })
+  const [addJobLoading, setAddJobLoading] = useState(false)
   const auth = getAuth()
 
   useEffect(() => {
@@ -102,10 +105,11 @@ export default function ServicePage() {
       <header className="flex items-center justify-between px-4 py-3 sticky top-0 z-40"
         style={{ background: 'rgba(20,8,2,0.95)', borderBottom: '1px solid rgba(198,139,58,0.3)' }}>
         <Logo size="sm" />
-        <Link href="/" className="text-xs px-3 py-1.5 rounded-lg"
-          style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
+        <button onClick={() => { setAddJobForm({ symptom: '', notes: '' }); setShowAddJob(true) }}
+          className="text-xs px-3 py-1.5 rounded-lg"
+          style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
           + New Job
-        </Link>
+        </button>
       </header>
 
       <main className="flex-1 overflow-y-auto px-4 py-4 pb-28">
@@ -187,6 +191,87 @@ export default function ServicePage() {
           </div>
         )}
       </main>
+      {/* Add Job Modal */}
+      {showAddJob && (
+        <div className="fixed inset-0 z-[100] flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.75)' }} onClick={() => setShowAddJob(false)}>
+          <div className="w-full max-w-lg rounded-t-2xl p-5" style={{ background: '#0d1f3c', border: '1px solid rgba(198,139,58,0.3)', borderBottom: 'none' }} onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>+ New Job</h2>
+              <button onClick={() => setShowAddJob(false)} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
+            </div>
+            <div className="flex flex-col gap-3">
+              <div>
+                <label className="text-xs mb-1 block" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Issue / Symptom *</label>
+                <textarea
+                  value={addJobForm.symptom}
+                  onChange={e => setAddJobForm(f => ({ ...f, symptom: e.target.value }))}
+                  placeholder="e.g. Engine overheating at high RPM"
+                  rows={3}
+                  className="w-full px-3 py-2 rounded-lg text-sm resize-none"
+                  style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(198,139,58,0.3)', color: '#F5F0E8', fontFamily: 'Georgia, serif', outline: 'none' }}
+                />
+              </div>
+              <div>
+                <label className="text-xs mb-1 block" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Notes (optional)</label>
+                <textarea
+                  value={addJobForm.notes}
+                  onChange={e => setAddJobForm(f => ({ ...f, notes: e.target.value }))}
+                  placeholder="Additional details, parts needed, etc."
+                  rows={2}
+                  className="w-full px-3 py-2 rounded-lg text-sm resize-none"
+                  style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(198,139,58,0.3)', color: '#F5F0E8', fontFamily: 'Georgia, serif', outline: 'none' }}
+                />
+              </div>
+              <button
+                disabled={!addJobForm.symptom.trim() || addJobLoading}
+                onClick={async () => {
+                  if (!addJobForm.symptom.trim()) return
+                  setAddJobLoading(true)
+                  try {
+                    const email = auth?.email || ''
+                    const entry = {
+                      id: Date.now().toString(),
+                      symptom: addJobForm.symptom.trim(),
+                      diagnosis: addJobForm.notes.trim(),
+                      status: 'open',
+                      user_id: email,
+                      created_at: new Date().toISOString(),
+                      updated_at: new Date().toISOString(),
+                    }
+                    try {
+                      await fetch(`${API_URL}/api/db/jobs`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...entry, user_email: email }),
+                      })
+                    } catch {}
+                    // Also save to localStorage
+                    const raw = localStorage.getItem('boat_buddy_repair_log')
+                    const log = raw ? JSON.parse(raw) : []
+                    log.unshift({ ...entry, date: Date.now(), vessel: '' })
+                    localStorage.setItem('boat_buddy_repair_log', JSON.stringify(log.slice(0, 100)))
+                    setJobs(prev => [entry as Job, ...prev])
+                    setShowAddJob(false)
+                  } catch {
+                    alert('Failed to save job. Please try again.')
+                  } finally {
+                    setAddJobLoading(false)
+                  }
+                }}
+                className="w-full py-3 rounded-xl text-sm font-bold mt-1"
+                style={{
+                  background: addJobForm.symptom.trim() ? '#C68B3A' : 'rgba(198,139,58,0.3)',
+                  color: addJobForm.symptom.trim() ? '#3D1C02' : 'rgba(198,139,58,0.5)',
+                  border: 'none', fontFamily: 'Georgia, serif',
+                  cursor: addJobForm.symptom.trim() ? 'pointer' : 'not-allowed',
+                }}>
+                {addJobLoading ? 'Saving...' : 'Save Job'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <NavBar />
     </div>
   )

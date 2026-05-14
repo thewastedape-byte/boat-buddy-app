@@ -138,9 +138,8 @@ body {
 .logo-title {
   font-size: 2rem;
   font-weight: bold;
-  color: #FFFFFF;
+  color: #1A0A00;
   font-family: Georgia, serif;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
   letter-spacing: 1px;
 }
 .logo-subtitle {
@@ -149,7 +148,6 @@ body {
   font-family: Georgia, serif;
   letter-spacing: 2px;
   text-transform: uppercase;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
 }
 
 /* Chat bubbles */
@@ -215,6 +213,7 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  z-index: 50;
 }
 .nav-item {
   display: flex;

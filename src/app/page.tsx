@@ -294,6 +294,10 @@ export default function ChatPage() {
         const err = await res.json().catch(() => ({}))
         aiContent = 'Manual search unavailable: ' + (err.error || res.status)
       }
+      // Hide internal config errors from users
+      if (aiContent.includes('VECTOR_STORE_ID') || aiContent.includes('ASSISTANT_ID')) {
+        aiContent = "I'm having trouble accessing the manual database right now. Please try describing your issue and I'll help diagnose it directly."
+      }
 
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
@@ -445,20 +449,20 @@ export default function ChatPage() {
           </span>
           {subscription !== 'first_mate' && (
             <a href="/upgrade" className="text-xs px-3 py-1.5 rounded-lg"
-              style={{ background: 'rgba(198,139,58,0.3)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.6)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
+              style={{ background: 'rgba(0,0,0,0.45)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
               ⭐ Upgrade
             </a>
           )}
           <a href="/diagrams" className="text-xs px-3 py-1.5 rounded-lg"
-            style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
+            style={{ background: 'rgba(0,0,0,0.45)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
             📐
           </a>
           <a href="/help" className="text-xs px-3 py-1.5 rounded-lg"
-            style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
+            style={{ background: 'rgba(0,0,0,0.45)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
             ?
           </a>
           <button onClick={handleNewChat} className="text-xs px-3 py-1.5 rounded-lg"
-            style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif' }}>
+            style={{ background: 'rgba(0,0,0,0.45)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)', fontFamily: 'Georgia, serif' }}>
             + New
           </button>
         </div>
@@ -506,10 +510,10 @@ export default function ChatPage() {
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full min-h-64 text-center py-12">
             <div className="text-5xl mb-4">⚓</div>
-            <h2 className="text-lg font-bold mb-2" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
+            <h2 className="text-lg font-bold mb-2" style={{ color: '#1A0A00', fontFamily: 'Georgia, serif' }}>
               Ahoy, Captain!
             </h2>
-            <p className="text-sm max-w-xs" style={{ color: 'rgba(245,240,232,0.6)', fontFamily: 'Georgia, serif' }}>
+            <p className="text-sm max-w-xs" style={{ color: 'rgba(26,10,0,0.7)', fontFamily: 'Georgia, serif' }}>
               Describe your boat issue or send a photo and I&apos;ll help diagnose the problem.
             </p>
             <div className="mt-6 flex flex-col gap-2 w-full max-w-xs">
@@ -520,7 +524,7 @@ export default function ChatPage() {
               ].map(suggestion => (
                 <button key={suggestion} onClick={() => { setInput(suggestion); textareaRef.current?.focus() }}
                   className="text-left text-sm px-4 py-3 rounded-xl"
-                  style={{ background: 'rgba(198,139,58,0.1)', border: '1px solid rgba(198,139,58,0.3)', color: 'rgba(245,240,232,0.7)', fontFamily: 'Georgia, serif' }}>
+                  style={{ background: 'rgba(255,255,255,0.65)', border: '1px solid rgba(26,10,0,0.2)', color: '#1A0A00', fontFamily: 'Georgia, serif' }}>
                   {suggestion}
                 </button>
               ))}

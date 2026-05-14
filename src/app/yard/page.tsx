@@ -79,7 +79,7 @@ interface PinModalProps {
 
 function SlipModal({ title, form, onChange, onSave, onClose, extraInfo }: PinModalProps) {
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.7)' }} onClick={onClose}>
+    <div className="fixed inset-0 z-[100] flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.7)' }} onClick={onClose}>
       <div className="w-full max-w-lg rounded-t-2xl p-5" style={{ background: '#0d1f3c', border: '1px solid rgba(74,144,226,0.3)', borderBottom: 'none' }} onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={headStyle}>{title}</h2>
@@ -757,11 +757,14 @@ export default function YardPage() {
 
       {/* Grid Edit Layout Modal */}
       {showEditLayout && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.7)' }} onClick={() => setShowEditLayout(false)}>
-          <div className="w-full max-w-lg rounded-t-2xl p-5" style={{ background: '#0d1f3c', border: '1px solid rgba(198,139,58,0.3)', borderBottom: 'none' }} onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-[100] flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.7)' }} onClick={() => setShowEditLayout(false)}>
+          <div className="w-full max-w-lg rounded-t-2xl p-5" style={{ background: '#0d1f3c', border: '1px solid rgba(198,139,58,0.3)', borderBottom: 'none', paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 88px)', overflowY: 'auto', maxHeight: '80vh' }} onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold" style={headStyle}>Edit Layout</h2>
-              <button onClick={() => setShowEditLayout(false)} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
+              <button onClick={applyLayout} className="text-sm px-4 py-2 rounded-xl font-bold"
+                style={{ background: '#C68B3A', color: '#3D1C02', border: 'none', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
+                Apply ({draftConfig.rows}×{draftConfig.cols})
+              </button>
             </div>
             <div className="flex flex-col gap-4">
               <div>
@@ -781,10 +784,6 @@ export default function YardPage() {
               <p className="text-xs" style={{ color: 'rgba(232,112,112,0.8)', fontFamily: 'Georgia, serif' }}>
                 ⚠️ Shrinking the grid will remove spots outside the new bounds.
               </p>
-              <button onClick={applyLayout} className="w-full py-3 rounded-xl text-sm font-bold"
-                style={{ background: '#C68B3A', color: '#3D1C02', border: 'none', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
-                Apply Layout ({draftConfig.rows} × {draftConfig.cols})
-              </button>
             </div>
           </div>
         </div>
@@ -849,7 +848,7 @@ function LockedTabMessage({ icon, title, message }: { icon: string; title: strin
 
 function ConfirmModal({ message, onConfirm, onCancel }: { message: string; onConfirm: () => void; onCancel: () => void }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-6" style={{ background: 'rgba(0,0,0,0.75)' }}>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center px-6" style={{ background: 'rgba(0,0,0,0.75)' }}>
       <div className="w-full max-w-sm rounded-2xl p-6 text-center" style={{ background: '#0d1f3c', border: '1px solid rgba(232,112,112,0.4)' }}>
         <p className="text-4xl mb-3">⚠️</p>
         <h2 className="text-base font-bold mb-2" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Are you sure?</h2>
