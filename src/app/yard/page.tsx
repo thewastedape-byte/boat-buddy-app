@@ -698,8 +698,6 @@ export default function YardPage() {
                   </a>
                 </div>
                 <div ref={mapRef} style={{ display: 'none' }} />
-                  )}
-                </div>
 
                 {satPins.length > 0 && (
                   <div className="mt-3 rounded-xl overflow-hidden" style={{ border: '1px solid rgba(74,144,226,0.15)' }}>
