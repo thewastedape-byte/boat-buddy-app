@@ -27,6 +27,7 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   height: 100%;
+  color: #1A0A00;
 }
 
 /* Custom scrollbar */

@@ -911,7 +911,7 @@ export default function MarinaPage() {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             className="w-full pl-8 pr-4 py-2 rounded-xl text-sm"
-            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(74,144,226,0.25)', color: '#F5F0E8', fontFamily: 'system-ui, sans-serif', outline: 'none' }}
+            style={{ background: 'rgba(255,255,255,0.85)', border: '2px solid rgba(26,10,0,0.3)', color: '#1A0A00', fontFamily: 'system-ui, sans-serif', outline: 'none' }}
           />
           {searchQuery && (
             <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs" style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', cursor: 'pointer' }}>✕</button>

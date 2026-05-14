@@ -12,10 +12,14 @@ export default function NavBar() {
   if (isTeam) {
     // Captain / Admiral nav
     return (
-      <nav className="nav-bar fixed bottom-0 left-0 right-0 z-50" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+      <nav className="nav-bar fixed bottom-0 left-0 right-0 z-50" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)', overflowX: 'auto' }}>
         <Link href="/" className={`nav-item ${pathname === '/' ? 'active' : ''}`}>
           <span className="nav-icon">🧠</span>
           <span>AI</span>
+        </Link>
+        <Link href="/history" className={`nav-item ${pathname === '/history' ? 'active' : ''}`}>
+          <span className="nav-icon">📋</span>
+          <span>History</span>
         </Link>
         <Link href="/service" className={`nav-item ${pathname === '/service' ? 'active' : ''}`}>
           <span className="nav-icon">🔩</span>
@@ -26,7 +30,7 @@ export default function NavBar() {
           <span>Yard</span>
         </Link>
         <Link href="/marina" className={`nav-item ${pathname === '/marina' ? 'active' : ''}`}>
-          <span className="nav-icon">⚓</span>
+          <span className="nav-icon">🚢</span>
           <span>Marina</span>
         </Link>
         <Link href="/settings" className={`nav-item ${pathname === '/settings' ? 'active' : ''}`}>
