@@ -98,6 +98,40 @@ export default function WelcomePage() {
           </div>
         </div>
 
+        {/* Add-ons */}
+        <div className="w-full max-w-sm mb-8">
+          <p className="text-xs uppercase tracking-wider mb-4"
+            style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>
+            Optional Add-ons
+          </p>
+          <div className="flex flex-col gap-3">
+            <div className="panel p-4 flex items-start gap-3"
+              style={{ borderColor: 'rgba(74,144,226,0.3)', background: 'rgba(74,144,226,0.05)' }}>
+              <span className="text-2xl flex-shrink-0">⚓</span>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Yard Manager</p>
+                  <span className="text-sm font-bold" style={{ color: '#4A90E2', fontFamily: 'Georgia, serif' }}>+$29/mo</span>
+                </div>
+                <p className="text-xs mt-1 leading-relaxed" style={{ color: 'rgba(245,240,232,0.55)', fontFamily: 'Georgia, serif' }}>Drag &amp; drop boat yard map, slip assignments, vessel &amp; owner tracking, occupancy at a glance.</p>
+                <p className="text-xs mt-1" style={{ color: 'rgba(198,139,58,0.7)', fontFamily: 'Georgia, serif' }}>Free on Captain &amp; Admiral plans</p>
+              </div>
+            </div>
+            <div className="panel p-4 flex items-start gap-3"
+              style={{ borderColor: 'rgba(74,144,226,0.3)', background: 'rgba(74,144,226,0.05)' }}>
+              <span className="text-2xl flex-shrink-0">🚢</span>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Marina Manager</p>
+                  <span className="text-sm font-bold" style={{ color: '#4A90E2', fontFamily: 'Georgia, serif' }}>+$49/mo</span>
+                </div>
+                <p className="text-xs mt-1 leading-relaxed" style={{ color: 'rgba(245,240,232,0.55)', fontFamily: 'Georgia, serif' }}>Full slip rentals, transient bookings, rental agreements, waitlist management, and payment tracking.</p>
+                <p className="text-xs mt-1" style={{ color: 'rgba(198,139,58,0.7)', fontFamily: 'Georgia, serif' }}>Free on Captain &amp; Admiral plans</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Pricing */}
         <div className="w-full max-w-sm panel p-5 mb-8">
           <p className="text-xs uppercase tracking-wider mb-4 text-center"
