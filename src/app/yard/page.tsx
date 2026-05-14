@@ -819,9 +819,9 @@ function TabPill({ label, active, onClick, locked }: { label: string; active: bo
     <button onClick={onClick}
       className="text-xs px-4 py-2 rounded-full"
       style={{
-        background: active ? '#4A90E2' : locked ? 'rgba(255,255,255,0.04)' : 'rgba(74,144,226,0.12)',
-        color: active ? '#fff' : locked ? 'rgba(245,240,232,0.3)' : 'rgba(245,240,232,0.7)',
-        border: active ? '1px solid #4A90E2' : locked ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(74,144,226,0.25)',
+        background: active ? '#1B3A5C' : locked ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.82)',
+        color: active ? '#fff' : locked ? 'rgba(26,10,0,0.4)' : '#1A0A00',
+        border: active ? '2px solid #1B3A5C' : locked ? '1px solid rgba(26,10,0,0.15)' : '2px solid rgba(26,10,0,0.25)',
         cursor: locked ? 'default' : 'pointer',
         fontFamily: 'Georgia, serif',
         transition: 'all 0.15s',

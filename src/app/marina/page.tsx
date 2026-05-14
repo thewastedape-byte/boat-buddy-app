@@ -175,9 +175,9 @@ function TabPill({ label, active, onClick }: { label: string; active: boolean; o
   return (
     <button onClick={onClick}
       style={{
-        background: active ? '#4A90E2' : 'rgba(74,144,226,0.12)',
-        color: active ? '#fff' : 'rgba(245,240,232,0.7)',
-        border: active ? '1px solid #4A90E2' : '1px solid rgba(74,144,226,0.25)',
+        background: active ? '#1B3A5C' : 'rgba(255,255,255,0.82)',
+        color: active ? '#fff' : '#1A0A00',
+        border: active ? '2px solid #1B3A5C' : '2px solid rgba(26,10,0,0.25)',
         borderRadius: '999px',
         padding: '6px 14px',
         fontSize: '12px',
