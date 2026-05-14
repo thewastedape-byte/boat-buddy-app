@@ -437,7 +437,7 @@ export default function ChatPage() {
 
       {/* Header */}
       <header className="flex items-center justify-between px-4 py-3 sticky top-0 z-40"
-        style={{ background: 'rgba(20, 8, 2, 0.95)', borderBottom: '1px solid rgba(198,139,58,0.3)' }}>
+        style={{ background: 'rgba(0, 0, 0, 0.5)', borderBottom: '1px solid rgba(255,255,255,0.15)' }}>
         <Logo size="sm" />
         <div className="flex items-center gap-2">
           <span className="text-xs hidden sm:block" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>

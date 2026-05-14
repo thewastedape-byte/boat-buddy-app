@@ -21,7 +21,9 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   font-family: Georgia, 'Times New Roman', serif;
-  background: url('/background.png') center center / cover fixed;
+  background: url('/bg-wood.jpg') center center / cover fixed;
+  background-size: cover;
+  background-attachment: fixed;
   min-height: 100vh;
   min-height: 100dvh;
   height: 100%;
@@ -41,7 +43,9 @@ body {
 
 /* Fix background attachment on mobile */
 .bg-wood {
-  background: url('/background.png') center center / cover fixed;
+  background: url('/bg-wood.jpg') center center / cover fixed;
+  background-size: cover;
+  background-attachment: fixed;
   min-height: 100vh;
   min-height: 100dvh;
 }
@@ -71,8 +75,8 @@ body {
 }
 
 .panel {
-  background: rgba(30, 15, 5, 0.85);
-  border: 1px solid rgba(198, 139, 58, 0.3);
+  background: rgba(27, 58, 92, 0.75);
+  border: 1px solid rgba(180, 140, 80, 0.4);
   border-radius: 12px;
 }
 
@@ -112,10 +116,10 @@ body {
 }
 
 .input-field {
-  background: rgba(245, 240, 232, 0.1);
-  border: 1px solid rgba(198, 139, 58, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 8px;
-  color: #F5F0E8;
+  color: #FFFFFF;
   padding: 12px 16px;
   font-family: Georgia, serif;
   font-size: 16px;
@@ -125,18 +129,18 @@ body {
 }
 .input-field:focus {
   border-color: #C68B3A;
-  background: rgba(245, 240, 232, 0.15);
+  background: rgba(255, 255, 255, 0.2);
 }
 .input-field::placeholder {
-  color: rgba(245, 240, 232, 0.4);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .logo-title {
   font-size: 2rem;
   font-weight: bold;
-  color: #F5F0E8;
+  color: #FFFFFF;
   font-family: Georgia, serif;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
   letter-spacing: 1px;
 }
 .logo-subtitle {
@@ -145,23 +149,25 @@ body {
   font-family: Georgia, serif;
   letter-spacing: 2px;
   text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
 }
 
 /* Chat bubbles */
 .bubble-user {
-  background: #C68B3A;
-  color: #3D1C02;
+  background: #1B3A5C;
+  color: #FFFFFF;
   border-radius: 18px 18px 4px 18px;
   padding: 10px 14px;
   max-width: 80%;
   font-family: Georgia, serif;
   font-size: 15px;
   line-height: 1.5;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
 }
 .bubble-ai {
-  background: rgba(20, 8, 2, 0.88);
-  color: #F5F0E8;
-  border: 1px solid rgba(198, 139, 58, 0.5);
+  background: rgba(26, 74, 74, 0.9);
+  color: #FFFFFF;
+  border: 1px solid rgba(180, 140, 80, 0.5);
   border-radius: 18px 18px 18px 4px;
   padding: 12px 16px;
   max-width: 85%;
@@ -169,7 +175,7 @@ body {
   font-size: 15px;
   font-weight: 400;
   line-height: 1.65;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
   /* MOBILE FIX: prevent horizontal overflow without clipping text */
   overflow-x: visible;
   overflow-y: visible;
@@ -203,8 +209,8 @@ body {
 
 /* Nav bar */
 .nav-bar {
-  background: rgba(20, 8, 2, 0.95);
-  border-top: 1px solid rgba(198, 139, 58, 0.4);
+  background: rgba(0, 0, 0, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   padding: 8px 0;
   display: flex;
   justify-content: space-around;
@@ -215,7 +221,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  color: rgba(245, 240, 232, 0.5);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 9px;
   font-family: Georgia, serif;
   cursor: pointer;
@@ -262,8 +268,8 @@ body {
   padding: 20px;
 }
 .modal-box {
-  background: rgba(20, 8, 2, 0.97);
-  border: 1px solid rgba(198, 139, 58, 0.5);
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(180, 140, 80, 0.5);
   border-radius: 16px;
   padding: 28px 24px;
   max-width: 420px;

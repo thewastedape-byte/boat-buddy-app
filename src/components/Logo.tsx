@@ -5,9 +5,9 @@ export default function Logo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
     <div className="flex items-center gap-2">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/logo.png"
+        src="/logo-new.jpg"
         alt="Boat Buddy by WastedApe"
-        style={{ width: imgSize, height: imgSize, objectFit: 'contain', filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.6))' }}
+        style={{ width: imgSize, height: imgSize, objectFit: 'cover', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.7)', boxShadow: '0 2px 8px rgba(0,0,0,0.6)' }}
       />
       {size !== 'sm' && (
         <div>
