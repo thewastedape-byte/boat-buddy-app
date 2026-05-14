@@ -105,6 +105,10 @@ function SignupContent() {
 
       localStorage.setItem('boat_buddy_pending_email', email.trim().toLowerCase())
       setSignedUp(true)
+      // Auto-login and go to tier picker if no invite
+      if (!inviteToken) {
+        login(email.trim().toLowerCase(), password)
+      }
     } finally {
       setLoading(false)
     }
@@ -123,8 +127,8 @@ function SignupContent() {
         localStorage.setItem('boat_buddy_auth', JSON.stringify(auth))
       }
     }
-    // New users go to setup wizard, invited users go straight to app
-    router.push(inviteInfo ? '/' : '/setup')
+    // New users go to tier picker, invited users go straight to app
+    router.push(inviteInfo ? '/' : '/upgrade')
   }
 
   return (

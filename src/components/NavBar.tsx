@@ -41,7 +41,8 @@ export default function NavBar() {
     )
   }
 
-  // Default nav — Sailor / First Mate (locked Yard)
+  // Default nav — Stow Away / First Mate (Yard + Marina link to add-on page)
+  const isPaid = sub === 'first_mate' || sub === 'team_member'
   return (
     <nav className="nav-bar fixed bottom-0 left-0 right-0 z-50" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
       <Link href="/" className={`nav-item ${pathname === '/' ? 'active' : ''}`}>
@@ -57,11 +58,11 @@ export default function NavBar() {
         <span>Vessel</span>
       </Link>
       <Link href="/yard" className={`nav-item ${pathname === '/yard' ? 'active' : ''}`}>
-        <span className="nav-icon">🔒</span>
+        <span className="nav-icon">⚓</span>
         <span>Yard</span>
       </Link>
       <Link href="/marina" className={`nav-item ${pathname === '/marina' ? 'active' : ''}`}>
-        <span className="nav-icon">🔒</span>
+        <span className="nav-icon">🚢</span>
         <span>Marina</span>
       </Link>
       <Link href="/settings" className={`nav-item ${pathname === '/settings' ? 'active' : ''}`}>

@@ -30,12 +30,16 @@ export function getUsers(): Record<string, { password: string; name: string }> {
 
 export function signup(email: string, password: string): { success: boolean; error?: string } {
   const users = getUsers()
-  if (users[email]) {
-    return { success: false, error: 'An account with this email already exists.' }
-  }
+  // Allow re-registration (overwrites existing account)
   users[email] = { password, name: email.split('@')[0] }
   localStorage.setItem(USERS_KEY, JSON.stringify(users))
   return { success: true }
+}
+
+export function deleteUser(email: string): void {
+  const users = getUsers()
+  delete users[email]
+  localStorage.setItem(USERS_KEY, JSON.stringify(users))
 }
 
 export function login(email: string, password: string): { success: boolean; error?: string; firstLogin?: boolean } {
