@@ -688,12 +688,16 @@ export default function YardPage() {
                 </div>
                 <p className="text-xs mb-3" style={dimStyle}>Click anywhere on the map to drop a slip marker</p>
 
-                <div ref={mapRef} style={{ width: '100%', height: '450px', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(74,144,226,0.3)', background: 'rgba(10,20,40,0.7)' }}>
-                  {!mapsLoaded && (
-                    <div className="w-full h-full flex flex-col items-center justify-center">
-                      <span style={{ fontSize: '2rem' }}>🛰️</span>
-                      <p className="text-sm mt-2" style={dimStyle}>Loading satellite map…</p>
-                    </div>
+                <div style={{ width: '100%', borderRadius: '12px', border: '1px solid rgba(74,144,226,0.3)', background: 'rgba(255,255,255,0.88)', padding: '28px 20px', textAlign: 'center' }}>
+                  <span style={{ fontSize: '2.5rem' }}>🛰️</span>
+                  <p className="text-sm font-bold mt-3 mb-1" style={{ color: '#1A0A00', fontFamily: 'Georgia, serif' }}>Satellite View — Coming Soon</p>
+                  <p className="text-xs mb-4" style={{ color: 'rgba(26,10,0,0.6)', fontFamily: 'Georgia, serif' }}>Google Maps is being configured. Use the Custom Map tab to upload your yard layout and drop pins on it.</p>
+                  <a href="https://maps.google.com" target="_blank" rel="noreferrer"
+                    style={{ display: 'inline-block', background: '#1B3A5C', color: '#fff', padding: '8px 16px', borderRadius: '8px', textDecoration: 'none', fontSize: '12px', fontFamily: 'Georgia, serif' }}>
+                    Open Google Maps ↗
+                  </a>
+                </div>
+                <div ref={mapRef} style={{ display: 'none' }} />
                   )}
                 </div>
 
