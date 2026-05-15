@@ -170,9 +170,14 @@ export default function WelcomePage() {
               </Link>
             ))}
           </div>
-          <p className="text-xs text-center mt-3 mb-8"
+          <p className="text-xs text-center mt-3 mb-2"
             style={{ color: 'rgba(245,240,232,0.3)', fontFamily: 'Georgia, serif' }}>
             No credit card required for free tier · Cancel anytime
+          </p>
+          <p className="text-xs text-center mb-8">
+            <Link href="/about" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
+              Why Boat Buddy vs ChatGPT? →
+            </Link>
           </p>
         </div>
       </main>
