@@ -26,9 +26,8 @@ const TIERS = [
     originalPrice: '$19.99',
     period: '/mo',
     seats: '1 user',
-    tag: '🎁 7-DAY FREE TRIAL',
+    tag: 'MOST POPULAR',
     features: [
-      '7 days free — no charge until day 8',
       'Unlimited AI questions',
       'Photo diagnosis',
       '📖 Service manual search',
@@ -192,7 +191,7 @@ export default function UpgradePage() {
                   className="btn-primary w-full"
                   style={{ opacity: loading !== null ? 0.7 : 1 }}
                 >
-                  {loading === tier.tier ? 'Loading...' : tier.tier === 'first_mate' ? '🎁 Start Free 7-Day Trial' : `⚓ Get ${tier.name} — ${tier.price}${tier.period}`}
+                  {loading === tier.tier ? 'Loading...' : `⚓ Get ${tier.name} — ${tier.price}${tier.period}`}
                 </button>
               ) : (
                 <div className="text-center py-1">

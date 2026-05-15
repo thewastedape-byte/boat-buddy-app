@@ -84,7 +84,7 @@ const TIERS = [
     ],
     missing: [],
     highlight: true,
-    trial: '7-day free trial',
+    trial: '50% off first 2 months',
   },
   {
     icon: '🚢',
@@ -226,15 +226,15 @@ export default function AboutPage() {
         {/* CTA */}
         <div className="text-center mb-8">
           <h2 className="text-xl font-bold mb-3" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
-            Try it free for 7 days
+            Introductory pricing — limited time
           </h2>
           <p className="text-xs mb-6" style={{ color: 'rgba(245,240,232,0.6)', fontFamily: 'Georgia, serif' }}>
-            No charge until day 8. Cancel anytime.
+            50% off your first 2 months. Cancel anytime.
           </p>
           <Link href="/upgrade"
             className="btn-primary font-bold"
             style={{ textDecoration: 'none', display: 'inline-block', padding: '14px 32px', fontSize: '16px' }}>
-            ⚓ Start Free Trial — $9.99/mo
+            ⚓ Get First Mate — $9.99/mo
           </Link>
           <p className="text-xs mt-4" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>
             Already have an account? <Link href="/login" style={{ color: '#C68B3A', textDecoration: 'none' }}>Sign in</Link>

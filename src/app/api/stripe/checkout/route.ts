@@ -26,16 +26,12 @@ export async function POST(req: NextRequest) {
     const cancelSlug = tier === 'marina_addon' ? 'marina' : tier.includes('yard') ? 'yard' : 'upgrade'
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://boatbuddy.thewastedape.com'
 
-    // Add 7-day free trial for First Mate
-    const trialDays = tier === 'first_mate' ? 7 : 0
-
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'subscription',
       customer_email: email,
       line_items: [{ price: priceId, quantity: 1 }],
       ...(isAddon ? {} : { discounts: [{ coupon: 'LAUNCH2026' }] }),
-      ...(trialDays > 0 ? { subscription_data: { trial_period_days: trialDays } } : {}),
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}&tier=${tier}`,
       cancel_url: `${appUrl}/${cancelSlug}`,
     })

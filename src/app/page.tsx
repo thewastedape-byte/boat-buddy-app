@@ -493,12 +493,12 @@ export default function ChatPage() {
               Upgrade to <strong style={{ color: '#C68B3A' }}>First Mate</strong> for unlimited AI questions, photo diagnosis, service manual search, repair logs, and more.
             </p>
             <div style={{ background: 'rgba(198,139,58,0.1)', border: '1px solid rgba(198,139,58,0.3)', borderRadius: '10px', padding: '16px', marginBottom: '20px' }}>
-              <p style={{ color: '#C68B3A', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>✅ 7-Day Free Trial</p>
-              <p style={{ color: 'rgba(245,240,232,0.7)', fontSize: '12px' }}>Try everything free. Cancel anytime. No charge until day 8.</p>
+              <p style={{ color: '#C68B3A', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>🎉 Introductory Price</p>
+              <p style={{ color: 'rgba(245,240,232,0.7)', fontSize: '12px' }}>50% off for your first 2 months. Cancel anytime.</p>
             </div>
             <a href="/upgrade"
               style={{ display: 'block', background: '#C68B3A', color: '#3D1C02', fontFamily: 'Georgia, serif', fontWeight: 'bold', fontSize: '16px', padding: '14px', borderRadius: '10px', textDecoration: 'none', marginBottom: '12px' }}>
-              Start Free Trial
+              ⚓ Upgrade — $9.99/mo
             </a>
             <button onClick={() => setShowUpgradeBanner(false)}
               style={{ background: 'none', border: 'none', color: 'rgba(245,240,232,0.4)', fontSize: '12px', cursor: 'pointer' }}>
