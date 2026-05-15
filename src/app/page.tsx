@@ -483,23 +483,26 @@ export default function ChatPage() {
         </div>
       )}
 
-      {/* Upgrade banner */}
+      {/* Upgrade modal */}
       {showUpgradeBanner && (
-        <div className="px-4 py-3 flex items-center justify-between gap-3"
-          style={{ background: 'rgba(139,26,26,0.4)', borderBottom: '1px solid rgba(198,139,58,0.4)' }}>
-          <p className="text-xs flex-1" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
-            🪝 You&apos;re on the Stow Away plan — 1 free question every 6 hours. Upgrade to First Mate for unlimited access.
-          </p>
-          <div className="flex items-center gap-2 flex-shrink-0">
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+          <div style={{ background: '#1a0e05', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '16px', padding: '32px 24px', maxWidth: '380px', width: '100%', textAlign: 'center' }}>
+            <div style={{ fontSize: '48px', marginBottom: '12px' }}>⚓</div>
+            <h2 style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: '22px', marginBottom: '8px' }}>You&apos;ve used your free question</h2>
+            <p style={{ color: 'rgba(245,240,232,0.8)', fontSize: '14px', lineHeight: '1.6', marginBottom: '24px' }}>
+              Upgrade to <strong style={{ color: '#C68B3A' }}>First Mate</strong> for unlimited AI questions, photo diagnosis, service manual search, repair logs, and more.
+            </p>
+            <div style={{ background: 'rgba(198,139,58,0.1)', border: '1px solid rgba(198,139,58,0.3)', borderRadius: '10px', padding: '16px', marginBottom: '20px' }}>
+              <p style={{ color: '#C68B3A', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>✅ 7-Day Free Trial</p>
+              <p style={{ color: 'rgba(245,240,232,0.7)', fontSize: '12px' }}>Try everything free. Cancel anytime. No charge until day 8.</p>
+            </div>
             <a href="/upgrade"
-              className="text-xs px-3 py-1.5 rounded-lg font-bold"
-              style={{ background: '#C68B3A', color: '#3D1C02', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
-              Upgrade — $19.99/mo
+              style={{ display: 'block', background: '#C68B3A', color: '#3D1C02', fontFamily: 'Georgia, serif', fontWeight: 'bold', fontSize: '16px', padding: '14px', borderRadius: '10px', textDecoration: 'none', marginBottom: '12px' }}>
+              Start Free Trial
             </a>
             <button onClick={() => setShowUpgradeBanner(false)}
-              className="text-xs"
-              style={{ color: 'rgba(245,240,232,0.5)', background: 'none', border: 'none', cursor: 'pointer' }}>
-              ✕
+              style={{ background: 'none', border: 'none', color: 'rgba(245,240,232,0.4)', fontSize: '12px', cursor: 'pointer' }}>
+              No thanks, I&apos;ll wait 6 hours
             </button>
           </div>
         </div>
