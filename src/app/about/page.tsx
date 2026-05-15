@@ -139,14 +139,14 @@ export default function AboutPage() {
         </Link>
       </header>
 
-      <main className="flex-1 px-5 pb-16 overflow-y-auto max-w-2xl mx-auto w-full">
+      <main className="flex-1 px-5 pb-16 overflow-y-auto max-w-2xl mx-auto w-full" style={{ background: 'rgba(10,4,1,0.75)' }}>
 
         {/* Hero */}
         <div className="text-center mt-10 mb-12">
           <h1 className="text-3xl font-bold mb-4" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
             Why Boat Buddy?
           </h1>
-          <p className="text-sm leading-relaxed" style={{ color: 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif' }}>
+          <p className="text-sm leading-relaxed" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
             There are a lot of AI tools out there. Here&apos;s why a marine mechanic or boat owner needs one built specifically for the water.
           </p>
         </div>
@@ -156,18 +156,18 @@ export default function AboutPage() {
           <h2 className="text-xl font-bold mb-2" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>
             Boat Buddy vs ChatGPT
           </h2>
-          <p className="text-xs mb-6" style={{ color: 'rgba(245,240,232,0.55)', fontFamily: 'Georgia, serif' }}>
+          <p className="text-xs mb-6" style={{ color: 'rgba(245,240,232,0.9)', fontFamily: 'Georgia, serif' }}>
             ChatGPT is a great general-purpose tool. But when your engine is down at the dock, &quot;general purpose&quot; isn&apos;t good enough.
           </p>
           <div className="flex flex-col gap-3">
             {COMPARISONS.map((c, i) => (
-              <div key={i} style={{ background: 'rgba(245,240,232,0.04)', border: '1px solid rgba(245,240,232,0.1)', borderRadius: '10px', padding: '14px' }}>
+              <div key={i} style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(198,139,58,0.3)', borderRadius: '10px', padding: '14px' }}>
                 <p className="text-xs font-bold mb-2" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>{c.feature}</p>
                 <div className="flex flex-col gap-1">
-                  <p className="text-xs" style={{ color: 'rgba(245,240,232,0.85)', fontFamily: 'Georgia, serif' }}>
+                  <p className="text-xs" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
                     <span style={{ color: '#C68B3A' }}>Boat Buddy: </span>{c.boatBuddy}
                   </p>
-                  <p className="text-xs" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>
+                  <p className="text-xs" style={{ color: 'rgba(245,240,232,0.7)', fontFamily: 'Georgia, serif' }}>
                     <span>ChatGPT: </span>{c.chatGpt}
                   </p>
                 </div>
@@ -181,7 +181,7 @@ export default function AboutPage() {
           <h2 className="text-xl font-bold mb-2" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>
             Which Plan Is Right for You?
           </h2>
-          <p className="text-xs mb-6" style={{ color: 'rgba(245,240,232,0.55)', fontFamily: 'Georgia, serif' }}>
+          <p className="text-xs mb-6" style={{ color: 'rgba(245,240,232,0.9)', fontFamily: 'Georgia, serif' }}>
             From casual weekend boaters to full marine service shops.
           </p>
           <div className="flex flex-col gap-5">
@@ -199,12 +199,12 @@ export default function AboutPage() {
                     🎁 {t.trial}
                   </span>
                 )}
-                <p className="text-xs mb-3 mt-1" style={{ color: 'rgba(245,240,232,0.6)', fontFamily: 'Georgia, serif' }}>
+                <p className="text-xs mb-3 mt-1" style={{ color: 'rgba(245,240,232,0.9)', fontFamily: 'Georgia, serif' }}>
                   <strong style={{ color: 'rgba(245,240,232,0.8)' }}>Best for: </strong>{t.who}
                 </p>
                 <ul className="flex flex-col gap-1 mb-2">
                   {t.includes.map((f, j) => (
-                    <li key={j} className="text-xs flex gap-2" style={{ color: 'rgba(245,240,232,0.85)', fontFamily: 'Georgia, serif' }}>
+                    <li key={j} className="text-xs flex gap-2" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
                       <span style={{ color: '#C68B3A', flexShrink: 0 }}>✓</span> {f}
                     </li>
                   ))}
