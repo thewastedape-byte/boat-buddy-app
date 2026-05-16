@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: 'Boat Buddy AI — Marine Diagnostics Assistant for Boat Mechanics & DIY Owners',
   description: 'AI-powered diagnostics for boats and ships. Engines, electrical, plumbing, fiberglass & paint. Free plan. Built for marine shops and DIY owners.',
   keywords: 'marine mechanic, boat diagnostics, boat repair AI, marine AI assistant, boat engine repair, fiberglass repair, marine electrical troubleshooting',
+  verification: { google: 'kC5ejZEO7H6cMXus3fszzyG8upBBvGFg9H4Prk7FQl0' },
   manifest: '/manifest.json',
   themeColor: '#3D1C02',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
