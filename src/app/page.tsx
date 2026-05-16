@@ -187,7 +187,7 @@ export default function ChatPage() {
           }
         } catch {}
 
-        const res = await fetch(`${API_URL}/api/chat`, {
+        const res = await fetch(`/api/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ question: text, session_id: sessionId, vessel_engine: vesselEngine, has_diagram: !!inlineDiagram, language: localStorage.getItem('bb_language') || 'en', email: auth?.email }),
