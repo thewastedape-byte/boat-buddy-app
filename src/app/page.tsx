@@ -123,18 +123,7 @@ export default function ChatPage() {
   const auth = isAdmin ? { ...rawAuth, subscription: 'admiral' } : rawAuth // LIVE: admin gets Admiral tier
     const currentSubscription = auth?.subscription
     const isPaid = currentSubscription === 'first_mate' || currentSubscription === 'captain' || currentSubscription === 'admiral' || currentSubscription === 'team_member'
-    if (!isPaid) {
-      const lastFreeTime = parseInt(localStorage.getItem('last_free_time') || '0', 10)
-      const sixHours = 6 * 60 * 60 * 1000
-      if (lastFreeTime && Date.now() - lastFreeTime < sixHours) {
-        setShowUpgradeBanner(true)
-        return
-      }
-      // Allow this question, record time
-      localStorage.setItem('last_free_time', Date.now().toString())
-      const count = parseInt(localStorage.getItem('question_count') || '0', 10)
-      localStorage.setItem('question_count', (count + 1).toString())
-    }
+    // Free tier gate handled server-side — see /api/chat route
 
     const userMsg: Message = {
       id: Date.now().toString(),
@@ -201,8 +190,17 @@ export default function ChatPage() {
         const res = await fetch(`${API_URL}/api/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: text, session_id: sessionId, vessel_engine: vesselEngine, has_diagram: !!inlineDiagram, language: localStorage.getItem('bb_language') || 'en' }),
+          body: JSON.stringify({ question: text, session_id: sessionId, vessel_engine: vesselEngine, has_diagram: !!inlineDiagram, language: localStorage.getItem('bb_language') || 'en', email: auth?.email }),
         })
+        if (res.status === 429) {
+          const data = await res.json()
+          if (data.error === 'free_limit') {
+            setMessages(newMessages) // remove loading
+            setShowUpgradeBanner(true)
+            setLoading(false)
+            return
+          }
+        }
         if (res.ok) {
           const data = await res.json()
           aiContent = (data.answer || data.response || data.message || 'Got it!')
