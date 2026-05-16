@@ -68,7 +68,15 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="google-site-verification" content="GOOGLE_VERIFICATION_CODE_HERE" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+  
+      <script dangerouslySetInnerHTML={{ __html: `
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js');
+          });
+        }
+      ` }} />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <script
           type="application/ld+json"
