@@ -64,25 +64,16 @@ function SignupContent() {
         } catch { /* fall through to normal flow */ }
       }
 
-      // Track signup in Supabase
+      // Sync signup to Supabase via server route (uses service key server-side)
       try {
-        const SUPABASE_URL = 'https://yruuzkxpnbgruwuivchy.supabase.co'
-        const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_KEY || ''
-        if (SUPABASE_KEY) {
-          await fetch(`${SUPABASE_URL}/rest/v1/users`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'apikey': SUPABASE_KEY,
-              'Authorization': `Bearer ${SUPABASE_KEY}`,
-              'Prefer': 'return=minimal',
-            },
-            body: JSON.stringify({
-              email: email.trim().toLowerCase(),
-              created_at: new Date().toISOString(),
-            }),
-          })
-        }
+        await fetch('/api/user/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email.trim().toLowerCase(),
+            name: email.split('@')[0],
+          }),
+        })
       } catch { /* non-fatal */ }
 
       // If invited, accept the invite and link to team
