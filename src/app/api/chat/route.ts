@@ -13,17 +13,30 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { email } = body
 
-    // Check free tier limit server-side
+    // Gate all users - including pre-signup ghost users
     if (email && SUPABASE_SERVICE_KEY && !ADMIN_EMAILS.includes(email)) {
       const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
-      const { data: user } = await supabase
+      let { data: user } = await supabase
         .from('users')
         .select('subscription, last_free_question')
         .eq('email', email)
         .single()
 
+      // Ghost user (localStorage only, not in Supabase) — register them now and gate immediately
+      if (!user) {
+        await supabase.from('users').upsert(
+          { email: email.toLowerCase().trim(), subscription: 'stow_away', created_at: new Date().toISOString() },
+          { onConflict: 'email', ignoreDuplicates: true }
+        )
+        const { data: newUser } = await supabase
+          .from('users')
+          .select('subscription, last_free_question')
+          .eq('email', email)
+          .single()
+        user = newUser
+      }
+
       if (user && !PAID_TIERS.includes(user.subscription)) {
-        // Free tier — check last question time
         const lastQuestion = user.last_free_question ? new Date(user.last_free_question).getTime() : 0
         const now = Date.now()
         const elapsed = now - lastQuestion
@@ -40,7 +53,7 @@ export async function POST(req: NextRequest) {
           )
         }
 
-        // Update last_free_question timestamp
+        // Stamp last_free_question
         await supabase
           .from('users')
           .update({ last_free_question: new Date().toISOString() })
