@@ -37,31 +37,31 @@
                         {
                             "label":  "AI Marine Diagnostic Chat",
                             "type":  "image/jpeg",
-                            "sizes":  "540x1170",
+                            "sizes":  "591x1280",
                             "src":  "/screenshots/screenshot-home.jpg"
                         },
                         {
                             "label":  "Chat History",
                             "type":  "image/jpeg",
-                            "sizes":  "540x1170",
+                            "sizes":  "591x1280",
                             "src":  "/screenshots/screenshot-history.jpg"
                         },
                         {
                             "label":  "Service Department",
                             "type":  "image/jpeg",
-                            "sizes":  "540x1170",
+                            "sizes":  "591x1280",
                             "src":  "/screenshots/screenshot-service.jpg"
                         },
                         {
                             "label":  "Yard Manager",
                             "type":  "image/jpeg",
-                            "sizes":  "540x1170",
+                            "sizes":  "591x1280",
                             "src":  "/screenshots/screenshot-yard.jpg"
                         },
                         {
                             "label":  "Marina Manager",
                             "type":  "image/jpeg",
-                            "sizes":  "540x1170",
+                            "sizes":  "591x1280",
                             "src":  "/screenshots/screenshot-marina.jpg"
                         }
                     ],
