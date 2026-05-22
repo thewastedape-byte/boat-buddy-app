@@ -2,7 +2,20 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { login, isLoggedIn } from '@/lib/auth'
+import { login, isLoggedIn, updateAuthSubscription } from '@/lib/auth'
+
+const SUPABASE_URL = 'https://yruuzkxpnbgruwuivchy.supabase.co'
+const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_KEY || ''
+
+async function fetchSubscription(email: string): Promise<string> {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}&select=subscription`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    })
+    const data = await res.json()
+    return data?.[0]?.subscription || 'stow_away'
+  } catch { return 'stow_away' }
+}
 import Logo from '@/components/Logo'
 
 export default function LoginPage() {
@@ -29,6 +42,9 @@ export default function LoginPage() {
     try {
       const result = login(email.trim().toLowerCase(), password)
       if (result.success) {
+        // Fetch fresh subscription from Supabase and store it
+        const sub = await fetchSubscription(email.trim().toLowerCase())
+        updateAuthSubscription(sub)
         router.push('/')
       } else {
         setError(result.error || 'Login failed.')

@@ -1,7 +1,7 @@
 ﻿'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { isLoggedIn, getAuth, hasAcceptedTerms, getOrCreateSessionId, newSession } from '@/lib/auth'
+import { isLoggedIn, getAuth, hasAcceptedTerms, getOrCreateSessionId, newSession, updateAuthSubscription } from '@/lib/auth'
 import { findDiagram } from '@/lib/diagrams'
 import NavBar from '@/components/NavBar'
 import TCModal from '@/components/TCModal'
@@ -54,6 +54,19 @@ export default function ChatPage() {
   const isAdmin = rawAuth?.email && adminEmails.includes(rawAuth.email.toLowerCase())
   const auth = isAdmin ? { ...rawAuth, subscription: 'admiral' } : rawAuth // LIVE: admin gets Admiral tier
     setSubscription(auth?.subscription)
+    // Refresh subscription from Supabase on every page load
+    if (rawAuth?.email) {
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY || ''
+      fetch(`https://yruuzkxpnbgruwuivchy.supabase.co/rest/v1/users?email=eq.${encodeURIComponent(rawAuth.email)}&select=subscription`, {
+        headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
+      }).then(r => r.json()).then(data => {
+        const freshSub = data?.[0]?.subscription
+        if (freshSub && freshSub !== auth?.subscription) {
+          updateAuthSubscription(freshSub)
+          setSubscription(freshSub)
+        }
+      }).catch(() => {})
+    }
     // Check for service reminders
     try {
       const raw = localStorage.getItem('boat_buddy_repair_log')

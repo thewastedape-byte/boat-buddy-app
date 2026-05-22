@@ -59,6 +59,17 @@ export function login(email: string, password: string): { success: boolean; erro
   return { success: true, firstLogin: !tcAccepted }
 }
 
+export function updateAuthSubscription(subscription: string): void {
+  if (typeof window === 'undefined') return
+  try {
+    const raw = localStorage.getItem(AUTH_KEY)
+    if (!raw) return
+    const auth = JSON.parse(raw)
+    auth.subscription = subscription
+    localStorage.setItem(AUTH_KEY, JSON.stringify(auth))
+  } catch { /* ignore */ }
+}
+
 const ADMIN_EMAILS = ['thewastedape@gmail.com', 'howirolloldschool@gmail.com', 'benjamin.green7@gmail.com', 'zrudick@gmail.com', 'brittanirudick@gmail.com']
 
 export function getAuth(): { token: string; email: string; name: string; subscription?: string } | null {
