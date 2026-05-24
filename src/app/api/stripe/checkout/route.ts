@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
       customer_email: email,
       line_items: [{ price: priceId, quantity: 1 }],
       ...(isAddon ? {} : { discounts: [{ coupon: 'LAUNCH2026' }] }),
+      metadata: { tier, email: email || '' },
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}&tier=${tier}`,
       cancel_url: `${appUrl}/${cancelSlug}`,
     })
