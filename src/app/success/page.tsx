@@ -1,19 +1,28 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Logo from '@/components/Logo'
+
+const TIER_LABELS: Record<string, string> = {
+  first_mate: 'First Mate',
+  captain: 'Captain',
+  admiral: 'Admiral',
+}
 
 export default function SuccessPage() {
   const router = useRouter()
-  const [countdown, setCountdown] = useState(3)
+  const searchParams = useSearchParams()
+  const [countdown, setCountdown] = useState(5)
+  const tier = searchParams.get('tier') || 'first_mate'
+  const tierLabel = TIER_LABELS[tier] || 'First Mate'
 
   useEffect(() => {
-    // Set subscription in localStorage
+    // Update subscription in localStorage to reflect actual purchased tier
     try {
       const raw = localStorage.getItem('boat_buddy_auth')
       if (raw) {
         const auth = JSON.parse(raw)
-        auth.subscription = 'first_mate'
+        auth.subscription = tier
         localStorage.setItem('boat_buddy_auth', JSON.stringify(auth))
       }
     } catch { /* ignore */ }
@@ -48,7 +57,7 @@ export default function SuccessPage() {
             Welcome aboard,
           </h1>
           <h2 className="text-3xl font-bold mb-6" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
-            First Mate!
+            {tierLabel}!
           </h2>
           <p className="text-sm mb-6" style={{ color: 'rgba(245,240,232,0.7)', fontFamily: 'Georgia, serif' }}>
             Your subscription is active. You now have unlimited access to Boat Buddy.
