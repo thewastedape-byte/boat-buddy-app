@@ -1,8 +1,14 @@
 [{
-  "relation": ["delegate_permission/common.handle_all_urls"],
+  "relation": [
+    "delegate_permission/common.handle_all_urls",
+    "delegate_permission/common.get_login_creds"
+  ],
   "target": {
     "namespace": "android_app",
     "package_name": "com.thewastedape.boatbuddy",
-    "sha256_cert_fingerprints": ["2A:17:81:D8:01:BB:15:CF:62:BD:97:CA:AE:2F:61:36:01:25:9F:63:24:DB:BC:BC:B4:18:AC:09:9B:AD:D7:09"]
+    "sha256_cert_fingerprints": [
+      "2A:17:81:D8:01:BB:15:CF:62:BD:97:CA:AE:2F:61:36:01:25:9F:63:24:DB:BC:BC:B4:18:AC:09:9B:AD:D7:09",
+      "C9:5B:55:90:15:88:15:DB:D7:2A:E4:1B:DC:86:AF:65:5E:B0:B5:DE:3E:5C:D1:EA:38:41:BB:0E:00:11:AD:D3"
+    ]
   }
 }]
