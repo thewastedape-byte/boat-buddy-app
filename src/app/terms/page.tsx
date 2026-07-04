@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 
 export default function TermsPage() {
   return (
@@ -6,7 +6,7 @@ export default function TermsPage() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="text-3xl mb-2">⚓</div>
+          <div className="text-3xl mb-2">ΓÜô</div>
           <h1 className="text-2xl font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
             Terms &amp; Conditions
           </h1>
@@ -103,7 +103,7 @@ export default function TermsPage() {
 
         <div className="text-center mt-6">
           <Link href="/login" className="btn-primary inline-block">
-            ← Back to App
+            ΓåÉ Back to App
           </Link>
         </div>
       </div>
