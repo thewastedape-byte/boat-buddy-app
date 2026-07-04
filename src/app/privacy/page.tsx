@@ -5,7 +5,6 @@ export default function PrivacyPage() {
     <div className="bg-wood min-h-screen py-8 px-4">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
-          <div className="text-3xl mb-2">⚓</div>
           <h1 className="text-2xl font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
             Privacy Policy
           </h1>
@@ -46,15 +45,15 @@ export default function PrivacyPage() {
           <section className="mb-6">
             <h2 className="text-lg font-bold mb-3" style={{ color: '#C68B3A' }}>3. Third-Party Services</h2>
             <ul className="text-sm list-disc ml-5 space-y-1">
-              <li><strong>OpenAI</strong> — Powers AI diagnostic responses per their privacy policy</li>
-              <li><strong>Supabase</strong> — Stores account data, vessel records, and repair logs securely</li>
-              <li><strong>Stripe</strong> — Processes subscription payments; we do not store card details</li>
+              <li><strong>OpenAI</strong> - Powers AI diagnostic responses per their privacy policy</li>
+              <li><strong>Supabase</strong> - Stores account data, vessel records, and repair logs securely</li>
+              <li><strong>Stripe</strong> - Processes subscription payments; we do not store card details</li>
             </ul>
           </section>
 
           <section className="mb-6">
             <h2 className="text-lg font-bold mb-3" style={{ color: '#C68B3A' }}>4. Data Sharing</h2>
-            <p className="text-sm">We do not sell, rent, or share your personal information with third parties for marketing purposes. Data is shared only as necessary to operate the service or as required by law.</p>
+            <p className="text-sm">We do not sell, rent, or share your personal information with third parties for marketing purposes.</p>
           </section>
 
           <section className="mb-6">
@@ -64,11 +63,11 @@ export default function PrivacyPage() {
 
           <section className="mb-6">
             <h2 className="text-lg font-bold mb-3" style={{ color: '#C68B3A' }}>6. Security</h2>
-            <p className="text-sm">We use encrypted data storage and secure HTTPS connections. Do not submit sensitive financial or personal identification information through the chat interface.</p>
+            <p className="text-sm">We use encrypted data storage and secure HTTPS connections. Do not submit sensitive personal information through the chat interface.</p>
           </section>
 
           <section className="mb-6">
-            <h2 className="text-lg font-bold mb-3" style={{ color: '#C68B3A' }}>7. Children&apos;s Privacy</h2>
+            <h2 className="text-lg font-bold mb-3" style={{ color: '#C68B3A' }}>7. Children</h2>
             <p className="text-sm">Boat Buddy is not intended for users under 18. We do not knowingly collect information from children.</p>
           </section>
 
@@ -83,12 +82,16 @@ export default function PrivacyPage() {
           </section>
 
           <div className="mt-8 pt-6 text-center" style={{ borderTop: '1px solid rgba(198,139,58,0.3)' }}>
-            <p className="text-xs" style={{ color: 'rgba(245,240,232,0.4)' }}>&copy; 2026 WastedApe. All rights reserved.</p>
+            <p className="text-xs" style={{ color: 'rgba(245,240,232,0.4)' }}>
+              2026 WastedApe. All rights reserved.
+            </p>
           </div>
         </div>
 
         <div className="text-center mt-6">
-          <Link href="/login" className="btn-primary inline-block">Back to App</Link>
+          <Link href="/login" className="btn-primary inline-block">
+            Back to App
+          </Link>
         </div>
       </div>
     </div>
