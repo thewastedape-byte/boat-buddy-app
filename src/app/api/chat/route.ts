@@ -69,6 +69,26 @@ export async function POST(req: NextRequest) {
     })
 
     const data = await res.json()
+
+    // Log question to Supabase questions table (fire and forget)
+    if (res.ok && data.answer && body.question && SUPABASE_SERVICE_KEY) {
+      try {
+        const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+        const ip = req.headers.get('x-forwarded-for') || 'unknown'
+        await supabase.from('questions').insert({
+          user_email: email || 'anonymous',
+          session_id: body.session_id || null,
+          question: body.question,
+          answer: data.answer,
+          engine_found: data.engineFound || null,
+          ip,
+          language: body.language || 'en',
+        })
+      } catch (logErr) {
+        console.error('Question logging failed:', logErr)
+      }
+    }
+
     return NextResponse.json(data, { status: res.status })
   } catch (err) {
     console.error('Chat API error:', err)
