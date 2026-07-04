@@ -17,7 +17,7 @@ export default function TermsPage() {
 
         <div className="panel p-6" style={{ fontFamily: 'Georgia, serif', color: 'rgba(245,240,232,0.85)', lineHeight: '1.7' }}>
           <p className="text-xs mb-6" style={{ color: 'rgba(245,240,232,0.5)' }}>
-            Last updated: July 4, 2026
+            Last updated: January 2025
           </p>
 
           <section className="mb-6">
@@ -96,7 +96,7 @@ export default function TermsPage() {
 
           <div className="mt-8 pt-6 text-center" style={{ borderTop: '1px solid rgba(198,139,58,0.3)' }}>
             <p className="text-xs" style={{ color: 'rgba(245,240,232,0.4)' }}>
-              © 2026 WastedApe. All rights reserved.
+              © 2025 WastedApe. All rights reserved.
             </p>
           </div>
         </div>
