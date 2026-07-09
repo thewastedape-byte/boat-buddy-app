@@ -57,19 +57,15 @@ export default function ServicePage() {
     try {
       const email = auth?.email || ''
       const r = await fetch(`${API_URL}/api/db/jobs?user_email=${encodeURIComponent(email)}`)
-      if (r.ok) {
-        const data = await r.json()
-        setJobs(data)
-      } else {
-        // Fall back to localStorage
-        const raw = localStorage.getItem('boat_buddy_repair_log')
-        if (raw) {
-          const local = JSON.parse(raw).map((j: {id:string;symptom:string;diagnosis:string;date:number}) => ({
-            ...j, status: j.status || 'open', created_at: new Date(j.date).toISOString()
-          }))
-          setJobs(local)
-        }
-      }
+      const apiJobs: Job[] = r.ok ? (await r.json()) : []
+      const raw = localStorage.getItem('boat_buddy_repair_log')
+      const localJobs: Job[] = raw ? JSON.parse(raw).map((j: {id:string;symptom:string;diagnosis:string;date:number;status?:string}) => ({
+        ...j, status: j.status || 'open', created_at: new Date(j.date || Date.now()).toISOString()
+      })) : []
+      const apiIds = new Set(apiJobs.map((j: Job) => j.id))
+      const merged = [...apiJobs, ...localJobs.filter((j: Job) => !apiIds.has(j.id))]
+      merged.sort((a: Job, b: Job) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      setJobs(merged)
     } catch {
       const raw = localStorage.getItem('boat_buddy_repair_log')
       if (raw) setJobs(JSON.parse(raw).map((j: {id:string;symptom:string;diagnosis:string;date:number}) => ({...j, status: j.status||'open', created_at: new Date(j.date).toISOString()})))
@@ -230,7 +226,7 @@ export default function ServicePage() {
                   try {
                     const email = auth?.email || ''
                     const entry = {
-                      id: Date.now().toString(),
+                      id: Date.now().toString(), // localStorage-only id
                       symptom: addJobForm.symptom.trim(),
                       diagnosis: addJobForm.notes.trim(),
                       status: 'open',
@@ -242,7 +238,7 @@ export default function ServicePage() {
                       await fetch(`${API_URL}/api/db/jobs`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ ...entry, user_email: email }),
+                        body: JSON.stringify({ symptom: entry.symptom, diagnosis: entry.diagnosis, status: entry.status, user_id: email }),
                       })
                     } catch {}
                     // Also save to localStorage
