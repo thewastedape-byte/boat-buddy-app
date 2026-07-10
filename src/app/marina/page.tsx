@@ -261,7 +261,7 @@ function SlipDetailModal({ slip, rentals, onSave, onDelete, onClose }: SlipModal
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.7)' }} onClick={onClose}>
-      <div className="w-full max-w-lg rounded-t-2xl p-5 overflow-y-auto" style={{ background: '#0d1f3c', border: '1px solid rgba(74,144,226,0.3)', borderBottom: 'none', maxHeight: '90vh' }} onClick={e => e.stopPropagation()}>
+      <div className="w-full max-w-lg rounded-t-2xl p-5 overflow-y-auto" style={{ background: '#0d1f3c', border: '1px solid rgba(74,144,226,0.3)', borderBottom: 'none', maxHeight: '90vh', paddingBottom: '80px' }} onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={headStyle}>{slip?.id ? `Slip: ${slip.name}` : '+ New Slip'}</h2>
           <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
@@ -538,7 +538,7 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.7)' }} onClick={onClose}>
-      <div className="w-full max-w-lg rounded-t-2xl p-5 overflow-y-auto" style={{ background: '#0d1f3c', border: '1px solid rgba(74,144,226,0.3)', borderBottom: 'none', maxHeight: '90vh' }} onClick={e => e.stopPropagation()}>
+      <div className="w-full max-w-lg rounded-t-2xl p-5 overflow-y-auto" style={{ background: '#0d1f3c', border: '1px solid rgba(74,144,226,0.3)', borderBottom: 'none', maxHeight: '90vh', paddingBottom: '80px' }} onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={headStyle}>{booking?.id ? 'Booking Details' : '+ New Booking'}</h2>
           <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
@@ -842,10 +842,11 @@ export default function MarinaPage() {
   }
 
   // ── Stats ──
-  const totalSlips = slips.length
-  const rentedSlips = slips.filter(s => s.status === 'rented').length
-  const availableSlips = slips.filter(s => s.status === 'available').length
-  const maintenanceSlips = slips.filter(s => s.status === 'maintenance').length
+  const filteredForStats = searchQuery ? slips.filter(slip => !searchQuery || slip.name.toLowerCase().includes(searchQuery.toLowerCase()) || (rentals.find(r => r.slipId === slip.id)?.vesselName || '').toLowerCase().includes(searchQuery.toLowerCase()) || (rentals.find(r => r.slipId === slip.id)?.ownerName || '').toLowerCase().includes(searchQuery.toLowerCase())) : slips
+  const totalSlips = filteredForStats.length
+  const rentedSlips = filteredForStats.filter(s => s.status === 'rented').length
+  const availableSlips = filteredForStats.filter(s => s.status === 'available').length
+  const maintenanceSlips = filteredForStats.filter(s => s.status === 'maintenance').length
 
   // ── Locked view ──
   if (!isCaptainPlus) {
@@ -906,7 +907,7 @@ export default function MarinaPage() {
         <div className="relative mb-3">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm" style={{ color: 'rgba(245,240,232,0.4)' }}>🔍</span>
           <input
-            type="text"
+            type="search"
             placeholder="Search by vessel or owner name..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
