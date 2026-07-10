@@ -90,7 +90,7 @@ export default function ServicePage() {
   const deleteJob = async (id: string) => {
     if (!confirm('Delete this job?')) return
     try {
-      await fetch(\/api/db/jobs/\, { method: 'DELETE' })
+      await fetch(`${API_URL}/api/db/jobs/${id}`, { method: 'DELETE' })
     } catch {}
     // Remove from localStorage too
     const raw = localStorage.getItem('boat_buddy_repair_log')
@@ -104,7 +104,7 @@ export default function ServicePage() {
 
   const updateVessel = async (id: string, vesselId: string) => {
     try {
-      await fetch(\/api/db/jobs/\, {
+      await fetch(`${API_URL}/api/db/jobs/${id}`, {
         method: 'PUT', headers: {'Content-Type':'application/json'},
         body: JSON.stringify({ vessel_id: vesselId || null })
       })
