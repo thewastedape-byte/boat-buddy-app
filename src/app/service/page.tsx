@@ -102,6 +102,22 @@ export default function ServicePage() {
     setExpanded(null)
   }
 
+  const updateVessel = async (id: string, vesselId: string) => {
+    try {
+      await fetch(\/api/db/jobs/\, {
+        method: 'PUT', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ vessel_id: vesselId || null })
+      })
+    } catch {}
+    // Update localStorage too
+    const raw = localStorage.getItem('boat_buddy_repair_log')
+    if (raw) {
+      const updated = JSON.parse(raw).map((j: {id: string}) => j.id === id ? { ...j, vessel_id: vesselId } : j)
+      localStorage.setItem('boat_buddy_repair_log', JSON.stringify(updated))
+    }
+    setJobs(prev => prev.map(j => j.id === id ? { ...j, vessel_id: vesselId } : j))
+  }
+
   const filteredJobs = jobs.filter(j => {
     if (filter === 'open') return j.status === 'open'
     if (filter === 'mine') return j.assigned_to === auth?.email || j.user_id === auth?.email
@@ -180,6 +196,20 @@ export default function ServicePage() {
                             <p className="text-xs mb-3 leading-relaxed" style={{ color: 'rgba(245,240,232,0.7)', fontFamily: 'system-ui, sans-serif' }}>
                               {job.diagnosis.substring(0, 300)}{job.diagnosis.length > 300 ? '...' : ''}
                             </p>
+                          )}
+                          {vessels.length > 0 && (
+                            <div className="mb-3">
+                              <label className="text-xs mb-1 block" style={{ color: 'rgba(198,139,58,0.6)', fontFamily: 'Georgia, serif' }}>Assign Vessel</label>
+                              <select
+                                value={job.vessel_id || ''}
+                                onChange={e => updateVessel(job.id, e.target.value)}
+                                className="w-full px-3 py-1.5 rounded-lg text-xs"
+                                style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(198,139,58,0.3)', color: '#F5F0E8', fontFamily: 'Georgia, serif', outline: 'none' }}
+                              >
+                                <option value="">-- No vessel --</option>
+                                {vessels.map(v => <option key={v.id} value={v.id} style={{ background: '#1a0a02' }}>{v.name}{v.year ?  () : ''''}{v.make ?  -  : ''''}</option>)}
+                              </select>
+                            </div>
                           )}
                           <div className="flex gap-2 flex-wrap">
                             {NEXT_STATUS[job.status] && (
