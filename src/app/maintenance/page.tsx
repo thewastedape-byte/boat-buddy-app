@@ -308,6 +308,12 @@ export default function MaintenancePage() {
             </select>
           </div>
         )}
+        {/* Add vessel shortcut */}
+        <div style={{ marginTop: 6, textAlign: 'right' }}>
+          <Link href="/vessel" style={{ color: '#C68B3A', fontSize: 12, fontFamily: 'Georgia, serif', opacity: 0.8 }}>
+            + Add / Manage Vessels →
+          </Link>
+        </div>
 
         {/* Engine Hours */}
         <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(198,139,58,0.08)', borderRadius: 8, padding: '8px 12px' }}>
