@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { isLoggedIn } from '@/lib/auth'
+import { isLoggedIn, userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 import { getVesselProfile } from '@/app/vessel/page'
@@ -27,7 +27,7 @@ export const REPAIR_LOG_KEY = 'boat_buddy_repair_log'
 export function getRepairLog(): RepairLogEntry[] {
   if (typeof window === 'undefined') return []
   try {
-    const raw = localStorage.getItem(REPAIR_LOG_KEY)
+    const raw = localStorage.getItem(userKey(REPAIR_LOG_KEY))
     return raw ? JSON.parse(raw) : []
   } catch { return [] }
 }
@@ -92,7 +92,7 @@ export default function RepairLogPage() {
       manual: true,
     }
     const updated = [entry, ...entries]
-    localStorage.setItem(REPAIR_LOG_KEY, JSON.stringify(updated))
+    localStorage.setItem(userKey(REPAIR_LOG_KEY), JSON.stringify(updated))
     setEntries(updated)
     setSaved(true)
     setShowForm(false)
@@ -110,12 +110,12 @@ export default function RepairLogPage() {
     if (!confirm('Delete this log entry?')) return
     const updated = entries.filter(e => e.id !== id)
     setEntries(updated)
-    localStorage.setItem(REPAIR_LOG_KEY, JSON.stringify(updated))
+    localStorage.setItem(userKey(REPAIR_LOG_KEY), JSON.stringify(updated))
   }
 
   const clearAll = () => {
     if (!confirm('Clear all repair log entries?')) return
-    localStorage.removeItem(REPAIR_LOG_KEY)
+    localStorage.removeItem(userKey(REPAIR_LOG_KEY))
     setEntries([])
   }
 
@@ -191,7 +191,7 @@ export default function RepairLogPage() {
                       // Mark done — clear the nextServiceDate from the entry
                       const updated = entries.map(en => en.id === e.id ? { ...en, nextServiceDate: undefined, nextServiceNote: undefined } : en)
                       setEntries(updated)
-                      localStorage.setItem(REPAIR_LOG_KEY, JSON.stringify(updated))
+                      localStorage.setItem(userKey(REPAIR_LOG_KEY), JSON.stringify(updated))
                       setServiceReminders(prev => prev.filter(r => r.id !== e.id))
                     }}
                     className="text-xs px-2 py-1 rounded-lg"

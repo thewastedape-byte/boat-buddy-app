@@ -52,7 +52,7 @@ export default function ServicePage() {
     if (!isLoggedIn()) { router.replace('/login'); return }
     loadJobs()
     try {
-      const vRaw = localStorage.getItem('boat_buddy_vessels')
+      const vRaw = localStorage.getItem(userKey('boat_buddy_vessels'))
       if (vRaw) setVessels(JSON.parse(vRaw))
     } catch {}
   }, [router])
@@ -63,7 +63,7 @@ export default function ServicePage() {
       const email = auth?.email || ''
       const r = await fetch(`${API_URL}/api/db/jobs?user_email=${encodeURIComponent(email)}`)
       const apiJobs: Job[] = r.ok ? (await r.json()) : []
-      const raw = localStorage.getItem('boat_buddy_repair_log')
+      const raw = localStorage.getItem(userKey('boat_buddy_repair_log'))
       const localJobs: Job[] = raw ? JSON.parse(raw).map((j: {id:string;symptom:string;diagnosis:string;date:number;status?:string}) => ({
         ...j, status: j.status || 'open', created_at: new Date(j.date || Date.now()).toISOString()
       })) : []
@@ -72,7 +72,7 @@ export default function ServicePage() {
       merged.sort((a: Job, b: Job) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       setJobs(merged)
     } catch {
-      const raw = localStorage.getItem('boat_buddy_repair_log')
+      const raw = localStorage.getItem(userKey('boat_buddy_repair_log'))
       if (raw) setJobs(JSON.parse(raw).map((j: {id:string;symptom:string;diagnosis:string;date:number}) => ({...j, status: j.status||'open', created_at: new Date(j.date).toISOString()})))
     } finally { setLoading(false) }
   }
@@ -93,10 +93,10 @@ export default function ServicePage() {
       await fetch(`${API_URL}/api/db/jobs/${id}`, { method: 'DELETE' })
     } catch {}
     // Remove from localStorage too
-    const raw = localStorage.getItem('boat_buddy_repair_log')
+    const raw = localStorage.getItem(userKey('boat_buddy_repair_log'))
     if (raw) {
       const updated = JSON.parse(raw).filter((j: {id: string}) => j.id !== id)
-      localStorage.setItem('boat_buddy_repair_log', JSON.stringify(updated))
+      localStorage.setItem(userKey('boat_buddy_repair_log'), JSON.stringify(updated))
     }
     setJobs(prev => prev.filter(j => j.id !== id))
     setExpanded(null)
@@ -110,10 +110,10 @@ export default function ServicePage() {
       })
     } catch {}
     // Update localStorage too
-    const raw = localStorage.getItem('boat_buddy_repair_log')
+    const raw = localStorage.getItem(userKey('boat_buddy_repair_log'))
     if (raw) {
       const updated = JSON.parse(raw).map((j: {id: string}) => j.id === id ? { ...j, vessel_id: vesselId } : j)
-      localStorage.setItem('boat_buddy_repair_log', JSON.stringify(updated))
+      localStorage.setItem(userKey('boat_buddy_repair_log'), JSON.stringify(updated))
     }
     setJobs(prev => prev.map(j => j.id === id ? { ...j, vessel_id: vesselId } : j))
   }
@@ -307,10 +307,10 @@ export default function ServicePage() {
                       })
                     } catch {}
                     // Also save to localStorage
-                    const raw = localStorage.getItem('boat_buddy_repair_log')
+                    const raw = localStorage.getItem(userKey('boat_buddy_repair_log'))
                     const log = raw ? JSON.parse(raw) : []
                     log.unshift({ ...entry, date: Date.now(), vessel: '' })
-                    localStorage.setItem('boat_buddy_repair_log', JSON.stringify(log.slice(0, 100)))
+                    localStorage.setItem(userKey('boat_buddy_repair_log'), JSON.stringify(log.slice(0, 100)))
                     setJobs(prev => [entry as Job, ...prev])
                     setShowAddJob(false)
                   } catch {

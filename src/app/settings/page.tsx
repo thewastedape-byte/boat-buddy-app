@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { isLoggedIn, getAuth, logout, changePassword } from '@/lib/auth'
+import { isLoggedIn, getAuth, logout, changePassword, userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 
@@ -31,19 +31,19 @@ export default function SettingsPage() {
     }
     const a = getAuth()
     setAuth(a)
-    setNotifications(localStorage.getItem('bb_notifications') === 'true')
-    setLanguage(localStorage.getItem('bb_language') || 'en')
-    setBizName(localStorage.getItem('bb_biz_name') || '')
-    setBizPhone(localStorage.getItem('bb_biz_phone') || '')
-    setBizAddress(localStorage.getItem('bb_biz_address') || '')
-    setBizLogo(localStorage.getItem('bb_biz_logo') || '')
+    setNotifications(localStorage.getItem(userKey('bb_notifications')) === 'true')
+    setLanguage(localStorage.getItem(userKey('bb_language')) || 'en')
+    setBizName(localStorage.getItem(userKey('bb_biz_name')) || '')
+    setBizPhone(localStorage.getItem(userKey('bb_biz_phone')) || '')
+    setBizAddress(localStorage.getItem(userKey('bb_biz_address')) || '')
+    setBizLogo(localStorage.getItem(userKey('bb_biz_logo')) || '')
   }, [router])
 
   const saveBizProfile = () => {
-    localStorage.setItem('bb_biz_name', bizName)
-    localStorage.setItem('bb_biz_phone', bizPhone)
-    localStorage.setItem('bb_biz_address', bizAddress)
-    if (bizLogo) localStorage.setItem('bb_biz_logo', bizLogo)
+    localStorage.setItem(userKey('bb_biz_name'), bizName)
+    localStorage.setItem(userKey('bb_biz_phone'), bizPhone)
+    localStorage.setItem(userKey('bb_biz_address'), bizAddress)
+    if (bizLogo) localStorage.setItem(userKey('bb_biz_logo'), bizLogo)
     setBizSaved(true)
     setTimeout(() => setBizSaved(false), 2000)
   }
@@ -56,7 +56,7 @@ export default function SettingsPage() {
     reader.onload = (ev) => {
       const dataUrl = ev.target?.result as string
       setBizLogo(dataUrl)
-      localStorage.setItem('bb_biz_logo', dataUrl)
+      localStorage.setItem(userKey('bb_biz_logo'), dataUrl)
     }
     reader.readAsDataURL(file)
   }
@@ -90,7 +90,7 @@ export default function SettingsPage() {
   const toggleNotifications = () => {
     const newVal = !notifications
     setNotifications(newVal)
-    localStorage.setItem('bb_notifications', String(newVal))
+    localStorage.setItem(userKey('bb_notifications'), String(newVal))
   }
 
   return (
@@ -142,7 +142,7 @@ export default function SettingsPage() {
                     📁 Upload
                     <input type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} />
                   </label>
-                  {bizLogo && <button onClick={() => { setBizLogo(''); localStorage.removeItem('bb_biz_logo') }}
+                  {bizLogo && <button onClick={() => { setBizLogo(''); localStorage.removeItem(userKey('bb_biz_logo')) }}
                     className="text-xs px-3 py-1 rounded-lg"
                     style={{ background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.5)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif' }}>Remove</button>}
                 </div>
@@ -215,7 +215,7 @@ export default function SettingsPage() {
               { code: 'nl', label: '🇳🇱 Nederlands' },
             ].map(lang => (
               <button key={lang.code}
-                onClick={() => { setLanguage(lang.code); localStorage.setItem('bb_language', lang.code); }}
+                onClick={() => { setLanguage(lang.code); localStorage.setItem(userKey('bb_language'), lang.code); }}
                 className="text-sm py-2 px-3 rounded-lg text-left transition-all"
                 style={{
                   background: language === lang.code ? '#C68B3A' : 'rgba(198,139,58,0.1)',

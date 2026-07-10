@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { isLoggedIn } from '@/lib/auth'
+import { isLoggedIn, userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 
@@ -21,12 +21,12 @@ export interface VesselProfile {
 }
 
 const VESSELS_KEY = 'boat_buddy_vessels'
-const ACTIVE_VESSEL_KEY = 'boat_buddy_vessel' // keep this key for backward compat with chat/log
+const ACTIVE_VESSEL_KEY = 'boat_buddy_vessel'
 
 export function getVesselProfile(): VesselProfile | null {
   if (typeof window === 'undefined') return null
   try {
-    const raw = localStorage.getItem(ACTIVE_VESSEL_KEY)
+    const raw = localStorage.getItem(userKey(ACTIVE_VESSEL_KEY))
     return raw ? JSON.parse(raw) : null
   } catch { return null }
 }
@@ -34,17 +34,17 @@ export function getVesselProfile(): VesselProfile | null {
 export function getAllVessels(): VesselProfile[] {
   if (typeof window === 'undefined') return []
   try {
-    const raw = localStorage.getItem(VESSELS_KEY)
+    const raw = localStorage.getItem(userKey(VESSELS_KEY))
     return raw ? JSON.parse(raw) : []
   } catch { return [] }
 }
 
 export function saveAllVessels(vessels: VesselProfile[]) {
-  localStorage.setItem(VESSELS_KEY, JSON.stringify(vessels))
+  localStorage.setItem(userKey(VESSELS_KEY), JSON.stringify(vessels))
 }
 
 export function setActiveVessel(vessel: VesselProfile) {
-  localStorage.setItem(ACTIVE_VESSEL_KEY, JSON.stringify(vessel))
+  localStorage.setItem(userKey(ACTIVE_VESSEL_KEY), JSON.stringify(vessel))
 }
 
 function generateId() {
@@ -77,7 +77,7 @@ export default function VesselPage() {
     // Migrate old single vessel if exists
     if (all.length === 0) {
       try {
-        const old = localStorage.getItem(ACTIVE_VESSEL_KEY)
+        const old = localStorage.getItem(userKey(ACTIVE_VESSEL_KEY))
         if (old) {
           const parsed = JSON.parse(old)
           if (parsed.name && !parsed.id) {
@@ -170,7 +170,7 @@ export default function VesselPage() {
         setActiveVessel(updated[0])
       } else {
         setActiveId(null)
-        localStorage.removeItem(ACTIVE_VESSEL_KEY)
+        localStorage.removeItem(userKey(ACTIVE_VESSEL_KEY))
       }
     }
   }

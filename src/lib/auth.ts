@@ -110,18 +110,33 @@ export function hasAcceptedTerms(): boolean {
 }
 
 export function getOrCreateSessionId(): string {
-  let sid = localStorage.getItem(SESSION_KEY)
+  let sid = localStorage.getItem(userKey(SESSION_KEY))
   if (!sid) {
     sid = generateSessionId()
-    localStorage.setItem(SESSION_KEY, sid)
+    localStorage.setItem(userKey(SESSION_KEY), sid)
   }
   return sid
 }
 
 export function newSession(): string {
   const sid = generateSessionId()
-  localStorage.setItem(SESSION_KEY, sid)
+  localStorage.setItem(userKey(SESSION_KEY), sid)
   return sid
+}
+
+// Returns a localStorage key scoped to the currently logged-in user
+export function userKey(key: string): string {
+  if (typeof window === 'undefined') return key
+  try {
+    const raw = localStorage.getItem(AUTH_KEY)
+    if (!raw) return key
+    const auth = JSON.parse(raw)
+    const email = auth?.email?.toLowerCase().trim().replace(/[^a-z0-9@.]/g, '_')
+    if (!email) return key
+    return `${key}__${email}`
+  } catch {
+    return key
+  }
 }
 
 export function changePassword(email: string, currentPassword: string, newPassword: string): { success: boolean; error?: string } {

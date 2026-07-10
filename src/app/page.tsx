@@ -1,7 +1,7 @@
-﻿'use client'
+'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { isLoggedIn, getAuth, hasAcceptedTerms, getOrCreateSessionId, newSession, updateAuthSubscription } from '@/lib/auth'
+import { isLoggedIn, getAuth, hasAcceptedTerms, getOrCreateSessionId, newSession, updateAuthSubscription, userKey } from '@/lib/auth'
 import { findDiagram } from '@/lib/diagrams'
 import NavBar from '@/components/NavBar'
 import TCModal from '@/components/TCModal'
@@ -69,7 +69,7 @@ export default function ChatPage() {
     }
     // Check for service reminders
     try {
-      const raw = localStorage.getItem('boat_buddy_repair_log')
+      const raw = localStorage.getItem(userKey('boat_buddy_repair_log'))
       if (raw) {
         const log = JSON.parse(raw)
         const now = Date.now()
@@ -82,7 +82,7 @@ export default function ChatPage() {
         if (due.length > 0) {
           const first = due[0]
           const dueDate = new Date(first.nextServiceDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-          setServiceAlert(`🔔 Service due ${dueDate}: ${first.nextServiceNote || 'Scheduled service'} — ${first.vessel}`)
+          setServiceAlert(`?? Service due ${dueDate}: ${first.nextServiceNote || 'Scheduled service'} � ${first.vessel}`)
         }
       }
     } catch {}
@@ -90,16 +90,16 @@ export default function ChatPage() {
 
   const loadHistory = (sid: string) => {
     try {
-      const raw = localStorage.getItem('chat_' + sid)
+      const raw = localStorage.getItem(userKey('chat_' + sid))
       if (raw) setMessages(JSON.parse(raw))
     } catch { /* ignore */ }
   }
 
   const saveHistory = useCallback((msgs: Message[], sid: string) => {
     try {
-      localStorage.setItem('chat_' + sid, JSON.stringify(msgs.slice(-100)))
+      localStorage.setItem(userKey('chat_' + sid), JSON.stringify(msgs.slice(-100)))
       // Save to history index
-      const histKey = 'chat_history_index'
+      const histKey = userKey('chat_history_index')
       const raw = localStorage.getItem(histKey)
       const index: Array<{ sid: string; title: string; time: number }> = raw ? JSON.parse(raw) : []
       const existing = index.findIndex(i => i.sid === sid)
@@ -136,12 +136,12 @@ export default function ChatPage() {
   const auth = isAdmin ? { ...rawAuth, subscription: 'admiral' } : rawAuth // LIVE: admin gets Admiral tier
     const currentSubscription = auth?.subscription
     const isPaid = currentSubscription === 'first_mate' || currentSubscription === 'captain' || currentSubscription === 'admiral' || currentSubscription === 'team_member'
-    // Free tier gate handled server-side — see /api/chat route
+    // Free tier gate handled server-side � see /api/chat route
 
     const userMsg: Message = {
       id: Date.now().toString(),
       role: 'user',
-      content: text || '📷 Image sent',
+      content: text || '?? Image sent',
       imageUrl: selectedImage || undefined,
       timestamp: Date.now(),
     }
@@ -156,7 +156,7 @@ export default function ChatPage() {
     try {
       let aiContent = ''
 
-      // Check for diagram match — reset first, then set if found
+      // Check for diagram match � reset first, then set if found
       setInlineDiagram(null)
       const matchedDiagram = findDiagram(text)
       if (matchedDiagram) {
@@ -164,7 +164,7 @@ export default function ChatPage() {
       }
 
       if (fileToSend) {
-        // Image analysis — convert to base64 and send as JSON
+        // Image analysis � convert to base64 and send as JSON
         const toBase64 = (file: File): Promise<string> => new Promise((resolve, reject) => {
           const reader = new FileReader()
           reader.onload = () => resolve((reader.result as string).split(',')[1])
@@ -193,7 +193,7 @@ export default function ChatPage() {
         // Get vessel engine for context
         let vesselEngine = ''
         try {
-          const vp = localStorage.getItem('boat_buddy_vessel')
+          const vp = localStorage.getItem(userKey('boat_buddy_vessel'))
           if (vp) {
             const v = JSON.parse(vp)
             vesselEngine = `${v.engineMake || ''} ${v.engineModel || ''}`.trim()
@@ -236,12 +236,12 @@ export default function ChatPage() {
       setMessages(updated)
       saveHistory(updated, sessionId)
 
-      // Log is manual only — user taps the log icon on a message to save it
+      // Log is manual only � user taps the log icon on a message to save it
     } catch {
       const errMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'Connection error — please check your internet and try again.',
+        content: 'Connection error � please check your internet and try again.',
         timestamp: Date.now(),
       }
       const updated = [...newMessages, errMsg]
@@ -259,7 +259,7 @@ export default function ChatPage() {
     const userMsg: Message = {
       id: Date.now().toString(),
       role: 'user',
-      content: '📖 ' + text,
+      content: '?? ' + text,
       timestamp: Date.now(),
     }
     const newMessages = [...messages, userMsg]
@@ -268,7 +268,7 @@ export default function ChatPage() {
     setLoading(true)
 
     try {
-      // Check for diagram match in manual mode — reset first
+      // Check for diagram match in manual mode � reset first
       setInlineDiagram(null)
       const manualDiagram = findDiagram(text)
       if (manualDiagram) {
@@ -277,7 +277,7 @@ export default function ChatPage() {
 
       let vesselEngine = ''
       try {
-        const vp = localStorage.getItem('boat_buddy_vessel')
+        const vp = localStorage.getItem(userKey('boat_buddy_vessel'))
         if (vp) {
           const v = JSON.parse(vp)
           vesselEngine = `${v.engineMake || ''} ${v.engineModel || ''}`.trim()
@@ -294,7 +294,7 @@ export default function ChatPage() {
       if (res.ok) {
         const data = await res.json()
         const sourceList = data.sources && data.sources.length > 0
-          ? '\n\nSOURCES:' + data.sources.map((s: string) => '\n• ' + s.replace(/[-_]/g, ' ').replace(/\.(txt|pdf)$/i, '')).join('')
+          ? '\n\nSOURCES:' + data.sources.map((s: string) => '\n� ' + s.replace(/[-_]/g, ' ').replace(/\.(txt|pdf)$/i, '')).join('')
           : ''
         const cleanAnswer = (data.answer || '')
           .replace(/\*\*([^*]+)\*\*/g, '$1')
@@ -323,7 +323,7 @@ export default function ChatPage() {
       const errMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'Manual search error — please check your connection.',
+        content: 'Manual search error � please check your connection.',
         timestamp: Date.now(),
       }
       const updated = [...newMessages, errMsg]
@@ -390,11 +390,11 @@ export default function ChatPage() {
           const manuals: Array<{label: string, url: string}> = JSON.parse(line.replace('MANUAL_LINKS:', ''))
           result.push(
             <div key={i} style={{ marginTop: '12px', padding: '10px 12px', background: 'rgba(198,139,58,0.1)', border: '1px solid rgba(198,139,58,0.35)', borderRadius: '10px' }}>
-              <p style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: '12px', marginBottom: '6px', fontWeight: 'bold' }}>📚 Service Manuals</p>
+              <p style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: '12px', marginBottom: '6px', fontWeight: 'bold' }}>?? Service Manuals</p>
               {manuals.map((m, mi) => (
                 <a key={mi} href={m.url} target="_blank" rel="noopener noreferrer"
                   style={{ display: 'block', color: '#C68B3A', fontSize: '13px', textDecoration: 'underline', fontFamily: 'Georgia, serif', marginBottom: '4px' }}>
-                  🔗 {m.label}
+                  ?? {m.label}
                 </a>
               ))}
             </div>
@@ -411,14 +411,14 @@ export default function ChatPage() {
         result.push(
           <a key={i} href={url} target="_blank" rel="noopener noreferrer"
             style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginTop: '8px', marginBottom: '4px', padding: '6px 12px', background: 'rgba(198,139,58,0.2)', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '8px', color: '#C68B3A', fontSize: '13px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
-            🔍 See images: {partName}
+            ?? See images: {partName}
           </a>
         )
         return
       }
 
       // Detect diagram lines: contain arrows, box chars, or multiple special chars
-      const isDiagramLine = /[─│┌┐└┘├┤┬┴┼→←↑↓↔⇒]/.test(line) || 
+      const isDiagramLine = /[-�+++++�--+??????]/.test(line) || 
         (line.includes('-->') && line.length > 5) ||
         (line.includes('->') && line.includes('|'))
 
@@ -461,16 +461,16 @@ export default function ChatPage() {
           {subscription !== 'first_mate' && (
             <a href="/upgrade" className="text-xs px-3 py-1.5 rounded-lg"
               style={{ background: 'rgba(0,0,0,0.45)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
-              ⭐ Upgrade
+              ? Upgrade
             </a>
           )}
           <a href="/diagrams" className="text-xs px-3 py-1.5 rounded-lg"
             style={{ background: 'rgba(0,0,0,0.45)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
-            📐
+            ??
           </a>
           <a href="/help" className="text-xs px-3 py-1.5 rounded-lg"
             style={{ background: 'rgba(0,0,0,0.45)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
-            ❓ Help
+            ? Help
           </a>
           <button onClick={handleNewChat} className="text-xs px-3 py-1.5 rounded-lg"
             style={{ background: 'rgba(0,0,0,0.45)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)', fontFamily: 'Georgia, serif' }}>
@@ -489,7 +489,7 @@ export default function ChatPage() {
               style={{ background: 'rgba(198,139,58,0.3)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
               View
             </a>
-            <button onClick={() => setServiceAlert(null)} className="text-xs" style={{ color: 'rgba(245,240,232,0.5)', background: 'none', border: 'none', cursor: 'pointer' }}>✕</button>
+            <button onClick={() => setServiceAlert(null)} className="text-xs" style={{ color: 'rgba(245,240,232,0.5)', background: 'none', border: 'none', cursor: 'pointer' }}>?</button>
           </div>
         </div>
       )}
@@ -498,13 +498,13 @@ export default function ChatPage() {
       {showUpgradeBanner && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
           <div style={{ background: '#1a0e05', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '16px', padding: '32px 24px', maxWidth: '380px', width: '100%', textAlign: 'center' }}>
-            <div style={{ fontSize: '48px', marginBottom: '12px' }}>⚓</div>
+            <div style={{ fontSize: '48px', marginBottom: '12px' }}>?</div>
             <h2 style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: '22px', marginBottom: '8px' }}>You&apos;ve used your free question</h2>
             <p style={{ color: 'rgba(245,240,232,0.8)', fontSize: '14px', lineHeight: '1.6', marginBottom: '24px' }}>
               Upgrade to <strong style={{ color: '#C68B3A' }}>First Mate</strong> for unlimited AI questions, photo diagnosis, service manual search, repair logs, and more.
             </p>
             <div style={{ background: 'rgba(198,139,58,0.1)', border: '1px solid rgba(198,139,58,0.3)', borderRadius: '10px', padding: '16px', marginBottom: '20px' }}>
-              <p style={{ color: '#C68B3A', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>🎉 Introductory Price</p>
+              <p style={{ color: '#C68B3A', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>?? Introductory Price</p>
               <p style={{ color: 'rgba(245,240,232,0.7)', fontSize: '12px' }}>50% off for your first 2 months. Cancel anytime.</p>
               <p style={{ color: '#F5F0E8', fontWeight: 'bold', fontSize: '20px', marginTop: '8px' }}>
                 $4.99<span style={{ fontSize: '13px', color: 'rgba(245,240,232,0.5)', fontWeight: 'normal' }}>/mo</span>{' '}
@@ -513,7 +513,7 @@ export default function ChatPage() {
             </div>
             <a href="/upgrade"
               style={{ display: 'block', background: '#C68B3A', color: '#3D1C02', fontFamily: 'Georgia, serif', fontWeight: 'bold', fontSize: '16px', padding: '14px', borderRadius: '10px', textDecoration: 'none', marginBottom: '12px' }}>
-              ⚓ Upgrade — $4.99/mo for 2 months
+              ? Upgrade � $4.99/mo for 2 months
             </a>
             <button onClick={() => setShowUpgradeBanner(false)}
               style={{ background: 'none', border: 'none', color: 'rgba(245,240,232,0.4)', fontSize: '12px', cursor: 'pointer' }}>
@@ -527,7 +527,7 @@ export default function ChatPage() {
       <main className="flex-1 overflow-y-auto px-4 py-4 pb-32" style={{ overflowX: 'hidden' }}>
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full min-h-64 text-center py-12">
-            <div className="text-5xl mb-4">⚓</div>
+            <div className="text-5xl mb-4">?</div>
             <h2 className="text-lg font-bold mb-2" style={{ color: '#1A0A00', fontFamily: 'Georgia, serif' }}>
               Ahoy, Captain!
             </h2>
@@ -575,7 +575,7 @@ export default function ChatPage() {
                   <div className={msg.role === 'user' ? 'bubble-user' : 'bubble-ai'}>
                     {msg.role === 'assistant' && (
                       <span className="text-xs block mb-1" style={{ color: msg.content.startsWith('FROM_MANUAL:') ? '#4A9E6B' : '#C68B3A', fontFamily: 'Georgia, serif' }}>
-                        {msg.content.startsWith('FROM_MANUAL:') ? '📖 From Manual' : '⚓ Boat Buddy'}
+                        {msg.content.startsWith('FROM_MANUAL:') ? '?? From Manual' : '? Boat Buddy'}
                       </span>
                     )}
                     {msg.role === 'assistant' ? <div>{renderMessage(msg.content.startsWith('FROM_MANUAL:') ? msg.content.slice(12) : msg.content)}</div> : msg.content}
@@ -584,9 +584,9 @@ export default function ChatPage() {
                     <button
                       onClick={() => {
                         try {
-                          const vesselRaw = localStorage.getItem('boat_buddy_vessel')
+                          const vesselRaw = localStorage.getItem(userKey('boat_buddy_vessel'))
                           const vessel = vesselRaw ? JSON.parse(vesselRaw) : null
-                          const logRaw = localStorage.getItem('boat_buddy_repair_log')
+                          const logRaw = localStorage.getItem(userKey('boat_buddy_repair_log'))
                           const repairLog = logRaw ? JSON.parse(logRaw) : []
                           // Find the user message before this one
                           const idx = messages.findIndex(m => m.id === msg.id)
@@ -601,18 +601,18 @@ export default function ChatPage() {
                             sessionId,
                           }
                           repairLog.unshift(entry)
-                          localStorage.setItem('boat_buddy_repair_log', JSON.stringify(repairLog.slice(0, 100)))
+                          localStorage.setItem(userKey('boat_buddy_repair_log'), JSON.stringify(repairLog.slice(0, 100)))
                           // Also sync to Supabase
                           try {
                             const rawAuth2 = JSON.parse(localStorage.getItem('boat_buddy_auth') || '{}')
                             fetch(`${API_URL}/api/db/jobs`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({...entry, user_id: rawAuth2.email}) }).catch(() => {})
                           } catch {}
-                          alert('Saved to Repair Log ✓')
+                          alert('Saved to Repair Log ?')
                         } catch { alert('Could not save to log') }
                       }}
                       className="text-xs mt-1 px-2 py-0.5 rounded-lg"
                       style={{ background: 'rgba(198,139,58,0.15)', color: 'rgba(198,139,58,0.7)', border: '1px solid rgba(198,139,58,0.25)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
-                      🗒️ Save to Log
+                      ??? Save to Log
                     </button>
                   )}
                 </div>
@@ -624,23 +624,23 @@ export default function ChatPage() {
         {loading && (
           <div className="flex justify-start mb-4">
             <div className="bubble-ai">
-              <span className="text-xs block mb-1" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>⚓ Boat Buddy</span>
+              <span className="text-xs block mb-1" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>? Boat Buddy</span>
               <span className="animate-pulse">{input.toLowerCase().includes('diagram') || input.toLowerCase().includes('schematic') || input.toLowerCase().includes('draw') ? 'Generating diagram...' : 'Analyzing...'}</span>
             </div>
           </div>
         )}
-        {/* Inline diagram — compact banner, tap to expand */}
+        {/* Inline diagram � compact banner, tap to expand */}
         {inlineDiagram && (
           <div ref={diagramRef}>
           <>
             <div className="mb-3" style={{ background: 'rgba(20,8,2,0.92)', border: '1px solid rgba(198,139,58,0.4)', borderRadius: '10px', overflow: 'hidden' }}>
               <div className="flex items-center justify-between px-3 py-2" style={{ borderBottom: '1px solid rgba(198,139,58,0.2)' }}>
                 <p className="text-xs font-bold" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>
-                  📐 {inlineDiagram.title}
+                  ?? {inlineDiagram.title}
                 </p>
                 <div className="flex items-center gap-2">
-                  <a href="/diagrams" className="text-xs" style={{ color: 'rgba(198,139,58,0.6)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>All ↗</a>
-                  <button onClick={() => setInlineDiagram(null)} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px' }}>✕</button>
+                  <a href="/diagrams" className="text-xs" style={{ color: 'rgba(198,139,58,0.6)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>All ?</a>
+                  <button onClick={() => setInlineDiagram(null)} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px' }}>?</button>
                 </div>
               </div>
               <div style={{ background: '#fff', padding: '6px' }}>
@@ -648,7 +648,7 @@ export default function ChatPage() {
                 <img src={inlineDiagram.svgPath} alt={inlineDiagram.title} className="w-full" style={{ maxHeight: '180px', objectFit: 'contain', display: 'block' }} />
               </div>
               <div className="px-3 py-1.5">
-                <a href={inlineDiagram.svgPath} target="_blank" rel="noopener noreferrer" className="text-xs" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>Tap to view full size ↗</a>
+                <a href={inlineDiagram.svgPath} target="_blank" rel="noopener noreferrer" className="text-xs" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>Tap to view full size ?</a>
               </div>
             </div>
           </>
@@ -669,7 +669,7 @@ export default function ChatPage() {
             <button onClick={() => { setSelectedImage(null); setSelectedFile(null) }}
               className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
               style={{ background: '#8B1A1A', color: '#F5F0E8' }}>
-              ✕
+              ?
             </button>
           </div>
         </div>
@@ -683,13 +683,13 @@ export default function ChatPage() {
           <button onClick={() => cameraInputRef.current?.click()}
             className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center"
             style={{ background: 'rgba(198,139,58,0.2)', border: '1px solid rgba(198,139,58,0.4)', color: '#C68B3A' }}>
-            📷
+            ??
           </button>
           {/* Gallery */}
           <button onClick={() => fileInputRef.current?.click()}
             className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center"
             style={{ background: 'rgba(198,139,58,0.2)', border: '1px solid rgba(198,139,58,0.4)', color: '#C68B3A' }}>
-            🖼️
+            ???
           </button>
 
           {/* Text input */}
@@ -714,7 +714,7 @@ export default function ChatPage() {
               border: manualMode ? '1px solid rgba(74,158,107,0.7)' : '1px solid rgba(198,139,58,0.4)',
               color: manualMode ? '#4A9E6B' : '#C68B3A',
             }}>
-            📖
+            ??
           </button>
 
           {/* Send */}
@@ -725,7 +725,7 @@ export default function ChatPage() {
               color: (loading || (!input.trim() && !selectedFile)) ? 'rgba(198,139,58,0.4)' : '#3D1C02',
               border: '1px solid rgba(198,139,58,0.4)',
             }}>
-            ➤
+            ?
           </button>
         </div>
       </div>

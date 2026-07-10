@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { isLoggedIn } from '@/lib/auth'
+import { isLoggedIn, userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 
@@ -26,7 +26,7 @@ export default function HistoryPage() {
 
   const loadHistory = () => {
     try {
-      const raw = localStorage.getItem('chat_history_index')
+      const raw = localStorage.getItem(userKey('chat_history_index'))
       if (raw) setHistory(JSON.parse(raw))
     } catch { /* ignore */ }
   }
@@ -34,14 +34,14 @@ export default function HistoryPage() {
   const deleteSession = (sid: string) => {
     const updated = history.filter(h => h.sid !== sid)
     setHistory(updated)
-    localStorage.setItem('chat_history_index', JSON.stringify(updated))
-    localStorage.removeItem('chat_' + sid)
+    localStorage.setItem(userKey('chat_history_index'), JSON.stringify(updated))
+    localStorage.removeItem(userKey('chat_' + sid))
   }
 
   const clearAll = () => {
     if (!confirm('Clear all chat history?')) return
-    history.forEach(h => localStorage.removeItem('chat_' + h.sid))
-    localStorage.removeItem('chat_history_index')
+    history.forEach(h => localStorage.removeItem(userKey('chat_' + h.sid)))
+    localStorage.removeItem(userKey('chat_history_index'))
     setHistory([])
   }
 
@@ -57,7 +57,7 @@ export default function HistoryPage() {
   }
 
   const openSession = (sid: string) => {
-    localStorage.setItem('boat_buddy_session_id', sid)
+    localStorage.setItem(userKey('boat_buddy_session_id'), sid)
     router.push('/')
   }
 
