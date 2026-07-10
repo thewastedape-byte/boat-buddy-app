@@ -207,7 +207,7 @@ export default function ServicePage() {
                                 style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(198,139,58,0.3)', color: '#F5F0E8', fontFamily: 'Georgia, serif', outline: 'none' }}
                               >
                                 <option value="">-- No vessel --</option>
-                                {vessels.map(v => <option key={v.id} value={v.id} style={{ background: '#1a0a02' }}>{v.name}{v.year ?  () : ''''}{v.make ?  -  : ''''}</option>)}
+                                {vessels.map(v => <option key={v.id} value={v.id} style={{ background: '#1a0a02' }}>{v.name + (v.year ? " (" + v.year + ")" : "") + (v.make ? " - " + v.make : "")}</option>)}
                               </select>
                             </div>
                           )}
