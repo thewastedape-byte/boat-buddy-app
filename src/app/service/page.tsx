@@ -43,13 +43,18 @@ export default function ServicePage() {
   const [expanded, setExpanded] = useState<string | null>(null)
   const [filter, setFilter] = useState('all')
   const [showAddJob, setShowAddJob] = useState(false)
-  const [addJobForm, setAddJobForm] = useState({ symptom: '', notes: '' })
+  const [addJobForm, setAddJobForm] = useState({ symptom: '', notes: '', vesselId: '' })
   const [addJobLoading, setAddJobLoading] = useState(false)
+  const [vessels, setVessels] = useState<{id:string;name:string;year?:string;make?:string}[]>([])
   const auth = getAuth()
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/login'); return }
     loadJobs()
+    try {
+      const vRaw = localStorage.getItem('boat_buddy_vessels')
+      if (vRaw) setVessels(JSON.parse(vRaw))
+    } catch {}
   }, [router])
 
   const loadJobs = async () => {
@@ -116,7 +121,7 @@ export default function ServicePage() {
       <header className="flex items-center justify-between px-4 py-3 sticky top-0 z-40"
         style={{ background: 'rgba(20,8,2,0.95)', borderBottom: '1px solid rgba(198,139,58,0.3)' }}>
         <Logo size="sm" />
-        <button onClick={() => { setAddJobForm({ symptom: '', notes: '' }); setShowAddJob(true) }}
+        <button onClick={() => { setAddJobForm({ symptom: '', notes: '', vesselId: '' }); setShowAddJob(true) }}
           className="text-xs px-3 py-1.5 rounded-lg"
           style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
           + New Job
@@ -163,7 +168,7 @@ export default function ServicePage() {
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-bold truncate" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>{job.symptom || 'No description'}</p>
                           <p className="text-xs mt-0.5" style={dimStyle}>
-                            {job.vessel?.name || 'Unknown vessel'} · {new Date(job.created_at).toLocaleDateString('en-US', {month:'short', day:'numeric'})}
+                            {job.vessel?.name || (job.vessel_id ? (vessels.find(v => v.id === job.vessel_id)?.name || 'Unknown vessel') : 'Unknown vessel')} · {new Date(job.created_at).toLocaleDateString('en-US', {month:'short', day:'numeric'})}
                           </p>
                         </div>
                         <span style={{ color: 'rgba(198,139,58,0.5)', fontSize: '12px' }}>{expanded === job.id ? '▲' : '▼'}</span>
@@ -212,6 +217,20 @@ export default function ServicePage() {
             </div>
             <div className="flex flex-col gap-3">
               <div>
+                {vessels.length > 0 && (
+                  <div className="mb-1">
+                    <label className="text-xs mb-1 block" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Vessel</label>
+                    <select
+                      value={addJobForm.vesselId}
+                      onChange={e => setAddJobForm(f => ({ ...f, vesselId: e.target.value }))}
+                      className="w-full px-3 py-2 rounded-lg text-sm"
+                      style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(198,139,58,0.3)', color: '#F5F0E8', fontFamily: 'Georgia, serif', outline: 'none' }}
+                    >
+                      <option value="">-- Select vessel --</option>
+                      {vessels.map(v => <option key={v.id} value={v.id} style={{ background: '#1a0a02' }}>{v.name}{v.year ? ` (${v.year})` : ''}{v.make ? ` - ${v.make}` : ''}</option>)}
+                    </select>
+                  </div>
+                )}
                 <label className="text-xs mb-1 block" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Issue / Symptom *</label>
                 <textarea
                   value={addJobForm.symptom}
@@ -246,6 +265,7 @@ export default function ServicePage() {
                       diagnosis: addJobForm.notes.trim(),
                       status: 'open',
                       user_id: email,
+                      vessel_id: addJobForm.vesselId || undefined,
                       created_at: new Date().toISOString(),
                       updated_at: new Date().toISOString(),
                     }
