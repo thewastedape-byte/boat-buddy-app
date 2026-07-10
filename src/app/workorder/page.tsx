@@ -74,6 +74,11 @@ function WorkOrderContent() {
               const prefilled = found.parts.map(p => ({ description: p, qty: '1', price: '' }))
               setParts([...prefilled, { description: '', qty: '1', price: '' }, { description: '', qty: '1', price: '' }])
             }
+            // Auto-select vessel matching this job
+            if (found.vessel_id) {
+              const matchedVessel = vessels.find(v => v.id === found.vessel_id)
+              if (matchedVessel) setVessel(matchedVessel)
+            }
           }
         }
       } catch {}
