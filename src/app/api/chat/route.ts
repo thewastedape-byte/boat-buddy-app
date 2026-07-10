@@ -13,19 +13,21 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { email } = body
 
-    // Gate all users - including pre-signup ghost users
-    if (email && SUPABASE_SERVICE_KEY && !ADMIN_EMAILS.includes(email)) {
+    // Gate and track all users
+    if (email && SUPABASE_SERVICE_KEY) {
       const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+      const isAdmin = ADMIN_EMAILS.includes(email.toLowerCase().trim())
+
       let { data: user } = await supabase
         .from('users')
         .select('subscription, last_free_question')
         .eq('email', email)
         .single()
 
-      // Ghost user (localStorage only, not in Supabase) — register them now and gate immediately
+      // Ghost user (localStorage only, not in Supabase) — register them now
       if (!user) {
         await supabase.from('users').upsert(
-          { email: email.toLowerCase().trim(), subscription: 'stow_away', created_at: new Date().toISOString() },
+          { email: email.toLowerCase().trim(), subscription: isAdmin ? 'admiral' : 'stow_away', created_at: new Date().toISOString() },
           { onConflict: 'email', ignoreDuplicates: true }
         )
         const { data: newUser } = await supabase
@@ -36,7 +38,8 @@ export async function POST(req: NextRequest) {
         user = newUser
       }
 
-      if (user && !PAID_TIERS.includes(user.subscription)) {
+      if (!isAdmin && user && !PAID_TIERS.includes(user.subscription)) {
+        // Rate limit free tier non-admins
         const lastQuestion = user.last_free_question ? new Date(user.last_free_question).getTime() : 0
         const now = Date.now()
         const elapsed = now - lastQuestion
@@ -52,13 +55,13 @@ export async function POST(req: NextRequest) {
             { status: 429 }
           )
         }
-
-        // Stamp last_free_question
-        await supabase
-          .from('users')
-          .update({ last_free_question: new Date().toISOString() })
-          .eq('email', email)
       }
+
+      // Stamp last_free_question for everyone (admins included)
+      await supabase
+        .from('users')
+        .update({ last_free_question: new Date().toISOString() })
+        .eq('email', email)
     }
 
     // Forward to backend
