@@ -40,7 +40,7 @@ const DEFAULT_ITEMS: MaintenanceItem[] = [
   { id: 'engine-belts', name: 'Engine Belts', icon: '🔧', category: 'Engine', intervalDays: 730, lastDoneDate: '', notes: '', enabled: true },
   { id: 'spark-plugs', name: 'Spark Plugs', icon: '⚡', category: 'Engine', intervalDays: 365, lastDoneDate: '', notes: '', enabled: true },
   { id: 'coolant', name: 'Coolant / Antifreeze', icon: '❄️', category: 'Cooling', intervalDays: 730, lastDoneDate: '', notes: '', enabled: true },
-  { id: 'bottom-paint', name: 'Bottom Paint', icon: '🪣', category: 'Hull', intervalDays: 365, lastDoneDate: '', notes: '', enabled: true },
+  { id: 'bottom-paint', name: 'Bottom Paint', icon: '🖌️', category: 'Hull', intervalDays: 365, lastDoneDate: '', notes: '', enabled: true },
   { id: 'fire-extinguisher', name: 'Fire Extinguisher', icon: '🔴', category: 'Safety', intervalDays: 365, lastDoneDate: '', notes: '', enabled: true },
   { id: 'life-jackets', name: 'Life Jackets', icon: '🦺', category: 'Safety', intervalDays: 365, lastDoneDate: '', notes: '', enabled: true },
   { id: 'epirb', name: 'EPIRB / Safety Gear', icon: '📡', category: 'Safety', intervalDays: 365, lastDoneDate: '', notes: '', enabled: true },
