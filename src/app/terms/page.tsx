@@ -6,7 +6,7 @@ export default function TermsPage() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="text-3xl mb-2">ΓÜô</div>
+          <div className="text-3xl mb-2">⚓</div>
           <h1 className="text-2xl font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
             Terms &amp; Conditions
           </h1>
@@ -89,8 +89,14 @@ export default function TermsPage() {
 
           <section className="mb-6">
             <h2 className="text-lg font-bold mb-3" style={{ color: '#C68B3A' }}>8. Contact</h2>
-            <p className="text-sm">
-              For questions about these Terms, please contact us through the App&apos;s support channel or visit our website.
+            <p className="text-sm mb-2">
+              For questions about these Terms, billing, or support, contact us at:
+            </p>
+            <a href="mailto:thewastedape@gmail.com" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: '14px' }}>
+              thewastedape@gmail.com
+            </a>
+            <p className="text-sm mt-2">
+              Or use the <a href="/contact" style={{ color: '#C68B3A' }}>Support &amp; Contact</a> page inside the App.
             </p>
           </section>
 
@@ -103,7 +109,7 @@ export default function TermsPage() {
 
         <div className="text-center mt-6">
           <Link href="/login" className="btn-primary inline-block">
-            ΓåÉ Back to App
+← Back to App
           </Link>
         </div>
       </div>

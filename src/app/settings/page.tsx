@@ -281,6 +281,14 @@ export default function SettingsPage() {
             <p className="text-sm" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Terms &amp; Conditions</p>
             <p style={{ color: 'rgba(198,139,58,0.7)' }}>→</p>
           </Link>
+          <Link href="/contact" className="flex items-center justify-between py-2 border-t"
+            style={{ borderColor: 'rgba(198,139,58,0.2)' }}>
+            <div>
+              <p className="text-sm" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>✉️ Support &amp; Contact</p>
+              <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>Questions, bugs, feedback</p>
+            </div>
+            <p style={{ color: 'rgba(198,139,58,0.7)' }}>→</p>
+          </Link>
         </div>
 
         {/* Captain/Admiral Team Tools */}
