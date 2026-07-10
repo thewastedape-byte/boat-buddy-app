@@ -82,6 +82,21 @@ export default function ServicePage() {
     setJobs(prev => prev.map(j => j.id === id ? {...j, status: newStatus} : j))
   }
 
+  const deleteJob = async (id: string) => {
+    if (!confirm('Delete this job?')) return
+    try {
+      await fetch(\/api/db/jobs/\, { method: 'DELETE' })
+    } catch {}
+    // Remove from localStorage too
+    const raw = localStorage.getItem('boat_buddy_repair_log')
+    if (raw) {
+      const updated = JSON.parse(raw).filter((j: {id: string}) => j.id !== id)
+      localStorage.setItem('boat_buddy_repair_log', JSON.stringify(updated))
+    }
+    setJobs(prev => prev.filter(j => j.id !== id))
+    setExpanded(null)
+  }
+
   const filteredJobs = jobs.filter(j => {
     if (filter === 'open') return j.status === 'open'
     if (filter === 'mine') return j.assigned_to === auth?.email || j.user_id === auth?.email
