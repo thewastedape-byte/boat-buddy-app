@@ -1,7 +1,22 @@
-'use client'
+use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import NavBar from '@/components/NavBar'
+
+interface VesselProfile {
+  id: string
+  name: string
+  year?: string
+  make?: string
+  model?: string
+  type?: string
+  homePort?: string
+  engineMake?: string
+  engineModel?: string
+  engineSerial?: string
+  engineHours?: string
+  documentNumber?: string
+}
 
 interface MaintenanceItem {
   id: string
@@ -63,7 +78,35 @@ function isOverdue(item: MaintenanceItem): boolean {
   return item.intervalDays - daysDiff(item.lastDoneDate) < 0
 }
 
+function loadVesselItems(vesselId: string): MaintenanceItem[] {
+  if (typeof window === 'undefined') return DEFAULT_ITEMS
+  const key = `boat_buddy_maintenance_${vesselId}`
+  const stored = localStorage.getItem(key)
+  if (stored) {
+    try { return JSON.parse(stored) } catch { /* fall through */ }
+  }
+  return DEFAULT_ITEMS.map(i => ({ ...i }))
+}
+
+function saveVesselItems(vesselId: string, items: MaintenanceItem[]) {
+  localStorage.setItem(`boat_buddy_maintenance_${vesselId}`, JSON.stringify(items))
+}
+
+function loadVesselHours(vessel: VesselProfile): string {
+  if (typeof window === 'undefined') return ''
+  const stored = localStorage.getItem(`bb_engine_hours_${vessel.id}`)
+  if (stored !== null) return stored
+  return vessel.engineHours || ''
+}
+
+function getVesselOverdueCount(vesselId: string): number {
+  const items = loadVesselItems(vesselId)
+  return items.filter(i => i.enabled && isOverdue(i)).length
+}
+
 export default function MaintenancePage() {
+  const [vessels, setVessels] = useState<VesselProfile[]>([])
+  const [selectedVesselId, setSelectedVesselId] = useState<string>('')
   const [items, setItems] = useState<MaintenanceItem[]>([])
   const [engineHours, setEngineHours] = useState<string>('')
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -72,25 +115,41 @@ export default function MaintenancePage() {
   const [newItem, setNewItem] = useState<Partial<MaintenanceItem>>({ icon: '🔧', intervalDays: 365, notes: '', enabled: true, custom: true })
   const [mounted, setMounted] = useState(false)
 
+  // Load vessels on mount
   useEffect(() => {
     setMounted(true)
-    const stored = localStorage.getItem('boat_buddy_maintenance')
-    if (stored) {
-      try {
-        setItems(JSON.parse(stored))
-      } catch {
-        setItems(DEFAULT_ITEMS)
-      }
-    } else {
-      setItems(DEFAULT_ITEMS)
+    const raw = localStorage.getItem('boat_buddy_vessels')
+    let vs: VesselProfile[] = []
+    if (raw) {
+      try { vs = JSON.parse(raw) } catch { /* ignore */ }
     }
-    const hrs = localStorage.getItem('bb_engine_hours')
-    if (hrs) setEngineHours(hrs)
+    setVessels(vs)
+
+    if (vs.length > 0) {
+      const remembered = localStorage.getItem('bb_maint_selected_vessel')
+      const initial = (remembered && vs.find(v => v.id === remembered)) ? remembered : vs[0].id
+      setSelectedVesselId(initial)
+      setItems(loadVesselItems(initial))
+      const firstVessel = vs.find(v => v.id === initial) || vs[0]
+      setEngineHours(loadVesselHours(firstVessel))
+    }
   }, [])
+
+  // When vessel selection changes, reload data
+  function selectVessel(vesselId: string) {
+    setSelectedVesselId(vesselId)
+    localStorage.setItem('bb_maint_selected_vessel', vesselId)
+    setItems(loadVesselItems(vesselId))
+    setEditingId(null)
+    setEditForm({})
+    setShowAddForm(false)
+    const v = vessels.find(v => v.id === vesselId)
+    if (v) setEngineHours(loadVesselHours(v))
+  }
 
   function saveItems(updated: MaintenanceItem[]) {
     setItems(updated)
-    localStorage.setItem('boat_buddy_maintenance', JSON.stringify(updated))
+    if (selectedVesselId) saveVesselItems(selectedVesselId, updated)
   }
 
   function markDone(id: string) {
@@ -133,13 +192,37 @@ export default function MaintenancePage() {
 
   function saveHours(val: string) {
     setEngineHours(val)
-    localStorage.setItem('bb_engine_hours', val)
+    if (selectedVesselId) localStorage.setItem(`bb_engine_hours_${selectedVesselId}`, val)
   }
 
   if (!mounted) return null
 
+  const selectedVessel = vessels.find(v => v.id === selectedVesselId)
   const overdueCount = items.filter(i => i.enabled && isOverdue(i)).length
   const categories = Array.from(new Set(items.map(i => i.category)))
+
+  // No vessels at all
+  if (vessels.length === 0) {
+    return (
+      <div className="bg-wood min-h-screen pb-24">
+        <div style={{ background: 'rgba(20,8,2,0.95)', borderBottom: '1px solid rgba(198,139,58,0.3)', padding: '16px 16px 12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <Link href="/" style={{ color: 'rgba(245,240,232,0.6)', textDecoration: 'none', fontSize: 20 }}>←</Link>
+            <h1 style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 20, margin: 0 }}>🔔 Maintenance</h1>
+          </div>
+        </div>
+        <div style={{ textAlign: 'center', padding: '60px 24px', color: 'rgba(245,240,232,0.6)' }}>
+          <div style={{ fontSize: 52, marginBottom: 16 }}>⚓</div>
+          <p style={{ fontFamily: 'Georgia, serif', fontSize: 16, color: '#F5F0E8', marginBottom: 8 }}>No vessel profiles found.</p>
+          <p style={{ fontSize: 13, marginBottom: 24 }}>Set up a vessel to track maintenance per boat.</p>
+          <Link href="/vessel" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 15, textDecoration: 'underline' }}>
+            Set up a vessel →
+          </Link>
+        </div>
+        <NavBar />
+      </div>
+    )
+  }
 
   return (
     <div className="bg-wood min-h-screen pb-24">
@@ -148,7 +231,9 @@ export default function MaintenancePage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <Link href="/" style={{ color: 'rgba(245,240,232,0.6)', textDecoration: 'none', fontSize: 20 }}>←</Link>
           <div>
-            <h1 style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 20, margin: 0 }}>🔔 Maintenance</h1>
+            <h1 style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 20, margin: 0 }}>
+              🔔 Maintenance{selectedVessel ? ` — ${selectedVessel.name}` : ''}
+            </h1>
             {overdueCount > 0 && (
               <p style={{ color: '#ef4444', fontSize: 12, margin: '2px 0 0' }}>
                 {overdueCount} item{overdueCount !== 1 ? 's' : ''} overdue
@@ -162,8 +247,70 @@ export default function MaintenancePage() {
           )}
         </div>
 
+        {/* Fleet Summary — only if multiple vessels */}
+        {vessels.length > 1 && (
+          <div style={{ marginTop: 12, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {vessels.map(v => {
+              const oc = getVesselOverdueCount(v.id)
+              const isSelected = v.id === selectedVesselId
+              return (
+                <button
+                  key={v.id}
+                  onClick={() => selectVessel(v.id)}
+                  style={{
+                    background: isSelected ? 'rgba(198,139,58,0.25)' : 'rgba(255,255,255,0.05)',
+                    border: isSelected ? '1px solid rgba(198,139,58,0.7)' : '1px solid rgba(198,139,58,0.2)',
+                    borderRadius: 20,
+                    color: isSelected ? '#C68B3A' : 'rgba(245,240,232,0.6)',
+                    padding: '4px 10px',
+                    fontSize: 12,
+                    cursor: 'pointer',
+                    fontFamily: 'Georgia, serif',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                  }}
+                >
+                  {v.name}
+                  {oc > 0 ? (
+                    <span style={{ color: '#ef4444', fontWeight: 700 }}>🔴{oc}</span>
+                  ) : (
+                    <span>🟢</span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        )}
+
+        {/* Vessel selector dropdown — always shown when vessels exist */}
+        {vessels.length > 0 && (
+          <div style={{ marginTop: 10 }}>
+            <select
+              value={selectedVesselId}
+              onChange={e => selectVessel(e.target.value)}
+              style={{
+                background: 'rgba(255,255,255,0.07)',
+                border: '1px solid rgba(198,139,58,0.3)',
+                borderRadius: 8,
+                color: '#F5F0E8',
+                padding: '6px 12px',
+                fontSize: 14,
+                width: '100%',
+                fontFamily: 'Georgia, serif',
+              }}
+            >
+              {vessels.map(v => (
+                <option key={v.id} value={v.id} style={{ background: '#1a0a02' }}>
+                  {v.name}{v.year ? ` (${v.year})` : ''}{v.make ? ` — ${v.make}` : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
         {/* Engine Hours */}
-        <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(198,139,58,0.08)', borderRadius: 8, padding: '8px 12px' }}>
+        <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(198,139,58,0.08)', borderRadius: 8, padding: '8px 12px' }}>
           <span style={{ color: '#C68B3A', fontSize: 16 }}>⚙️</span>
           <label style={{ color: 'rgba(245,240,232,0.7)', fontSize: 13 }}>Engine Hours:</label>
           <input
