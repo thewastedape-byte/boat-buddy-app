@@ -516,10 +516,10 @@ export default function ChatPage() {
             </p>
             <div style={{ background: 'rgba(198,139,58,0.1)', border: '1px solid rgba(198,139,58,0.3)', borderRadius: '10px', padding: '16px', marginBottom: '20px' }}>
               <p style={{ color: '#C68B3A', fontWeight: 'bold', fontSize: '13px', marginBottom: '4px' }}>🎉 Introductory Price</p>
-              <p style={{ color: 'rgba(245,240,232,0.7)', fontSize: '12px' }}>50% off for your first 2 months. Cancel anytime.</p>
+              <p style={{ color: 'rgba(245,240,232,0.9)', fontSize: '12px' }}>50% off for your first 2 months. Cancel anytime.</p>
               <p style={{ color: '#F5F0E8', fontWeight: 'bold', fontSize: '20px', marginTop: '8px' }}>
                 $4.99<span style={{ fontSize: '13px', color: 'rgba(245,240,232,0.5)', fontWeight: 'normal' }}>/mo</span>{' '}
-                <span style={{ fontSize: '13px', color: 'rgba(245,240,232,0.35)', textDecoration: 'line-through', fontWeight: 'normal' }}>$9.99</span>
+                <span style={{ fontSize: '13px', color: 'rgba(245,240,232,0.6)', textDecoration: 'line-through', fontWeight: 'normal' }}>$9.99</span>
               </p>
             </div>
             <a href="/upgrade"
@@ -527,7 +527,7 @@ export default function ChatPage() {
               ⚓ Upgrade — $4.99/mo for 2 months
             </a>
             <button onClick={() => setShowUpgradeBanner(false)}
-              style={{ background: 'none', border: 'none', color: 'rgba(245,240,232,0.4)', fontSize: '12px', cursor: 'pointer' }}>
+              style={{ background: 'none', border: 'none', color: 'rgba(245,240,232,0.65)', fontSize: '12px', cursor: 'pointer' }}>
               No thanks, I&apos;ll wait 6 hours
             </button>
           </div>
@@ -688,7 +688,7 @@ export default function ChatPage() {
 
       {/* Input bar */}
       <div className="fixed bottom-16 left-0 right-0 px-3 pb-2 z-40"
-        style={{ background: 'rgba(20,8,2,0.95)', borderTop: '1px solid rgba(198,139,58,0.3)' }}>
+        style={{ background: 'rgba(10,4,1,0.98)', borderTop: '2px solid rgba(198,139,58,0.7)' }}>
         <div className="flex items-end gap-2 pt-2">
           {/* Camera */}
           <button onClick={() => cameraInputRef.current?.click()}
