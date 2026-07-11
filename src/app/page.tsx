@@ -203,7 +203,7 @@ export default function ChatPage() {
         const res = await fetch(`/api/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: text, session_id: sessionId, vessel_engine: vesselEngine, has_diagram: !!inlineDiagram, language: localStorage.getItem(userKey('bb_language')) || 'en', email: auth?.email }),
+          body: JSON.stringify({ question: text, session_id: sessionId, vessel_engine: vesselEngine, has_diagram: !!inlineDiagram, language: localStorage.getItem(userKey('bb_language')) || 'en', email: auth?.email, subscription: auth?.subscription || 'stow_away' }),
         })
         if (res.status === 429) {
           const data = await res.json()
