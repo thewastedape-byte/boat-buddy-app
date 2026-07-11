@@ -360,24 +360,8 @@ export default function ChatPage() {
     reader.readAsDataURL(file)
   }
 
-  const handleGalleryClick = async () => {
-    // showOpenFilePicker opens native file manager directly, skipping Samsung's Camera/action sheet
-    if (typeof window !== 'undefined' && 'showOpenFilePicker' in window) {
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const [fileHandle] = await (window as any).showOpenFilePicker({
-          types: [{ description: 'Images', accept: { 'image/*': ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.heic', '.heif', '.bmp'] } }],
-          multiple: false
-        })
-        const file = await fileHandle.getFile()
-        handleFileFromHandle(file)
-      } catch {
-        // User cancelled or API failed — fall back to input
-        fileInputRef.current?.click()
-      }
-    } else {
-      fileInputRef.current?.click()
-    }
+  const handleGalleryClick = () => {
+    fileInputRef.current?.click()
   }
 
   const handleNewChat = () => {
@@ -757,8 +741,8 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Gallery input: file extensions instead of image/* to bypass Samsung Camera option in system picker */}
-      <input ref={fileInputRef} type="file" accept=".jpg,.jpeg,.png,.gif,.webp,.heic,.heif,.bmp" onChange={handleFileChange}
+      {/* Gallery input: accept image/* triggers native photo picker (camera roll) on Chrome for Android */}
+      <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange}
         style={{ position: 'fixed', top: 0, left: 0, width: '1px', height: '1px', opacity: 0, pointerEvents: 'none' }} />
       {/* Camera input: capture=environment goes directly to back camera, no chooser */}
       <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" onChange={handleFileChange}
