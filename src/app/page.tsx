@@ -730,11 +730,11 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* File inputs — use opacity/position instead of display:none so Android onChange fires */}
-      <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange}
+      {/* Gallery input: file extensions instead of image/* to bypass Samsung Camera option in system picker */}
+      <input ref={fileInputRef} type="file" accept=".jpg,.jpeg,.png,.gif,.webp,.heic,.heif,.bmp" onChange={handleFileChange}
         style={{ position: 'fixed', top: 0, left: 0, width: '1px', height: '1px', opacity: 0, pointerEvents: 'none' }} />
-      {/* camera: capture without value = Android opens camera app directly */}
-      <input ref={cameraInputRef} type="file" accept="image/*" capture onChange={handleFileChange}
+      {/* Camera input: capture=environment goes directly to back camera, no chooser */}
+      <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" onChange={handleFileChange}
         style={{ position: 'fixed', top: 0, left: 0, width: '1px', height: '1px', opacity: 0, pointerEvents: 'none' }} />
 
       <NavBar />
