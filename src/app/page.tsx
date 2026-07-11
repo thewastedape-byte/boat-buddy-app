@@ -353,6 +353,33 @@ export default function ChatPage() {
     e.target.value = ''
   }
 
+  const handleFileFromHandle = (file: File) => {
+    setSelectedFile(file)
+    const reader = new FileReader()
+    reader.onload = ev => setSelectedImage(ev.target?.result as string)
+    reader.readAsDataURL(file)
+  }
+
+  const handleGalleryClick = async () => {
+    // showOpenFilePicker opens native file manager directly, skipping Samsung's Camera/action sheet
+    if (typeof window !== 'undefined' && 'showOpenFilePicker' in window) {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const [fileHandle] = await (window as any).showOpenFilePicker({
+          types: [{ description: 'Images', accept: { 'image/*': ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.heic', '.heif', '.bmp'] } }],
+          multiple: false
+        })
+        const file = await fileHandle.getFile()
+        handleFileFromHandle(file)
+      } catch {
+        // User cancelled or API failed — fall back to input
+        fileInputRef.current?.click()
+      }
+    } else {
+      fileInputRef.current?.click()
+    }
+  }
+
   const handleNewChat = () => {
     const sid = newSession()
     setSessionId(sid)
@@ -686,7 +713,7 @@ export default function ChatPage() {
             📷
           </button>
           {/* Gallery */}
-          <button onClick={() => fileInputRef.current?.click()}
+          <button onClick={handleGalleryClick}
             className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center"
             style={{ background: 'rgba(198,139,58,0.2)', border: '1px solid rgba(198,139,58,0.4)', color: '#C68B3A' }}>
             🖼️
