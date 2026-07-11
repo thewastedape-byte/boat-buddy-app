@@ -741,12 +741,10 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Gallery input: accept image/* triggers native photo picker (camera roll) on Chrome for Android */}
-      <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange}
-        style={{ position: 'fixed', top: 0, left: 0, width: '1px', height: '1px', opacity: 0, pointerEvents: 'none' }} />
-      {/* Camera input: capture=environment goes directly to back camera, no chooser */}
-      <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" onChange={handleFileChange}
-        style={{ position: 'fixed', top: 0, left: 0, width: '1px', height: '1px', opacity: 0, pointerEvents: 'none' }} />
+      {/* Hidden file inputs */}
+      <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+      {/* camera: capture without value = Android opens camera app directly */}
+      <input ref={cameraInputRef} type="file" accept="image/*" capture className="hidden" onChange={handleFileChange} />
 
       <NavBar />
     </div>
