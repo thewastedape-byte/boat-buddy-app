@@ -2,7 +2,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { isLoggedIn, getAuth } from '@/lib/auth'
+import { isLoggedIn, getAuth, userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 
@@ -74,13 +74,13 @@ function parseCSV(text: string): string[][] {
 function loadSpots(): YardSpot[] {
   if (typeof window === 'undefined') return []
   try {
-    const raw = localStorage.getItem(YARD_SPOTS_KEY)
+    const raw = localStorage.getItem(userKey(YARD_SPOTS_KEY))
     return raw ? JSON.parse(raw) : []
   } catch { return [] }
 }
 
 function saveSpots(spots: YardSpot[]) {
-  localStorage.setItem(YARD_SPOTS_KEY, JSON.stringify(spots))
+  localStorage.setItem(userKey(YARD_SPOTS_KEY), JSON.stringify(spots))
 }
 
 function normalizeStatus(val: string): SpotStatus {

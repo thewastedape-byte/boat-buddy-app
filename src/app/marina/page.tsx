@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { isLoggedIn, getAuth } from '@/lib/auth'
+import { isLoggedIn, getAuth, userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 
@@ -89,13 +89,13 @@ interface WaitlistEntry {
 function loadLS<T>(key: string, fallback: T): T {
   if (typeof window === 'undefined') return fallback
   try {
-    const raw = localStorage.getItem(key)
+    const raw = localStorage.getItem(userKey(key))
     return raw ? JSON.parse(raw) : fallback
   } catch { return fallback }
 }
 
 function saveLS(key: string, value: unknown) {
-  localStorage.setItem(key, JSON.stringify(value))
+  localStorage.setItem(userKey(key), JSON.stringify(value))
 }
 
 function genId() {

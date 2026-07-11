@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { isLoggedIn, getAuth } from '@/lib/auth'
+import { isLoggedIn, getAuth, userKey } from '@/lib/auth'
 import { exportJobs, exportCustomers, exportParts, exportRepairLog } from '@/lib/csvExport'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
@@ -246,7 +246,7 @@ export default function IntegrationsPage() {
           <div className="grid grid-cols-2 gap-2">
             {[
               { label: '🔧 Repair Log', fn: () => {
-                const raw = localStorage.getItem('boat_buddy_repair_log')
+                const raw = localStorage.getItem(userKey('boat_buddy_repair_log'))
                 exportRepairLog(raw ? JSON.parse(raw) : [])
               }},
               { label: '📦 Inventory', fn: async () => {
@@ -264,7 +264,7 @@ export default function IntegrationsPage() {
                 } catch { exportCustomers([]) }
               }},
               { label: '🔩 Jobs', fn: async () => {
-                const raw = localStorage.getItem('boat_buddy_repair_log')
+                const raw = localStorage.getItem(userKey('boat_buddy_repair_log'))
                 exportJobs(raw ? JSON.parse(raw) : [])
               }},
             ].map(({ label, fn }) => (

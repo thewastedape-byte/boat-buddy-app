@@ -2,13 +2,13 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { getAuth } from '@/lib/auth'
+import { getAuth, userKey } from '@/lib/auth'
 
 function useOverdueCount() {
   const [count, setCount] = useState(0)
   useEffect(() => {
     try {
-      const stored = localStorage.getItem('boat_buddy_maintenance')
+      const stored = localStorage.getItem(userKey('boat_buddy_maintenance'))
       if (!stored) return
       const items = JSON.parse(stored)
       const today = new Date().setHours(0, 0, 0, 0)

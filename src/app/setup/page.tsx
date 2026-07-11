@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { isLoggedIn, getAuth } from '@/lib/auth'
+import { isLoggedIn, getAuth, userKey } from '@/lib/auth'
 import Logo from '@/components/Logo'
 
 const STORAGE_KEY = 'bb_setup_progress'
@@ -181,14 +181,14 @@ export default function SetupPage() {
   const [current, setCurrent] = useState(0)
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
+    const saved = localStorage.getItem(userKey(STORAGE_KEY))
     if (saved) setCompleted(JSON.parse(saved))
   }, [])
 
   const markDone = (id: string) => {
     const updated = { ...completed, [id]: true }
     setCompleted(updated)
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+    localStorage.setItem(userKey(STORAGE_KEY), JSON.stringify(updated))
     if (current < allSteps.length - 1) setCurrent(current + 1)
   }
 

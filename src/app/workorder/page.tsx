@@ -2,7 +2,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { isLoggedIn } from '@/lib/auth'
+import { isLoggedIn, userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 import type { VesselProfile } from '../vessel/page'
@@ -45,24 +45,24 @@ function WorkOrderContent() {
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/login'); return }
     // Load business profile
-    setShopName(localStorage.getItem('bb_biz_name') || 'Boat Buddy Marine')
-    setShopPhone(localStorage.getItem('bb_biz_phone') || '')
-    setShopAddress(localStorage.getItem('bb_biz_address') || '')
-    setShopLogo(localStorage.getItem('bb_biz_logo') || '')
+    setShopName(localStorage.getItem(userKey('bb_biz_name')) || 'Boat Buddy Marine')
+    setShopPhone(localStorage.getItem(userKey('bb_biz_phone')) || '')
+    setShopAddress(localStorage.getItem(userKey('bb_biz_address')) || '')
+    setShopLogo(localStorage.getItem(userKey('bb_biz_logo')) || '')
     try {
       // Load all vessels
-      const allRaw = localStorage.getItem('boat_buddy_vessels')
+      const allRaw = localStorage.getItem(userKey('boat_buddy_vessels'))
       const vessels: VesselProfile[] = allRaw ? JSON.parse(allRaw) : []
       setAllVessels(vessels)
       // Load active vessel
-      const vRaw = localStorage.getItem(VESSEL_KEY)
+      const vRaw = localStorage.getItem(userKey(VESSEL_KEY))
       if (vRaw) setVessel(JSON.parse(vRaw))
       else if (vessels.length > 0) setVessel(vessels[0])
     } catch {}
 
     if (entryId) {
       try {
-        const logRaw = localStorage.getItem(REPAIR_LOG_KEY)
+        const logRaw = localStorage.getItem(userKey(REPAIR_LOG_KEY))
         if (logRaw) {
           const log: RepairLogEntry[] = JSON.parse(logRaw)
           const found = log.find(e => e.id === entryId)

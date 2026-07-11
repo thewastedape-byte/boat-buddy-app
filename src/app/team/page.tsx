@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { isLoggedIn, getAuth } from '@/lib/auth'
+import { isLoggedIn, getAuth, userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 
@@ -40,9 +40,9 @@ export default function TeamPage() {
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/login'); return }
     // Load team from localStorage for now
-    const saved = localStorage.getItem('bb_team_members')
+    const saved = localStorage.getItem(userKey('bb_team_members'))
     if (saved) setMembers(JSON.parse(saved))
-    const savedName = localStorage.getItem('bb_team_name')
+    const savedName = localStorage.getItem(userKey('bb_team_name'))
     if (savedName) setTeamName(savedName)
     else {
       setTeamName('My Marine Shop')
@@ -51,7 +51,7 @@ export default function TeamPage() {
 
   const saveMembers = (m: TeamMember[]) => {
     setMembers(m)
-    localStorage.setItem('bb_team_members', JSON.stringify(m))
+    localStorage.setItem(userKey('bb_team_members'), JSON.stringify(m))
   }
 
   const generateInviteLink = async () => {
@@ -162,7 +162,7 @@ export default function TeamPage() {
         <div className="panel p-4 mb-4">
           <h2 className="text-xs uppercase tracking-wider mb-2" style={labelStyle}>Team Name</h2>
           <input className="input-field" value={teamName}
-            onChange={e => { setTeamName(e.target.value); localStorage.setItem('bb_team_name', e.target.value) }}
+            onChange={e => { setTeamName(e.target.value); localStorage.setItem(userKey('bb_team_name'), e.target.value) }}
             placeholder="Your shop or yard name" />
         </div>
 

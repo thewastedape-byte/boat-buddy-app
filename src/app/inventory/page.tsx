@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
-import { isLoggedIn, getAuth } from '@/lib/auth'
+import { isLoggedIn, getAuth, userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 
@@ -91,14 +91,14 @@ export default function InventoryPage() {
       }
     } catch {
       // Fall back to localStorage
-      const raw = localStorage.getItem('bb_inventory')
+      const raw = localStorage.getItem(userKey('bb_inventory'))
       if (raw) setParts(JSON.parse(raw))
     } finally { setLoading(false) }
   }
 
   const saveParts = (updated: Part[]) => {
     setParts(updated)
-    localStorage.setItem('bb_inventory', JSON.stringify(updated))
+    localStorage.setItem(userKey('bb_inventory'), JSON.stringify(updated))
   }
 
   const handleScannedCode = (code: string) => {
@@ -132,9 +132,9 @@ export default function InventoryPage() {
 
   const addToActiveWorkOrder = (part: Part, qty: number) => {
     try {
-      const existing = JSON.parse(localStorage.getItem('bb_workorder_parts') || '[]')
+      const existing = JSON.parse(localStorage.getItem(userKey('bb_workorder_parts')) || '[]')
       const newPart = { description: part.name, part_number: part.part_number || '', qty, unit_price: part.unit_price || 0 }
-      localStorage.setItem('bb_workorder_parts', JSON.stringify([...existing, newPart]))
+      localStorage.setItem(userKey('bb_workorder_parts'), JSON.stringify([...existing, newPart]))
       showToast(`✅ Added to Work Order: ${part.name}`)
     } catch {}
   }

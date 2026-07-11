@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 
 interface VesselProfile {
@@ -80,7 +81,7 @@ function isOverdue(item: MaintenanceItem): boolean {
 
 function loadVesselItems(vesselId: string): MaintenanceItem[] {
   if (typeof window === 'undefined') return DEFAULT_ITEMS
-  const key = `boat_buddy_maintenance_${vesselId}`
+  const key = userKey(`boat_buddy_maintenance_${vesselId}`)
   const stored = localStorage.getItem(key)
   if (stored) {
     try { return JSON.parse(stored) } catch { /* fall through */ }
@@ -89,12 +90,12 @@ function loadVesselItems(vesselId: string): MaintenanceItem[] {
 }
 
 function saveVesselItems(vesselId: string, items: MaintenanceItem[]) {
-  localStorage.setItem(`boat_buddy_maintenance_${vesselId}`, JSON.stringify(items))
+  localStorage.setItem(userKey(`boat_buddy_maintenance_${vesselId}`), JSON.stringify(items))
 }
 
 function loadVesselHours(vessel: VesselProfile): string {
   if (typeof window === 'undefined') return ''
-  const stored = localStorage.getItem(`bb_engine_hours_${vessel.id}`)
+  const stored = localStorage.getItem(userKey(`bb_engine_hours_${vessel.id}`))
   if (stored !== null) return stored
   return vessel.engineHours || ''
 }
@@ -118,7 +119,7 @@ export default function MaintenancePage() {
   // Load vessels on mount
   useEffect(() => {
     setMounted(true)
-    const raw = localStorage.getItem('boat_buddy_vessels')
+    const raw = localStorage.getItem(userKey('boat_buddy_vessels'))
     let vs: VesselProfile[] = []
     if (raw) {
       try { vs = JSON.parse(raw) } catch { /* ignore */ }
@@ -126,7 +127,7 @@ export default function MaintenancePage() {
     setVessels(vs)
 
     if (vs.length > 0) {
-      const remembered = localStorage.getItem('bb_maint_selected_vessel')
+      const remembered = localStorage.getItem(userKey('bb_maint_selected_vessel'))
       const initial = (remembered && vs.find(v => v.id === remembered)) ? remembered : vs[0].id
       setSelectedVesselId(initial)
       setItems(loadVesselItems(initial))
@@ -138,7 +139,7 @@ export default function MaintenancePage() {
   // When vessel selection changes, reload data
   function selectVessel(vesselId: string) {
     setSelectedVesselId(vesselId)
-    localStorage.setItem('bb_maint_selected_vessel', vesselId)
+    localStorage.setItem(userKey('bb_maint_selected_vessel'), vesselId)
     setItems(loadVesselItems(vesselId))
     setEditingId(null)
     setEditForm({})
@@ -192,7 +193,7 @@ export default function MaintenancePage() {
 
   function saveHours(val: string) {
     setEngineHours(val)
-    if (selectedVesselId) localStorage.setItem(`bb_engine_hours_${selectedVesselId}`, val)
+    if (selectedVesselId) localStorage.setItem(userKey(`bb_engine_hours_${selectedVesselId}`), val)
   }
 
   if (!mounted) return null
