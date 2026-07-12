@@ -212,10 +212,10 @@ export default function MaintenancePage() {
             <h1 style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 20, margin: 0 }}>🔔 Maintenance</h1>
           </div>
         </div>
-        <div style={{ textAlign: 'center', padding: '60px 24px', color: 'rgba(245,240,232,0.6)' }}>
+        <div style={{ textAlign: 'center', padding: '60px 24px' }}>
           <div style={{ fontSize: 52, marginBottom: 16 }}>⚓</div>
           <p style={{ fontFamily: 'Georgia, serif', fontSize: 16, color: '#F5F0E8', marginBottom: 8 }}>No vessel profiles found.</p>
-          <p style={{ fontSize: 13, marginBottom: 24 }}>Set up a vessel to track maintenance per boat.</p>
+          <p style={{ fontSize: 13, marginBottom: 24, color: 'rgba(245,240,232,0.75)' }}>Set up a vessel to track maintenance per boat.</p>
           <Link href="/vessel" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 15, textDecoration: 'underline' }}>
             Set up a vessel →
           </Link>
@@ -469,12 +469,12 @@ export default function MaintenancePage() {
                               </div>
                               <div style={{ color: status.color, fontSize: 12, marginTop: 2 }}>{status.label}</div>
                               {item.lastDoneDate && (
-                                <div style={{ color: 'rgba(245,240,232,0.4)', fontSize: 11, marginTop: 2 }}>
+                                <div style={{ color: 'rgba(245,240,232,0.65)', fontSize: 11, marginTop: 2 }}>
                                   Last done: {item.lastDoneDate} · Every {item.intervalDays}d
                                   {item.intervalHours ? ` / ${item.intervalHours}h` : ''}
                                 </div>
                               )}
-                              {item.notes && <div style={{ color: 'rgba(245,240,232,0.5)', fontSize: 11, marginTop: 2 }}>{item.notes}</div>}
+                              {item.notes && <div style={{ color: 'rgba(245,240,232,0.7)', fontSize: 11, marginTop: 2 }}>{item.notes}</div>}
                             </div>
                           </div>
                           <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>

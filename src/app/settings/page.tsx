@@ -80,8 +80,8 @@ export default function SettingsPage() {
     setTimeout(() => { setPwSuccess(false); setShowChangePw(false) }, 2000)
   }
 
-  const handleClearData = () => {
-    if (!confirm('Clear all app data including chat history?')) return
+  const handleDeleteAccount = () => {
+    if (!confirm('⚠️ Delete Account\n\nThis will permanently delete your account and all saved data. You will be logged out and cannot undo this.\n\nAre you sure?')) return
     const keys = Object.keys(localStorage).filter(k => k.startsWith('boat_buddy') || k.startsWith('chat_'))
     keys.forEach(k => localStorage.removeItem(k))
     router.push('/login')
@@ -358,11 +358,14 @@ export default function SettingsPage() {
           <h2 className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8B1A1A', fontFamily: 'Georgia, serif' }}>
             Danger Zone
           </h2>
-          <button onClick={handleClearData}
+          <button onClick={handleDeleteAccount}
             className="w-full text-left py-2 text-sm"
-            style={{ color: 'rgba(245,240,232,0.7)', fontFamily: 'Georgia, serif' }}>
-            🗑️ Clear All Data
+            style={{ color: '#ef4444', fontFamily: 'Georgia, serif' }}>
+            🗑️ Delete Account
           </button>
+          <p style={{ color: 'rgba(245,240,232,0.45)', fontSize: 11, fontFamily: 'Georgia, serif', marginTop: 4 }}>
+            Permanently removes your account and all data.
+          </p>
         </div>
 
         {/* Logout */}
