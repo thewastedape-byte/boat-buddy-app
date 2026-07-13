@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
@@ -360,7 +360,7 @@ function WorkOrderContent() {
                   const lTotal = laborHours && laborRate ? (parseFloat(laborHours) * parseFloat(laborRate)).toFixed(2) : '0.00'
                   const gTotal = (partsSubtotal + parseFloat(lTotal)).toFixed(2)
                   try {
-                    await fetch(`${API_URL}/api/send-invoice`, {
+                    const resp = await fetch(`${API_URL}/api/send-invoice`, {
                       method: 'POST', headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({
                         to: customerEmail, customerName, shopName, shopPhone, shopAddress,
@@ -370,9 +370,11 @@ function WorkOrderContent() {
                         techName, date: orderDate,
                       })
                     })
+                    const data = await resp.json()
+                    if (!resp.ok || data.error) { alert('Failed to send email: ' + (data.error || 'Unknown error')); return }
                     setEmailSent(true)
                     setTimeout(() => { setEmailSent(false); setShowEmailForm(false) }, 3000)
-                  } catch {} finally { setEmailSending(false) }
+                  } catch (err: any) { alert('Send failed: ' + (err?.message || 'Network error')) } finally { setEmailSending(false) }
                 }}
                 className="btn-primary w-full py-3"
                 style={{ opacity: !customerEmail || emailSending ? 0.5 : 1 }}>
