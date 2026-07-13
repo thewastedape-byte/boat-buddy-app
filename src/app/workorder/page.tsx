@@ -33,6 +33,8 @@ function WorkOrderContent() {
   const [workOrderNum, setWorkOrderNum] = useState('')
   const [customerEmail, setCustomerEmail] = useState('')
   const [customerName, setCustomerName] = useState('')
+  const [invoiceFromEmail, setInvoiceFromEmail] = useState('')
+  const [invoiceAppPw, setInvoiceAppPw] = useState('')
   const [emailSent, setEmailSent] = useState(false)
   const [emailSending, setEmailSending] = useState(false)
   const [showEmailForm, setShowEmailForm] = useState(false)
@@ -45,6 +47,8 @@ function WorkOrderContent() {
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/login'); return }
     // Load business profile
+    setInvoiceFromEmail(localStorage.getItem(userKey('bb_invoice_email')) || '')
+    setInvoiceAppPw(localStorage.getItem(userKey('bb_invoice_app_pw')) || '')
     setShopName(localStorage.getItem(userKey('bb_biz_name')) || 'Boat Buddy Marine')
     setShopPhone(localStorage.getItem(userKey('bb_biz_phone')) || '')
     setShopAddress(localStorage.getItem(userKey('bb_biz_address')) || '')
@@ -363,6 +367,8 @@ function WorkOrderContent() {
                     const resp = await fetch(`${API_URL}/api/send-invoice`, {
                       method: 'POST', headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({
+                        fromEmail: invoiceFromEmail || undefined,
+                        appPassword: invoiceAppPw || undefined,
                         to: customerEmail, customerName, shopName, shopPhone, shopAddress,
                         workOrderNum, vessel: vessel ? `${vessel.name} — ${vessel.engine || ''}` : '',
                         problemDesc, parts, laborDesc: laborNotes, laborHours, laborRate,
