@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -18,6 +18,9 @@ export default function SettingsPage() {
   const [bizAddress, setBizAddress] = useState('')
   const [bizLogo, setBizLogo] = useState('')
   const [bizSaved, setBizSaved] = useState(false)
+  const [invoiceEmail, setInvoiceEmail] = useState('')
+  const [invoiceAppPw, setInvoiceAppPw] = useState('')
+  const [emailSaved, setEmailSaved] = useState(false)
   const [currentPw, setCurrentPw] = useState('')
   const [newPw, setNewPw] = useState('')
   const [confirmPw, setConfirmPw] = useState('')
@@ -37,6 +40,8 @@ export default function SettingsPage() {
     setBizPhone(localStorage.getItem(userKey('bb_biz_phone')) || '')
     setBizAddress(localStorage.getItem(userKey('bb_biz_address')) || '')
     setBizLogo(localStorage.getItem(userKey('bb_biz_logo')) || '')
+    setInvoiceEmail(localStorage.getItem(userKey('bb_invoice_email')) || '')
+    setInvoiceAppPw(localStorage.getItem(userKey('bb_invoice_app_pw')) || '')
   }, [router])
 
   const saveBizProfile = () => {
@@ -91,6 +96,13 @@ export default function SettingsPage() {
     const newVal = !notifications
     setNotifications(newVal)
     localStorage.setItem(userKey('bb_notifications'), String(newVal))
+  }
+
+  const saveEmailSettings = () => {
+    localStorage.setItem(userKey('bb_invoice_email'), invoiceEmail)
+    localStorage.setItem(userKey('bb_invoice_app_pw'), invoiceAppPw)
+    setEmailSaved(true)
+    setTimeout(() => setEmailSaved(false), 2000)
   }
 
   return (
@@ -200,6 +212,24 @@ export default function SettingsPage() {
               <button type="submit" className="btn-primary w-full" style={{ fontSize: '14px', padding: '10px' }}>Update Password</button>
             </form>
           )}
+        </div>
+
+        {/* Invoice Email Settings */}
+        <div className="rounded-2xl p-4 mb-4" style={{ background: 'rgba(198,139,58,0.06)', border: '1px solid rgba(198,139,58,0.2)' }}>
+          <h2 className="text-base font-bold mb-3" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>📧 Invoice Email</h2>
+          <p className="text-xs mb-3" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>
+            Invoices will send from your email address. Requires a{' '}
+            <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener noreferrer" style={{ color: '#C68B3A' }}>Gmail App Password</a>.
+          </p>
+          <div className="flex flex-col gap-2 mb-3">
+            <input className="input-field" type="email" placeholder="your@gmail.com"
+              value={invoiceEmail} onChange={e => setInvoiceEmail(e.target.value)} />
+            <input className="input-field" type="password" placeholder="App Password (16 chars, no spaces)"
+              value={invoiceAppPw} onChange={e => setInvoiceAppPw(e.target.value)} />
+          </div>
+          <button onClick={saveEmailSettings} className="btn-primary w-full" style={{ fontSize: '14px', padding: '10px' }}>
+            {emailSaved ? '✓ Saved!' : 'Save Email Settings'}
+          </button>
         </div>
 
         {/* Language */}
