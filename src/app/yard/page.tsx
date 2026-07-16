@@ -141,7 +141,8 @@ export default function YardPage() {
   const sub = auth?.subscription || 'sailor'
   const isAdmiral = sub === 'admiral'
   const isCaptainPlus = sub === 'captain' || sub === 'admiral'
-  const hasYardAccess = isCaptainPlus
+  const hasYardAddon = (auth as { yardAddon?: boolean } | null)?.yardAddon === true
+  const hasYardAccess = isCaptainPlus || hasYardAddon
 
   // Tab state — grid is default
   const [activeTab, setActiveTab] = useState<TabType>('grid')
@@ -446,7 +447,7 @@ export default function YardPage() {
             </div>
           </div>
           <h1 className="text-xl font-bold mb-2" style={{ ...headStyle, fontFamily: 'Georgia, serif' }}>⚓ Yard Manager</h1>
-          <p className="text-sm mb-6 max-w-xs leading-relaxed" style={dimStyle}>
+          <p className="text-sm mb-6 max-w-xs leading-relaxed" style={{ ...dimStyle, color: '#333333' }}>
             Yard Manager is included with <strong style={goldStyle}>Captain</strong> and <strong style={goldStyle}>Admiral</strong> plans, or available as an add-on for $29/mo
           </p>
           <div className="flex flex-col gap-3 w-full max-w-xs">
