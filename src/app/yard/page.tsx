@@ -138,7 +138,8 @@ const emptyPinForm = { vesselName: '', ownerName: '', notes: '', status: 'availa
 export default function YardPage() {
   const router = useRouter()
   const auth = getAuth()
-  const sub = auth?.subscription || 'sailor'
+  const [liveSub, setLiveSub] = useState<string | null>(null)
+  const sub = liveSub || auth?.subscription || 'sailor'
   const isAdmiral = sub === 'admiral'
   const isCaptainPlus = sub === 'captain' || sub === 'admiral'
   const hasYardAddon = (auth as { yardAddon?: boolean } | null)?.yardAddon === true
@@ -188,6 +189,18 @@ export default function YardPage() {
     setPins(loadLS<YardPin[]>(YARD_PINS_KEY, []))
     setSatPins(loadLS<YardPin[]>(YARD_SAT_PINS_KEY, []))
   }, [router])
+
+  // ── Live subscription lookup ──
+  useEffect(() => {
+    if (auth?.email) {
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || 'https://gemini-marine-api.onrender.com'
+      fetch(`${apiBase}/api/db/users/${encodeURIComponent(auth.email)}`)
+        .then(r => r.json())
+        .then(u => { if (u?.subscription) setLiveSub(u.subscription) })
+        .catch(() => {})
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth?.email])
 
   // ──────────────────────────────────────────────────────────────
   // GRID helpers
