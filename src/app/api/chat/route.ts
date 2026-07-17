@@ -57,11 +57,18 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // Stamp last_free_question for everyone (admins included)
-      await supabase
-        .from('users')
-        .update({ last_free_question: new Date().toISOString() })
-        .eq('email', email)
+      // Stamp last_free_question for free tier only
+      if (!isAdmin && user && !PAID_TIERS.includes(user.subscription)) {
+        await supabase
+          .from('users')
+          .update({ last_free_question: new Date().toISOString() })
+          .eq('email', email)
+      }
+
+      // Override subscription in forwarded body with authoritative DB value
+      // (prevents stale localStorage subscription from degrading paid users' experience)
+      const authoritative = isAdmin ? 'admiral' : (user?.subscription || 'stow_away')
+      body.subscription = authoritative
     }
 
     // Forward to backend
