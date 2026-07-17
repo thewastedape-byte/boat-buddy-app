@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { isLoggedIn, getAuth, userKey } from '@/lib/auth'
+import { isLoggedIn, getAuth, updateAuthSubscription, userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 
@@ -687,7 +687,8 @@ function WaitlistModal({ entry, onSave, onClose }: WaitlistModalProps) {
 export default function MarinaPage() {
   const router = useRouter()
   const auth = getAuth()
-  const sub = auth?.subscription || 'sailor'
+  const [liveSub, setLiveSub] = useState<string | null>(null)
+  const sub = liveSub || auth?.subscription || 'sailor'
   const isCaptainPlus = sub === 'captain' || sub === 'admiral'
 
   const [activeTab, setActiveTab] = useState<TabType>('slips')
@@ -710,6 +711,23 @@ export default function MarinaPage() {
     setTransient(loadLS<TransientBooking[]>(TRANSIENT_KEY, []))
     setWaitlist(loadLS<WaitlistEntry[]>(WAITLIST_KEY, []))
   }, [router])
+
+  // ── Live subscription lookup ──
+  useEffect(() => {
+    if (auth?.email) {
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || 'https://gemini-marine-api.onrender.com'
+      fetch(`${apiBase}/api/db/users/${encodeURIComponent(auth.email)}`)
+        .then(r => r.json())
+        .then(u => {
+          if (u?.subscription) {
+            setLiveSub(u.subscription)
+            updateAuthSubscription(u.subscription)
+          }
+        })
+        .catch(() => {})
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth?.email])
 
   // ── SLIP handlers ──
   const saveSlip = (form: Partial<Slip>) => {

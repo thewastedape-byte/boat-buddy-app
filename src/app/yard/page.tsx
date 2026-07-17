@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { isLoggedIn, getAuth, userKey } from '@/lib/auth'
+import { isLoggedIn, getAuth, updateAuthSubscription, userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 
@@ -180,14 +180,6 @@ export default function YardPage() {
 
   // ── Init ──
   useEffect(() => {
-  if (auth?.email) {
-    fetch('https://gemini-marine-api.onrender.com/api/db/users/' + encodeURIComponent(auth.email))
-      .then(r => r.json())
-      .then(u => { if (u?.subscription) setLiveSub(u.subscription) })
-      .catch(() => {})
-  }
-}, [auth?.email])
-useEffect(() => {
     if (!isLoggedIn()) { router.replace('/login'); return }
     const c = loadLS<YardConfig>(YARD_CONFIG_KEY, { rows: 10, cols: 10 })
     setConfig(c)
@@ -204,7 +196,12 @@ useEffect(() => {
       const apiBase = process.env.NEXT_PUBLIC_API_URL || 'https://gemini-marine-api.onrender.com'
       fetch(`${apiBase}/api/db/users/${encodeURIComponent(auth.email)}`)
         .then(r => r.json())
-        .then(u => { if (u?.subscription) setLiveSub(u.subscription) })
+        .then(u => {
+          if (u?.subscription) {
+            setLiveSub(u.subscription)
+            updateAuthSubscription(u.subscription) // persist to localStorage so other pages don't flash
+          }
+        })
         .catch(() => {})
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
