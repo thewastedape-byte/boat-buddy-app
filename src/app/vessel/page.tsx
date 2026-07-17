@@ -48,7 +48,13 @@ export function setActiveVessel(vessel: VesselProfile) {
 }
 
 function generateId() {
-  return 'v_' + Date.now().toString(36) + Math.random().toString(36).substring(2)
+  // Use crypto.randomUUID() so IDs are valid UUIDs for Supabase sync
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID()
+  // Fallback: RFC-4122 v4 UUID
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16)
+  })
 }
 
 const EMPTY: Omit<VesselProfile, 'id'> = {
