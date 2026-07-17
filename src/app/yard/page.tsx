@@ -180,6 +180,14 @@ export default function YardPage() {
 
   // ── Init ──
   useEffect(() => {
+  if (auth?.email) {
+    fetch('https://gemini-marine-api.onrender.com/api/db/users/' + encodeURIComponent(auth.email))
+      .then(r => r.json())
+      .then(u => { if (u?.subscription) setLiveSub(u.subscription) })
+      .catch(() => {})
+  }
+}, [auth?.email])
+useEffect(() => {
     if (!isLoggedIn()) { router.replace('/login'); return }
     const c = loadLS<YardConfig>(YARD_CONFIG_KEY, { rows: 10, cols: 10 })
     setConfig(c)
