@@ -892,7 +892,7 @@ export default function MarinaPage() {
             </div>
           </div>
           <h1 className="text-xl font-bold mb-2" style={{ ...headStyle, fontFamily: 'Georgia, serif' }}>⚓ Marina Manager</h1>
-          <p className="text-sm mb-6 max-w-xs leading-relaxed" style={dimStyle}>
+          <p className="text-sm mb-6 max-w-xs leading-relaxed" style={{ ...dimStyle, color: 'rgba(245,240,232,0.85)' }}>
             Marina Manager is included with <strong style={goldStyle}>Captain</strong> and <strong style={goldStyle}>Admiral</strong> plans, or available as an add-on for $49/mo
           </p>
           <div className="flex flex-col gap-3 w-full max-w-xs">
