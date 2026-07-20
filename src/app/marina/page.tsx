@@ -144,14 +144,14 @@ function bookingStatusColor(s: BookingStatus) {
 function slipStatusColor(s: SlipStatus) {
   if (s === 'available') return '#4caf82'
   if (s === 'rented') return '#4A90E2'
-  if (s === 'reserved') return '#C68B3A'
+  if (s === 'reserved') return '#A855F7'
   return '#e87070'
 }
 
 function slipStatusBg(s: SlipStatus) {
   if (s === 'available') return 'rgba(76,175,130,0.18)'
   if (s === 'rented') return 'rgba(74,144,226,0.18)'
-  if (s === 'reserved') return 'rgba(198,139,58,0.18)'
+  if (s === 'reserved') return 'rgba(168,85,247,0.18)'
   return 'rgba(232,112,112,0.18)'
 }
 
@@ -337,7 +337,9 @@ function DockManagerModal({ docks, onAddDock, onRenameDock, onDeleteDock, onClos
     <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.7)' }} onClick={onClose}>
       <div className="w-full max-w-lg rounded-t-2xl p-5 overflow-y-auto"
         style={{ background: '#0d1f3c', border: '1px solid rgba(74,144,226,0.3)', borderBottom: 'none', maxHeight: '88vh', paddingBottom: '80px' }}
-        onClick={e => e.stopPropagation()}>
+        onClick={e => e.stopPropagation()}
+        onTouchStart={e => e.stopPropagation()}
+        onTouchEnd={e => e.stopPropagation()}>
 
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={headStyle}>⚓ Configure Docks</h2>
@@ -495,7 +497,9 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
     <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.7)' }} onClick={onClose}>
       <div className="w-full max-w-lg rounded-t-2xl p-5 overflow-y-auto"
         style={{ background: '#0d1f3c', border: '1px solid rgba(74,144,226,0.3)', borderBottom: 'none', maxHeight: '90vh', paddingBottom: '80px' }}
-        onClick={e => e.stopPropagation()}>
+        onClick={e => e.stopPropagation()}
+        onTouchStart={e => e.stopPropagation()}
+        onTouchEnd={e => e.stopPropagation()}>
 
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={headStyle}>{slip?.id ? `Slip: ${slip.name}` : '+ New Slip'}</h2>
@@ -637,7 +641,9 @@ function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModa
     <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.7)' }} onClick={onClose}>
       <div className="w-full max-w-lg rounded-t-2xl p-5 overflow-y-auto"
         style={{ background: '#0d1f3c', border: '1px solid rgba(74,144,226,0.3)', borderBottom: 'none', maxHeight: '92vh' }}
-        onClick={e => e.stopPropagation()}>
+        onClick={e => e.stopPropagation()}
+        onTouchStart={e => e.stopPropagation()}
+        onTouchEnd={e => e.stopPropagation()}>
 
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={headStyle}>{rental?.id ? 'Rental Details' : '+ New Rental'}</h2>
@@ -800,7 +806,9 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
     <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.7)' }} onClick={onClose}>
       <div className="w-full max-w-lg rounded-t-2xl p-5 overflow-y-auto"
         style={{ background: '#0d1f3c', border: '1px solid rgba(74,144,226,0.3)', borderBottom: 'none', maxHeight: '92vh', paddingBottom: '80px' }}
-        onClick={e => e.stopPropagation()}>
+        onClick={e => e.stopPropagation()}
+        onTouchStart={e => e.stopPropagation()}
+        onTouchEnd={e => e.stopPropagation()}>
 
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={headStyle}>{booking?.id ? 'Booking Details' : '+ New Booking'}</h2>
@@ -968,7 +976,9 @@ function WaitlistModal({ entry, onSave, onClose }: WaitlistModalProps) {
     <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.7)' }} onClick={onClose}>
       <div className="w-full max-w-lg rounded-t-2xl p-5 overflow-y-auto"
         style={{ background: '#0d1f3c', border: '1px solid rgba(74,144,226,0.3)', borderBottom: 'none', maxHeight: '85vh' }}
-        onClick={e => e.stopPropagation()}>
+        onClick={e => e.stopPropagation()}
+        onTouchStart={e => e.stopPropagation()}
+        onTouchEnd={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={headStyle}>{entry?.id ? 'Edit Waitlist Entry' : '+ Add to Waitlist'}</h2>
           <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
