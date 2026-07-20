@@ -115,6 +115,7 @@ export default function MaintenancePage() {
   const [showAddForm, setShowAddForm] = useState(false)
   const [newItem, setNewItem] = useState<Partial<MaintenanceItem>>({ icon: '🔧', intervalDays: 365, notes: '', enabled: true, custom: true })
   const [mounted, setMounted] = useState(false)
+  const [undoPending, setUndoPending] = useState<Set<string>>(new Set())
 
   // Load vessels on mount
   useEffect(() => {
@@ -158,6 +159,28 @@ export default function MaintenancePage() {
       item.id === id ? { ...item, lastDoneDate: todayStr(), lastDoneHours: engineHours ? parseFloat(engineHours) : item.lastDoneHours } : item
     )
     saveItems(updated)
+  }
+
+  function handleMarkDoneButton(id: string, isDoneToday: boolean) {
+    if (!isDoneToday) {
+      markDone(id)
+      return
+    }
+    // Already done today — first tap enters undo-pending state
+    if (!undoPending.has(id)) {
+      setUndoPending(prev => new Set(prev).add(id))
+      // Auto-clear undo state after 3s if not acted on
+      setTimeout(() => {
+        setUndoPending(prev => { const s = new Set(prev); s.delete(id); return s })
+      }, 3000)
+    } else {
+      // Second tap — undo
+      setUndoPending(prev => { const s = new Set(prev); s.delete(id); return s })
+      const updated = items.map(item =>
+        item.id === id ? { ...item, lastDoneDate: '', lastDoneHours: undefined } : item
+      )
+      saveItems(updated)
+    }
   }
 
   function saveEdit(id: string) {
@@ -478,19 +501,27 @@ export default function MaintenancePage() {
                             </div>
                           </div>
                           <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
-                            <button
-                              className={item.lastDoneDate === todayStr() ? undefined : 'btn-primary'}
-                              onClick={() => markDone(item.id)}
-                              style={item.lastDoneDate === todayStr() ? {
-                                flex: 1, fontSize: 13, padding: '8px 0',
-                                background: 'rgba(34,197,94,0.15)',
-                                border: '1px solid rgba(34,197,94,0.5)',
-                                borderRadius: 8, color: '#22c55e',
-                                cursor: 'pointer', fontFamily: 'Georgia, serif',
-                              } : { flex: 1, fontSize: 13, padding: '8px 0' }}
-                            >
-                              {item.lastDoneDate === todayStr() ? '✓ Done Today' : '✓ Mark Done'}
-                            </button>
+                            {(() => {
+                              const isDoneToday = item.lastDoneDate === todayStr()
+                              const isUndo = undoPending.has(item.id)
+                              const bg = isUndo
+                                ? 'rgba(232,112,112,0.2)'
+                                : isDoneToday ? 'rgba(34,197,94,0.15)' : undefined
+                              const border = isUndo
+                                ? '1px solid rgba(232,112,112,0.5)'
+                                : isDoneToday ? '1px solid rgba(34,197,94,0.5)' : undefined
+                              const color = isUndo ? '#e87070' : isDoneToday ? '#22c55e' : undefined
+                              const label = isUndo ? '↩ Tap again to undo' : isDoneToday ? '✓ Done Today' : '✓ Mark Done'
+                              return (
+                                <button
+                                  className={isDoneToday || isUndo ? undefined : 'btn-primary'}
+                                  onClick={() => handleMarkDoneButton(item.id, isDoneToday)}
+                                  style={{ flex: 1, fontSize: 13, padding: '8px 0', ...(bg ? { background: bg, border, borderRadius: 8, color, cursor: 'pointer', fontFamily: 'Georgia, serif' } : {}) }}
+                                >
+                                  {label}
+                                </button>
+                              )
+                            })()}
                             <button
                               onClick={() => { setEditingId(item.id); setEditForm({}) }}
                               style={{ ...secondaryBtnStyle, flex: 1, fontSize: 13, padding: '8px 0' }}

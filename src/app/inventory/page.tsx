@@ -314,8 +314,8 @@ export default function InventoryPage() {
         <p className="text-xs mb-2" style={dimStyle}>{parts.length} parts · {lowStock.length} low stock</p>
 
         {/* Scanner hint */}
-        <p className="text-xs mb-4 px-3 py-2 rounded-lg" style={{ background: 'rgba(198,139,58,0.08)', color: 'rgba(198,139,58,0.7)', fontFamily: 'Georgia, serif', border: '1px solid rgba(198,139,58,0.15)' }}>
-          📷 Tap Scan for camera · 🔌 Bluetooth scanners work automatically — just scan anywhere on this page
+        <p className="text-xs mb-4 px-3 py-2 rounded-lg" style={{ background: 'rgba(198,139,58,0.15)', color: '#F5F0E8', fontFamily: 'Georgia, serif', border: '1px solid rgba(198,139,58,0.4)', lineHeight: '1.5' }}>
+          📷 <strong style={{ color: '#C68B3A' }}>Tap Scan</strong> for camera &nbsp;·&nbsp; 🔌 <strong style={{ color: '#C68B3A' }}>Bluetooth scanners</strong> work automatically — just scan anywhere on this page
         </p>
 
         {/* Low stock alert */}
