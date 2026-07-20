@@ -10,8 +10,115 @@ import type { RepairLogEntry } from '../log/page'
 
 const VESSEL_KEY = 'boat_buddy_vessel'
 const REPAIR_LOG_KEY = 'boat_buddy_repair_log'
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://gemini-marine-api.onrender.com'
 
 interface PartRow { description: string; qty: string; price: string }
+
+interface InventoryPart {
+  id: string
+  name: string
+  part_number?: string
+  qty: number
+  unit_price?: number
+  supplier?: string
+  location?: string
+  category?: string
+}
+
+function PartPickerModal({ onSelect, onClose }: {
+  onSelect: (part: InventoryPart) => void
+  onClose: () => void
+}) {
+  const [search, setSearch] = useState('')
+  const [parts, setParts] = useState<InventoryPart[]>([])
+
+  useEffect(() => {
+    // Load from localStorage first
+    try {
+      const authRaw = localStorage.getItem('boat_buddy_auth')
+      const email = authRaw ? JSON.parse(authRaw)?.email || '' : ''
+      const prefix = email ? `${email}:` : ''
+      const raw = localStorage.getItem(`${prefix}bb_inventory`)
+      if (raw) {
+        const local: InventoryPart[] = JSON.parse(raw)
+        setParts(local)
+      }
+    } catch {}
+    // Also try API
+    try {
+      const authRaw = localStorage.getItem('boat_buddy_auth')
+      const email = authRaw ? JSON.parse(authRaw)?.email || '' : ''
+      if (email) {
+        fetch(`${API_URL}/api/db/parts?user_email=${encodeURIComponent(email)}`)
+          .then(r => r.ok ? r.json() : null)
+          .then(data => { if (data && Array.isArray(data)) setParts(data) })
+          .catch(() => {})
+      }
+    } catch {}
+  }, [])
+
+  const filtered = parts.filter(p =>
+    p.name.toLowerCase().includes(search.toLowerCase()) ||
+    (p.part_number || '').toLowerCase().includes(search.toLowerCase()) ||
+    (p.supplier || '').toLowerCase().includes(search.toLowerCase()) ||
+    (p.category || '').toLowerCase().includes(search.toLowerCase())
+  )
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.8)' }} onClick={onClose}>
+      <div className="w-full max-w-lg rounded-t-2xl flex flex-col" style={{ background: '#1a0a02', border: '1px solid rgba(198,139,58,0.4)', borderBottom: 'none', maxHeight: '80vh' }} onClick={e => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-4 pb-2">
+          <h3 style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 16, margin: 0 }}>📦 Pick from Inventory</h3>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(245,240,232,0.4)', fontSize: 20, cursor: 'pointer', lineHeight: 1 }}>✕</button>
+        </div>
+        <div className="px-4 pb-2">
+          <input
+            autoFocus
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search parts, part#, supplier..."
+            style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid rgba(198,139,58,0.3)', background: 'rgba(255,255,255,0.07)', color: '#F5F0E8', fontFamily: 'Georgia, serif', fontSize: 14, outline: 'none', boxSizing: 'border-box' }}
+          />
+        </div>
+        <div className="overflow-y-auto flex-1 px-4 pb-20">
+          {filtered.length === 0 && (
+            <p style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif', fontSize: 13, padding: '24px 0', textAlign: 'center' }}>
+              {parts.length === 0 ? 'No parts in inventory yet.' : 'No parts match your search.'}
+            </p>
+          )}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingTop: 8 }}>
+            {filtered.map(part => (
+              <button
+                key={part.id}
+                onClick={() => onSelect(part)}
+                style={{
+                  background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(198,139,58,0.2)',
+                  borderRadius: 10, padding: '10px 14px', cursor: 'pointer', textAlign: 'left',
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8,
+                }}
+              >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif', fontSize: 14, fontWeight: 'bold', margin: 0 }}>{part.name}</p>
+                  <p style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif', fontSize: 11, margin: '2px 0 0' }}>
+                    {[part.part_number && `#${part.part_number}`, part.supplier, part.location].filter(Boolean).join(' · ')}
+                  </p>
+                </div>
+                <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                  {part.unit_price ? (
+                    <p style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 13, fontWeight: 'bold', margin: 0 }}>${part.unit_price.toFixed(2)}</p>
+                  ) : null}
+                  <p style={{ color: part.qty <= 0 ? '#e87070' : 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif', fontSize: 11, margin: '1px 0 0' }}>
+                    {part.qty} in stock
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function WorkOrderContent() {
   const router = useRouter()
@@ -38,6 +145,8 @@ function WorkOrderContent() {
   const [emailSent, setEmailSent] = useState(false)
   const [emailSending, setEmailSending] = useState(false)
   const [showEmailForm, setShowEmailForm] = useState(false)
+  const [showPartPicker, setShowPartPicker] = useState(false)
+  const [pickerTargetRow, setPickerTargetRow] = useState<number | null>(null)
   const [parts, setParts] = useState<PartRow[]>([
     { description: '', qty: '1', price: '' },
     { description: '', qty: '1', price: '' },
@@ -98,6 +207,52 @@ function WorkOrderContent() {
   }
   const addPartRow = () => setParts(prev => [...prev, { description: '', qty: '1', price: '' }])
   const removePartRow = (i: number) => setParts(prev => prev.filter((_, idx) => idx !== i))
+
+  const openPicker = (rowIndex?: number) => {
+    if (rowIndex !== undefined) {
+      setPickerTargetRow(rowIndex)
+    } else {
+      // Find first empty row or append
+      const emptyIdx = parts.findIndex(p => !p.description.trim())
+      setPickerTargetRow(emptyIdx >= 0 ? emptyIdx : parts.length)
+    }
+    setShowPartPicker(true)
+  }
+
+  const handlePickPart = (part: InventoryPart) => {
+    setShowPartPicker(false)
+    const targetIdx = pickerTargetRow ?? parts.findIndex(p => !p.description.trim())
+    const row: PartRow = {
+      description: part.name + (part.part_number ? ` [${part.part_number}]` : ''),
+      qty: '1',
+      price: part.unit_price ? part.unit_price.toFixed(2) : '',
+    }
+    // Fill the target row, or append if needed
+    if (targetIdx >= 0 && targetIdx < parts.length) {
+      setParts(prev => prev.map((p, i) => i === targetIdx ? row : p))
+    } else {
+      setParts(prev => [...prev, row])
+    }
+    setPickerTargetRow(null)
+    // Deduct 1 from inventory
+    try {
+      const authRaw = localStorage.getItem('boat_buddy_auth')
+      const email = authRaw ? JSON.parse(authRaw)?.email || '' : ''
+      const prefix = email ? `${email}:` : ''
+      const invKey = `${prefix}bb_inventory`
+      const raw = localStorage.getItem(invKey)
+      if (raw) {
+        const inv: InventoryPart[] = JSON.parse(raw)
+        const updated = inv.map(p => p.id === part.id ? { ...p, qty: Math.max(0, p.qty - 1) } : p)
+        localStorage.setItem(invKey, JSON.stringify(updated))
+      }
+      // Also update API
+      fetch(`${API_URL}/api/db/parts/${part.id}`, {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...part, qty: Math.max(0, part.qty - 1) })
+      }).catch(() => {})
+    } catch {}
+  }
 
   // Calculations
   const partsTotal = parts.reduce((sum, p) => {
@@ -262,10 +417,16 @@ function WorkOrderContent() {
                 </tr>
               </tbody>
             </table>
-            <button onClick={addPartRow} className="no-print"
-              style={{ marginTop: '8px', background: 'none', border: '1px dashed #bbb', borderRadius: '4px', color: '#888', padding: '4px 12px', fontSize: '12px', cursor: 'pointer', width: '100%' }}>
-              + Add Part
-            </button>
+            <div className="no-print flex gap-2" style={{ marginTop: '8px' }}>
+              <button onClick={addPartRow}
+                style={{ background: 'none', border: '1px dashed #bbb', borderRadius: '4px', color: '#888', padding: '4px 12px', fontSize: '12px', cursor: 'pointer', flex: 1 }}>
+                + Add Row
+              </button>
+              <button onClick={() => openPicker()}
+                style={{ background: 'rgba(198,139,58,0.12)', border: '1px solid rgba(198,139,58,0.4)', borderRadius: '4px', color: '#C68B3A', padding: '4px 14px', fontSize: '12px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
+                📦 Search Inventory
+              </button>
+            </div>
           </div>
 
           {/* Labor */}
@@ -398,6 +559,13 @@ function WorkOrderContent() {
           Tip: Print → Save as PDF or email directly to customer.
         </p>
       </main>
+      {showPartPicker && (
+        <PartPickerModal
+          onSelect={handlePickPart}
+          onClose={() => { setShowPartPicker(false); setPickerTargetRow(null) }}
+        />
+      )}
+
       <NavBar />
     </div>
   )

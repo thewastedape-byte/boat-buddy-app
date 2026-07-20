@@ -14,17 +14,29 @@ const LOW_STOCK_THRESHOLD = 3
 interface Part {
   id: string
   name: string
+  category?: string
   part_number?: string
   barcode?: string
   supplier?: string
   qty: number
   min_qty?: number
+  cost_price?: number
   unit_price?: number
   location?: string
+  // Vendor details
+  vendor_contact?: string
+  vendor_phone?: string
+  vendor_email?: string
+  vendor_website?: string
+  vendor_account?: string
   user_id?: string
 }
 
-const EMPTY_PART: Omit<Part, 'id'> = { name: '', part_number: '', barcode: '', supplier: '', qty: 0, min_qty: 1, unit_price: 0, location: '' }
+const EMPTY_PART: Omit<Part, 'id'> = {
+  name: '', category: '', part_number: '', barcode: '', supplier: '',
+  qty: 0, min_qty: 1, cost_price: 0, unit_price: 0, location: '',
+  vendor_contact: '', vendor_phone: '', vendor_email: '', vendor_website: '', vendor_account: '',
+}
 
 function generateId() { return Date.now().toString(36) + Math.random().toString(36).substring(2) }
 
@@ -354,14 +366,43 @@ export default function InventoryPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div><label className="block text-xs mb-1" style={labelStyle}>Unit Price ($)</label>
-                  <input type="number" step="0.01" className="input-field" value={form.unit_price || ''} onChange={e => setField('unit_price', parseFloat(e.target.value) || 0)} placeholder="0.00" /></div>
-                <div><label className="block text-xs mb-1" style={labelStyle}>Supplier</label>
-                  <input className="input-field" value={form.supplier || ''} onChange={e => setField('supplier', e.target.value)} placeholder="West Marine, etc." /></div>
+                <div><label className="block text-xs mb-1" style={labelStyle}>Category</label>
+                  <input className="input-field" value={form.category || ''} onChange={e => setField('category', e.target.value)} placeholder="Engine, Electrical, Hull..." /></div>
+                <div><label className="block text-xs mb-1" style={labelStyle}>Storage Location</label>
+                  <input className="input-field" value={form.location || ''} onChange={e => setField('location', e.target.value)} placeholder="Bin A3, Shelf 2..." /></div>
               </div>
 
-              <div><label className="block text-xs mb-1" style={labelStyle}>Storage Location</label>
-                <input className="input-field" value={form.location || ''} onChange={e => setField('location', e.target.value)} placeholder="Bin A3, Shelf 2, etc." /></div>
+              <div className="grid grid-cols-2 gap-3">
+                <div><label className="block text-xs mb-1" style={labelStyle}>Cost Price ($)</label>
+                  <input type="number" step="0.01" className="input-field" value={form.cost_price || ''} onChange={e => setField('cost_price', parseFloat(e.target.value) || 0)} placeholder="0.00" /></div>
+                <div><label className="block text-xs mb-1" style={labelStyle}>Sell Price ($)</label>
+                  <input type="number" step="0.01" className="input-field" value={form.unit_price || ''} onChange={e => setField('unit_price', parseFloat(e.target.value) || 0)} placeholder="0.00" /></div>
+              </div>
+
+              {/* Vendor section */}
+              <div style={{ borderTop: '1px solid rgba(198,139,58,0.2)', paddingTop: '10px', marginTop: '2px' }}>
+                <p className="text-xs font-bold mb-2" style={labelStyle}>🏭 Vendor / Supplier</p>
+                <div className="flex flex-col gap-2">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '10px' }}>Company Name</label>
+                      <input className="input-field" value={form.supplier || ''} onChange={e => setField('supplier', e.target.value)} placeholder="West Marine, etc." /></div>
+                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '10px' }}>Contact Name</label>
+                      <input className="input-field" value={form.vendor_contact || ''} onChange={e => setField('vendor_contact', e.target.value)} placeholder="John Smith" /></div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '10px' }}>Phone</label>
+                      <input className="input-field" value={form.vendor_phone || ''} onChange={e => setField('vendor_phone', e.target.value)} placeholder="(555) 000-0000" /></div>
+                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '10px' }}>Email</label>
+                      <input type="email" className="input-field" value={form.vendor_email || ''} onChange={e => setField('vendor_email', e.target.value)} placeholder="orders@vendor.com" /></div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '10px' }}>Website</label>
+                      <input className="input-field" value={form.vendor_website || ''} onChange={e => setField('vendor_website', e.target.value)} placeholder="westmarine.com" /></div>
+                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '10px' }}>Account #</label>
+                      <input className="input-field" value={form.vendor_account || ''} onChange={e => setField('vendor_account', e.target.value)} placeholder="Your acct #" /></div>
+                  </div>
+                </div>
+              </div>
 
               <div className="flex gap-2">
                 <button onClick={savePart} className="btn-primary flex-1" style={{ fontSize: '14px', padding: '10px' }}>💾 Save</button>
@@ -399,7 +440,10 @@ export default function InventoryPage() {
                           {part.barcode && <p className="text-xs" style={dimStyle}>UPC: {part.barcode}</p>}
                           {part.supplier && <p className="text-xs" style={dimStyle}>{part.supplier}</p>}
                           {part.location && <p className="text-xs" style={dimStyle}>📍{part.location}</p>}
-                          {part.unit_price ? <p className="text-xs" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>${part.unit_price.toFixed(2)}</p> : null}
+                          {part.category && <p className="text-xs" style={{ color: 'rgba(198,139,58,0.7)', fontFamily: 'Georgia, serif' }}>🏷️ {part.category}</p>}
+                          {part.unit_price ? <p className="text-xs" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>Sell: ${part.unit_price.toFixed(2)}{part.cost_price ? ` · Cost: $${part.cost_price.toFixed(2)}` : ''}</p> : null}
+                          {part.vendor_phone && <p className="text-xs" style={dimStyle}>📞 {part.vendor_phone}</p>}
+                          {part.vendor_email && <p className="text-xs" style={dimStyle}>✉️ {part.vendor_email}</p>}
                         </div>
                       </div>
 
@@ -414,7 +458,7 @@ export default function InventoryPage() {
 
                       {/* Actions */}
                       <div className="flex flex-col gap-1 flex-shrink-0">
-                        <button onClick={() => { setEditing(part); setForm({ name: part.name, part_number: part.part_number || '', barcode: part.barcode || '', supplier: part.supplier || '', qty: part.qty, min_qty: part.min_qty ?? 1, unit_price: part.unit_price || 0, location: part.location || '' }); setShowForm(true) }}
+                        <button onClick={() => { setEditing(part); setForm({ name: part.name, category: part.category || '', part_number: part.part_number || '', barcode: part.barcode || '', supplier: part.supplier || '', qty: part.qty, min_qty: part.min_qty ?? 1, cost_price: part.cost_price || 0, unit_price: part.unit_price || 0, location: part.location || '', vendor_contact: part.vendor_contact || '', vendor_phone: part.vendor_phone || '', vendor_email: part.vendor_email || '', vendor_website: part.vendor_website || '', vendor_account: part.vendor_account || '' }); setShowForm(true) }}
                           style={{ background: 'rgba(198,139,58,0.1)', color: 'rgba(198,139,58,0.7)', border: '1px solid rgba(198,139,58,0.2)', borderRadius: '6px', padding: '3px 7px', fontSize: '11px', cursor: 'pointer' }}>✏️</button>
                         <button onClick={() => deletePart(part.id)}
                           style={{ background: 'rgba(139,26,26,0.1)', color: 'rgba(245,240,232,0.3)', border: '1px solid rgba(139,26,26,0.2)', borderRadius: '6px', padding: '3px 7px', fontSize: '11px', cursor: 'pointer' }}>🗑️</button>
