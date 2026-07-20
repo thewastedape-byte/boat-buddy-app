@@ -486,6 +486,7 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
     status: 'available', notes: '',
   })
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [nameError, setNameError] = useState(false)
 
   const linkedRental = form.rentalId ? rentals.find(r => r.id === form.rentalId) : null
 
@@ -585,7 +586,12 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
               style={{ ...inputStyle, resize: 'none' }} />
           </div>
 
-          <button onClick={() => onSave(form)}
+          {nameError && (
+            <p style={{ color: '#e87070', fontSize: '12px', fontFamily: 'Georgia, serif', textAlign: 'center', margin: '0' }}>
+              ⚠️ Slip name is required
+            </p>
+          )}
+          <button onClick={() => { if (!form.name?.trim()) { setNameError(true); return } setNameError(false); onSave(form) }}
             style={{ background: '#4A90E2', color: '#fff', border: 'none', borderRadius: '12px', padding: '12px', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer', fontFamily: 'Georgia, serif', marginTop: '4px' }}>
             Save Slip
           </button>
@@ -1074,9 +1080,12 @@ export default function MarinaPage() {
 
   // ── DOCK handlers ──
   const addDock = (dock: Dock, slipCount: number, slipLen: number, slipBeam: number) => {
-    const updatedDocks = [...docks, dock]
-    setDocks(updatedDocks)
-    saveLS(DOCKS_KEY, updatedDocks)
+    // Use functional update to avoid stale closure when adding multiple docks
+    setDocks(prev => {
+      const updatedDocks = [...prev, dock]
+      saveLS(DOCKS_KEY, updatedDocks)
+      return updatedDocks
+    })
 
     if (slipCount > 0) {
       const newSlips: Slip[] = Array.from({ length: slipCount }, (_, i) => {
@@ -1093,9 +1102,11 @@ export default function MarinaPage() {
           notes: '',
         }
       })
-      const updated = [...slips, ...newSlips]
-      setSlips(updated)
-      saveLS(SLIPS_KEY, updated)
+      setSlips(prev => {
+        const updated = [...prev, ...newSlips]
+        saveLS(SLIPS_KEY, updated)
+        return updated
+      })
     }
   }
 

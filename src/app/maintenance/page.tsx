@@ -479,11 +479,17 @@ export default function MaintenancePage() {
                           </div>
                           <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
                             <button
-                              className="btn-primary"
+                              className={item.lastDoneDate === todayStr() ? undefined : 'btn-primary'}
                               onClick={() => markDone(item.id)}
-                              style={{ flex: 1, fontSize: 13, padding: '8px 0' }}
+                              style={item.lastDoneDate === todayStr() ? {
+                                flex: 1, fontSize: 13, padding: '8px 0',
+                                background: 'rgba(34,197,94,0.15)',
+                                border: '1px solid rgba(34,197,94,0.5)',
+                                borderRadius: 8, color: '#22c55e',
+                                cursor: 'pointer', fontFamily: 'Georgia, serif',
+                              } : { flex: 1, fontSize: 13, padding: '8px 0' }}
                             >
-                              ✓ Mark Done
+                              {item.lastDoneDate === todayStr() ? '✓ Done Today' : '✓ Mark Done'}
                             </button>
                             <button
                               onClick={() => { setEditingId(item.id); setEditForm({}) }}
