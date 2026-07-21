@@ -300,7 +300,10 @@ export default function ChatPage() {
           .replace(/\*\*([^*]+)\*\*/g, '$1')
           .replace(/\*([^*]+)\*/g, '$1')
           .replace(/^#{1,3}\s+/gm, '')
-        aiContent = 'FROM_MANUAL:' + cleanAnswer + sourceList
+        const manualLinksLine = (data.manualLinks && data.manualLinks.length > 0)
+          ? '\n\nMANUAL_LINKS:' + JSON.stringify(data.manualLinks)
+          : ''
+        aiContent = 'FROM_MANUAL:' + cleanAnswer + sourceList + manualLinksLine
       } else {
         const err = await res.json().catch(() => ({}))
         aiContent = 'Manual search unavailable: ' + (err.error || res.status)
@@ -402,12 +405,18 @@ export default function ChatPage() {
           result.push(
             <div key={i} style={{ marginTop: '12px', padding: '10px 12px', background: 'rgba(198,139,58,0.1)', border: '1px solid rgba(198,139,58,0.35)', borderRadius: '10px' }}>
               <p style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: '12px', marginBottom: '6px', fontWeight: 'bold' }}>📚 Service Manuals</p>
-              {manuals.map((m, mi) => (
-                <a key={mi} href={m.url} target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'block', color: '#C68B3A', fontSize: '13px', textDecoration: 'underline', fontFamily: 'Georgia, serif', marginBottom: '4px' }}>
-                  🔗 {m.label}
-                </a>
-              ))}
+              {manuals.map((m, mi) => {
+                // Route manualslib URLs through Google — they blank out on mobile
+                const href = m.url.includes('manualslib.com')
+                  ? `https://www.google.com/search?q=${encodeURIComponent(m.label + ' marine service manual')}`
+                  : m.url
+                return (
+                  <a key={mi} href={href} target="_blank" rel="noopener noreferrer"
+                    style={{ display: 'block', color: '#C68B3A', fontSize: '13px', textDecoration: 'underline', fontFamily: 'Georgia, serif', marginBottom: '4px' }}>
+                    🔗 {m.label}
+                  </a>
+                )
+              })}
             </div>
           )
         } catch {}
