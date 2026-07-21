@@ -857,9 +857,9 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
               {availableSlips.map(s => (
                 <option key={s.id} value={s.id} style={{ background: '#0d1f3c' }}>
                   {s.name} ({s.length}ft × {s.beam}ft)
-                  {s.amenities.amp30 ? ' · 30A' : ''}
-                  {s.amenities.amp50 ? ' · 50A' : ''}
-                  {s.amenities.water ? ' · Water' : ''}
+                  {s.amenities?.amp30 ? ' · 30A' : ''}
+                  {s.amenities?.amp50 ? ' · 50A' : ''}
+                  {s.amenities?.water ? ' · Water' : ''}
                 </option>
               ))}
             </select>
@@ -1054,7 +1054,8 @@ export default function MarinaPage() {
     if (!isLoggedIn()) { router.replace('/login'); return }
     const loadedSlips = loadLS<Slip[]>(SLIPS_KEY, [])
     // Migrate old slips without dock field
-    const migratedSlips = loadedSlips.map(s => ({ dock: 'Main', ...s }))
+    const defaultAmenities = { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false }
+    const migratedSlips = loadedSlips.map(s => ({ dock: 'Main', amenities: defaultAmenities, ...s }))
     setSlips(migratedSlips)
     setDocks(loadLS<Dock[]>(DOCKS_KEY, []))
     setRentals(loadLS<Rental[]>(RENTALS_KEY, []))
