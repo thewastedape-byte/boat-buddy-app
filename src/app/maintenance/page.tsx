@@ -231,7 +231,7 @@ export default function MaintenancePage() {
       <div className="bg-wood min-h-screen pb-24">
         <div style={{ background: 'rgba(20,8,2,0.95)', borderBottom: '1px solid rgba(198,139,58,0.3)', padding: '16px 16px 12px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <Link href="/" style={{ color: 'rgba(245,240,232,0.6)', textDecoration: 'none', fontSize: 20 }}>←</Link>
+            <Link href="/" style={{ color: 'rgba(245,240,232,0.88)', textDecoration: 'none', fontSize: 20 }}>←</Link>
             <h1 style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 20, margin: 0 }}>🔔 Maintenance</h1>
           </div>
         </div>
@@ -253,7 +253,7 @@ export default function MaintenancePage() {
       {/* Header */}
       <div style={{ background: 'rgba(20,8,2,0.95)', borderBottom: '1px solid rgba(198,139,58,0.3)', padding: '16px 16px 12px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Link href="/" style={{ color: 'rgba(245,240,232,0.6)', textDecoration: 'none', fontSize: 20 }}>←</Link>
+          <Link href="/" style={{ color: 'rgba(245,240,232,0.88)', textDecoration: 'none', fontSize: 20 }}>←</Link>
           <div>
             <h1 style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 20, margin: 0 }}>
               🔔 Maintenance{selectedVessel ? ` — ${selectedVessel.name}` : ''}
@@ -285,7 +285,7 @@ export default function MaintenancePage() {
                     background: isSelected ? 'rgba(198,139,58,0.25)' : 'rgba(255,255,255,0.05)',
                     border: isSelected ? '1px solid rgba(198,139,58,0.7)' : '1px solid rgba(198,139,58,0.2)',
                     borderRadius: 20,
-                    color: isSelected ? '#C68B3A' : 'rgba(245,240,232,0.6)',
+                    color: isSelected ? '#C68B3A' : 'rgba(245,240,232,0.88)',
                     padding: '4px 10px',
                     fontSize: 12,
                     cursor: 'pointer',
@@ -358,7 +358,7 @@ export default function MaintenancePage() {
               fontSize: 14,
             }}
           />
-          <span style={{ color: 'rgba(245,240,232,0.5)', fontSize: 12 }}>hrs</span>
+          <span style={{ color: 'rgba(245,240,232,0.82)', fontSize: 12 }}>hrs</span>
         </div>
       </div>
 
@@ -540,7 +540,7 @@ export default function MaintenancePage() {
         })}
 
         {items.length === 0 && (
-          <div style={{ textAlign: 'center', color: 'rgba(245,240,232,0.5)', marginTop: 60 }}>
+          <div style={{ textAlign: 'center', color: 'rgba(245,240,232,0.82)', marginTop: 60 }}>
             <div style={{ fontSize: 48 }}>🔔</div>
             <p>No maintenance items yet.</p>
             <p style={{ fontSize: 13 }}>Add a custom item to get started.</p>

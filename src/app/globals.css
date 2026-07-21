@@ -76,7 +76,7 @@ body {
 }
 
 .panel {
-  background: rgba(20, 45, 75, 0.92);
+  background: rgba(10, 28, 55, 0.96);
   border: 1px solid rgba(198, 139, 58, 0.7);
   border-radius: 12px;
 }
@@ -223,8 +223,8 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 9px;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 10px;
   font-family: Georgia, serif;
   cursor: pointer;
   padding: 4px 8px;

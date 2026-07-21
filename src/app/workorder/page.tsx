@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
@@ -41,7 +41,7 @@ function PartPickerModal({ onSelect, onClose }: {
         setParts(local)
       }
     } catch {}
-    // Also try API — only replace if non-empty
+    // Also try API � only replace if non-empty
     try {
       const authRaw = localStorage.getItem('boat_buddy_auth')
       const email = authRaw ? JSON.parse(authRaw)?.email || '' : ''
@@ -65,8 +65,8 @@ function PartPickerModal({ onSelect, onClose }: {
     <div className="fixed inset-0 z-[100] flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.8)' }} onClick={onClose}>
       <div className="w-full max-w-lg rounded-t-2xl flex flex-col" style={{ background: '#1a0a02', border: '1px solid rgba(198,139,58,0.4)', borderBottom: 'none', maxHeight: '80vh' }} onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between p-4 pb-2">
-          <h3 style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 16, margin: 0 }}>📦 Pick from Inventory</h3>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(245,240,232,0.4)', fontSize: 20, cursor: 'pointer', lineHeight: 1 }}>✕</button>
+          <h3 style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 16, margin: 0 }}>?? Pick from Inventory</h3>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(245,240,232,0.75)', fontSize: 20, cursor: 'pointer', lineHeight: 1 }}>?</button>
         </div>
         <div className="px-4 pb-2">
           <input
@@ -79,7 +79,7 @@ function PartPickerModal({ onSelect, onClose }: {
         </div>
         <div className="overflow-y-auto flex-1 px-4 pb-20">
           {filtered.length === 0 && (
-            <p style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif', fontSize: 13, padding: '24px 0', textAlign: 'center' }}>
+            <p style={{ color: 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif', fontSize: 13, padding: '24px 0', textAlign: 'center' }}>
               {parts.length === 0 ? 'No parts in inventory yet.' : 'No parts match your search.'}
             </p>
           )}
@@ -96,15 +96,15 @@ function PartPickerModal({ onSelect, onClose }: {
               >
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif', fontSize: 14, fontWeight: 'bold', margin: 0 }}>{part.name}</p>
-                  <p style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif', fontSize: 11, margin: '2px 0 0' }}>
-                    {[part.part_number && `#${part.part_number}`, part.supplier, part.location].filter(Boolean).join(' · ')}
+                  <p style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif', fontSize: 11, margin: '2px 0 0' }}>
+                    {[part.part_number && `#${part.part_number}`, part.supplier, part.location].filter(Boolean).join(' � ')}
                   </p>
                 </div>
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
                   {part.unit_price ? (
                     <p style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 13, fontWeight: 'bold', margin: 0 }}>${part.unit_price.toFixed(2)}</p>
                   ) : null}
-                  <p style={{ color: part.qty <= 0 ? '#e87070' : 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif', fontSize: 11, margin: '1px 0 0' }}>
+                  <p style={{ color: part.qty <= 0 ? '#e87070' : 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif', fontSize: 11, margin: '1px 0 0' }}>
                     {part.qty} in stock
                   </p>
                 </div>
@@ -260,7 +260,7 @@ function WorkOrderContent() {
   const laborTotal = (parseFloat(laborHours) || 0) * (parseFloat(laborRate) || 0)
   const grandTotal = partsTotal + laborTotal
 
-  const fmt = (n: number) => n > 0 ? '$' + n.toFixed(2) : '—'
+  const fmt = (n: number) => n > 0 ? '$' + n.toFixed(2) : '�'
 
   const iStyle = { background: 'transparent', border: 'none', borderBottom: '1px solid #ccc', borderRadius: 0, color: '#1a1a1a', fontFamily: 'Georgia, serif', fontSize: '13px', padding: '2px 4px', width: '100%', outline: 'none' }
   const thStyle: React.CSSProperties = { textAlign: 'left', padding: '6px 8px', fontSize: '11px', textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#555', borderBottom: '2px solid #333', whiteSpace: 'nowrap' as const }
@@ -273,19 +273,19 @@ function WorkOrderContent() {
         <div className="flex items-center gap-2">
           <Link href="/log" className="text-xs px-3 py-1.5 rounded-lg"
             style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
-            ← Log
+            ? Log
           </Link>
           <button onClick={() => window.print()}
             className="text-xs px-3 py-1.5 rounded-lg font-bold"
             style={{ background: '#C68B3A', color: '#3D1C02', border: 'none', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
-            🖨️ Print
+            ??? Print
           </button>
         </div>
       </header>
 
       <main className="flex-1 overflow-y-auto px-3 py-4 pb-28">
         <h1 className="no-print text-xl font-bold mb-4" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
-          📄 Work Order / Repair Record
+          ?? Work Order / Repair Record
         </h1>
 
         {/* WHITE PAPER DOCUMENT */}
@@ -298,7 +298,7 @@ function WorkOrderContent() {
           <div style={{ textAlign: 'center', marginBottom: '20px', paddingBottom: '16px', borderBottom: '3px solid #1a1a1a' }}>
             {shopLogo
               ? <img src={shopLogo} alt="logo" style={{ height: '60px', maxWidth: '200px', objectFit: 'contain', marginBottom: '8px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
-              : <div style={{ fontSize: '28px', marginBottom: '4px' }}>⚓</div>
+              : <div style={{ fontSize: '28px', marginBottom: '4px' }}>?</div>
             }
             <input value={shopName} onChange={e => setShopName(e.target.value)}
               style={{ ...iStyle, textAlign: 'center', fontSize: '18px', fontWeight: 'bold', letterSpacing: '0.5px', borderBottom: 'none', width: '100%', maxWidth: '100%' }} />
@@ -320,7 +320,7 @@ function WorkOrderContent() {
             </div>
           </div>
 
-          {/* Vessel Selector — screen only */}
+          {/* Vessel Selector � screen only */}
           {allVessels.length > 1 && (
             <div className="no-print" style={{ marginBottom: '16px' }}>
               <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px', fontWeight: 'bold' }}>Select Vessel</div>
@@ -333,7 +333,7 @@ function WorkOrderContent() {
                 style={{ width: '100%', padding: '8px 12px', border: '1px solid #ccc', borderRadius: '6px', fontSize: '14px', fontFamily: 'Georgia, serif', background: '#f9f9f9', color: '#1a1a1a' }}
               >
                 {allVessels.map(v => (
-                  <option key={v.id} value={v.id}>{v.name} — {v.year} {v.make} {v.model}</option>
+                  <option key={v.id} value={v.id}>{v.name} � {v.year} {v.make} {v.model}</option>
                 ))}
               </select>
             </div>
@@ -356,7 +356,7 @@ function WorkOrderContent() {
                 {vessel.documentNumber && <div><span style={{ color: '#666' }}>Doc/HIN: </span>{vessel.documentNumber}</div>}
               </div>
             ) : (
-              <p style={{ fontSize: '12px', color: '#888' }}>No vessel profile — <Link href="/vessel" style={{ color: '#C68B3A' }}>set up vessel →</Link></p>
+              <p style={{ fontSize: '12px', color: '#888' }}>No vessel profile � <Link href="/vessel" style={{ color: '#C68B3A' }}>set up vessel ?</Link></p>
             )}
           </div>
 
@@ -399,10 +399,10 @@ function WorkOrderContent() {
                           placeholder="0.00" style={{ ...iStyle, textAlign: 'right', width: '70px' }} />
                       </td>
                       <td style={{ padding: '6px 8px', textAlign: 'right', color: '#333' }}>
-                        {rowTotal > 0 ? '$' + rowTotal.toFixed(2) : '—'}
+                        {rowTotal > 0 ? '$' + rowTotal.toFixed(2) : '�'}
                       </td>
                       <td style={{ padding: '6px 4px', textAlign: 'center' }} className="no-print">
-                        <button onClick={() => removePartRow(i)} style={{ background: 'none', border: 'none', color: '#aaa', cursor: 'pointer', fontSize: '14px' }}>✕</button>
+                        <button onClick={() => removePartRow(i)} style={{ background: 'none', border: 'none', color: '#aaa', cursor: 'pointer', fontSize: '14px' }}>?</button>
                       </td>
                     </tr>
                   )
@@ -421,7 +421,7 @@ function WorkOrderContent() {
               </button>
               <button onClick={() => openPicker()}
                 style={{ background: 'rgba(198,139,58,0.12)', border: '1px solid rgba(198,139,58,0.4)', borderRadius: '4px', color: '#C68B3A', padding: '4px 14px', fontSize: '12px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
-                📦 Search Inventory
+                ?? Search Inventory
               </button>
             </div>
           </div>
@@ -486,7 +486,7 @@ function WorkOrderContent() {
 
           {/* Footer */}
           <div style={{ textAlign: 'center', borderTop: '1px solid #eee', paddingTop: '12px' }}>
-            <p style={{ fontSize: '10px', color: '#aaa' }}>Generated by Boat Buddy by WastedApe — AI-powered marine diagnostics</p>
+            <p style={{ fontSize: '10px', color: '#aaa' }}>Generated by Boat Buddy by WastedApe � AI-powered marine diagnostics</p>
           </div>
         </div>
 
@@ -494,12 +494,12 @@ function WorkOrderContent() {
         <div className="no-print flex flex-col gap-3" style={{ maxWidth: '700px', margin: '0 auto' }}>
           <div className="flex gap-3">
             <button onClick={() => window.print()} className="btn-primary flex-1">
-              🖨️ Print / Save PDF
+              ??? Print / Save PDF
             </button>
             <button onClick={() => setShowEmailForm(!showEmailForm)}
               className="flex-1 py-3 rounded-xl text-sm font-bold"
-              style={{ background: showEmailForm ? 'rgba(139,26,26,0.2)' : 'rgba(198,139,58,0.2)', color: showEmailForm ? 'rgba(245,240,232,0.5)' : '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif' }}>
-              ✉️ Email to Customer
+              style={{ background: showEmailForm ? 'rgba(139,26,26,0.2)' : 'rgba(198,139,58,0.2)', color: showEmailForm ? 'rgba(245,240,232,0.82)' : '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif' }}>
+              ?? Email to Customer
             </button>
           </div>
 
@@ -528,7 +528,7 @@ function WorkOrderContent() {
                         fromEmail: invoiceFromEmail || undefined,
                         appPassword: invoiceAppPw || undefined,
                         to: customerEmail, customerName, shopName, shopPhone, shopAddress,
-                        workOrderNum, vessel: vessel ? `${vessel.name} — ${vessel.engine || ''}` : '',
+                        workOrderNum, vessel: vessel ? `${vessel.name} � ${vessel.engine || ''}` : '',
                         problemDesc, parts, laborDesc: laborNotes, laborHours, laborRate,
                         laborTotal: lTotal, partsTotal: partsSubtotal.toFixed(2), grandTotal: gTotal,
                         techName, date: orderDate,
@@ -542,18 +542,18 @@ function WorkOrderContent() {
                 }}
                 className="btn-primary w-full py-3"
                 style={{ opacity: !customerEmail || emailSending ? 0.5 : 1 }}>
-                {emailSending ? 'Sending...' : emailSent ? '✓ Sent!' : '📨 Send Invoice Email'}
+                {emailSending ? 'Sending...' : emailSent ? '? Sent!' : '?? Send Invoice Email'}
               </button>
             </div>
           )}
 
           <Link href="/log" className="text-center py-3 rounded-lg text-sm font-bold"
             style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            ← Back to Log
+            ? Back to Log
           </Link>
         </div>
-        <p className="no-print text-xs text-center mt-3" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>
-          Tip: Print → Save as PDF or email directly to customer.
+        <p className="no-print text-xs text-center mt-3" style={{ color: 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif' }}>
+          Tip: Print ? Save as PDF or email directly to customer.
         </p>
       </main>
       {showPartPicker && (

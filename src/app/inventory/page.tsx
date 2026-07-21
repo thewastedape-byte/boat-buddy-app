@@ -227,7 +227,7 @@ export default function InventoryPage() {
     (p.supplier || '').toLowerCase().includes(search.toLowerCase())
   )
 
-  const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
+  const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'system-ui, -apple-system, sans-serif' }
   const labelStyle = { color: '#C68B3A', fontFamily: 'Georgia, serif' }
 
   return (
@@ -286,7 +286,7 @@ export default function InventoryPage() {
               </button>
               <button onClick={() => setScanResult(null)}
                 className="py-3 px-4 rounded-lg text-sm"
-                style={{ background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.6)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
+                style={{ background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.88)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
                 Cancel
               </button>
             </div>
@@ -335,7 +335,7 @@ export default function InventoryPage() {
           <div className="mb-4 p-3 rounded-xl" style={{ background: 'rgba(232,112,112,0.1)', border: '1px solid rgba(232,112,112,0.3)' }}>
             <p className="text-xs font-bold mb-1" style={{ color: '#e87070', fontFamily: 'Georgia, serif' }}>⚠️ Low Stock ({lowStock.length})</p>
             {lowStock.map(p => (
-              <p key={p.id} className="text-xs" style={{ color: 'rgba(245,240,232,0.6)', fontFamily: 'Georgia, serif' }}>
+              <p key={p.id} className="text-xs" style={{ color: 'rgba(245,240,232,0.88)', fontFamily: 'Georgia, serif' }}>
                 {p.name} — {p.qty} left
               </p>
             ))}
@@ -420,7 +420,7 @@ export default function InventoryPage() {
                 <button onClick={savePart} className="btn-primary flex-1" style={{ fontSize: '14px', padding: '10px' }}>💾 Save</button>
                 <button onClick={() => { setShowForm(false); setEditing(null) }}
                   className="flex-1 py-2 rounded-lg text-sm"
-                  style={{ background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.6)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
+                  style={{ background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.88)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
                   Cancel
                 </button>
               </div>
@@ -473,7 +473,7 @@ export default function InventoryPage() {
                         <button onClick={() => { setEditing(part); setForm({ name: part.name, category: part.category || '', part_number: part.part_number || '', barcode: part.barcode || '', supplier: part.supplier || '', qty: part.qty, min_qty: part.min_qty ?? 1, cost_price: part.cost_price || 0, unit_price: part.unit_price || 0, location: part.location || '', vendor_contact: part.vendor_contact || '', vendor_phone: part.vendor_phone || '', vendor_email: part.vendor_email || '', vendor_website: part.vendor_website || '', vendor_account: part.vendor_account || '' }); setShowForm(true) }}
                           style={{ background: 'rgba(198,139,58,0.1)', color: 'rgba(198,139,58,0.7)', border: '1px solid rgba(198,139,58,0.2)', borderRadius: '6px', padding: '3px 7px', fontSize: '11px', cursor: 'pointer' }}>✏️</button>
                         <button onClick={() => deletePart(part.id)}
-                          style={{ background: 'rgba(139,26,26,0.1)', color: 'rgba(245,240,232,0.3)', border: '1px solid rgba(139,26,26,0.2)', borderRadius: '6px', padding: '3px 7px', fontSize: '11px', cursor: 'pointer' }}>🗑️</button>
+                          style={{ background: 'rgba(139,26,26,0.1)', color: 'rgba(245,240,232,0.72)', border: '1px solid rgba(139,26,26,0.2)', borderRadius: '6px', padding: '3px 7px', fontSize: '11px', cursor: 'pointer' }}>🗑️</button>
                       </div>
                     </div>
                   </div>

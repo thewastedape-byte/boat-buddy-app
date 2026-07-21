@@ -134,7 +134,7 @@ export default function RepairLogPage() {
 
   const labelStyle = { color: '#C68B3A', fontFamily: 'Georgia, serif' }
   const textStyle = { color: '#F5F0E8', fontFamily: 'system-ui, -apple-system, sans-serif' }
-  const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
+  const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }
 
   return (
     <div className="bg-wood min-h-screen flex flex-col">
@@ -201,7 +201,7 @@ export default function RepairLogPage() {
                   <button
                     onClick={() => setServiceReminders(prev => prev.filter(r => r.id !== e.id))}
                     className="text-xs px-2 py-1 rounded-lg"
-                    style={{ background: 'rgba(139,26,26,0.3)', color: 'rgba(245,240,232,0.6)', border: '1px solid rgba(139,26,26,0.4)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
+                    style={{ background: 'rgba(139,26,26,0.3)', color: 'rgba(245,240,232,0.88)', border: '1px solid rgba(139,26,26,0.4)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
                     ✕
                   </button>
                 </div>
@@ -244,7 +244,7 @@ export default function RepairLogPage() {
             </div>
 
             <div>
-              <label className="block text-xs mb-1" style={labelStyle}>Parts Used <span style={{ color: 'rgba(245,240,232,0.4)' }}>(one per line)</span></label>
+              <label className="block text-xs mb-1" style={labelStyle}>Parts Used <span style={{ color: 'rgba(245,240,232,0.75)' }}>(one per line)</span></label>
               <textarea className="input-field resize-none" placeholder={"Raw water impeller\nThermostat\nCoolant hose"} value={form.parts} onChange={e => set('parts', e.target.value)} rows={3} style={{ fontSize: '14px', padding: '8px 12px' }} />
             </div>
 
@@ -311,11 +311,11 @@ export default function RepairLogPage() {
         {filtered.length === 0 && !showForm ? (
           <div className="text-center py-16">
             <div className="text-5xl mb-4">🔧</div>
-            <p className="text-sm mb-2" style={{ color: 'rgba(245,240,232,0.6)', fontFamily: 'Georgia, serif' }}>
+            <p className="text-sm mb-2" style={{ color: 'rgba(245,240,232,0.88)', fontFamily: 'Georgia, serif' }}>
               {entries.length === 0 ? 'No repairs logged yet.' : 'No entries match your filter.'}
             </p>
             {entries.length === 0 && (
-              <p className="text-xs mb-6" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>
+              <p className="text-xs mb-6" style={{ color: 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif' }}>
                 Add a manual entry or AI diagnoses auto-save here.
               </p>
             )}
@@ -366,7 +366,7 @@ export default function RepairLogPage() {
                             </span>
                           ))}
                           {entry.parts.length > 3 && (
-                            <span className="text-xs px-2 py-0.5 rounded-full" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>
+                            <span className="text-xs px-2 py-0.5 rounded-full" style={{ color: 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif' }}>
                               +{entry.parts.length - 3} more
                             </span>
                           )}

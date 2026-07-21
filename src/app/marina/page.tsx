@@ -156,7 +156,7 @@ function slipStatusBg(s: SlipStatus) {
 }
 
 // ── Styles ──
-const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
+const dimStyle = { color: 'rgba(245,240,232,0.8)', fontFamily: 'Georgia, serif' }
 const headStyle = { color: '#F5F0E8', fontFamily: 'Georgia, serif' }
 const goldStyle = { color: '#C68B3A', fontFamily: 'Georgia, serif' }
 const inputStyle: React.CSSProperties = {
@@ -171,7 +171,7 @@ const inputStyle: React.CSSProperties = {
   fontSize: '14px',
   boxSizing: 'border-box',
 }
-const labelStyle: React.CSSProperties = { ...dimStyle, fontSize: '11px', display: 'block', marginBottom: '4px' }
+const labelStyle: React.CSSProperties = { ...dimStyle, fontSize: '13px', display: 'block', marginBottom: '4px' }
 
 // ── Input component ──
 function Field({ label, value, onChange, type = 'text', placeholder = '' }: {

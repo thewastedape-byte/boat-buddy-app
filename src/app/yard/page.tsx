@@ -63,7 +63,7 @@ function saveLS(key: string, value: unknown) {
 }
 
 // ── Styles ──
-const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
+const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }
 const headStyle = { color: '#F5F0E8', fontFamily: 'Georgia, serif' }
 const goldStyle = { color: '#C68B3A', fontFamily: 'Georgia, serif' }
 
@@ -83,9 +83,9 @@ function SlipModal({ title, form, onChange, onSave, onClose, extraInfo }: PinMod
       <div className="w-full max-w-lg rounded-t-2xl p-5" style={{ background: '#0d1f3c', border: '1px solid rgba(74,144,226,0.3)', borderBottom: 'none' }} onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={headStyle}>{title}</h2>
-          <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
+          <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.75)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
         </div>
-        {extraInfo && <p className="text-xs mb-3" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>{extraInfo}</p>}
+        {extraInfo && <p className="text-xs mb-3" style={{ color: 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif' }}>{extraInfo}</p>}
         <div className="flex flex-col gap-3">
           <div>
             <label className="text-xs mb-1 block" style={dimStyle}>Status</label>
@@ -95,7 +95,7 @@ function SlipModal({ title, form, onChange, onSave, onClose, extraInfo }: PinMod
                   className="text-xs px-3 py-1.5 rounded-lg capitalize flex-1"
                   style={{
                     background: form.status === s ? (s === 'occupied' ? '#4A90E2' : s === 'reserved' ? '#C68B3A' : 'rgba(20,40,80,0.9)') : 'rgba(255,255,255,0.05)',
-                    color: form.status === s ? (s === 'available' ? '#4A90E2' : '#fff') : 'rgba(245,240,232,0.4)',
+                    color: form.status === s ? (s === 'available' ? '#4A90E2' : '#fff') : 'rgba(245,240,232,0.75)',
                     border: form.status === s ? (s === 'occupied' ? '1px solid #4A90E2' : s === 'reserved' ? '1px solid #C68B3A' : '1px solid rgba(74,144,226,0.5)') : '1px solid rgba(255,255,255,0.1)',
                     cursor: 'pointer', fontFamily: 'Georgia, serif',
                   }}>{s}</button>
@@ -641,7 +641,7 @@ export default function YardPage() {
                   ].map(item => (
                     <div key={item.label} className="flex items-center gap-1.5">
                       <div style={{ width: 12, height: 12, borderRadius: '50%', background: item.color }} />
-                      <span style={{ color: 'rgba(245,240,232,0.6)', fontFamily: 'Georgia, serif' }}>{item.label}</span>
+                      <span style={{ color: 'rgba(245,240,232,0.88)', fontFamily: 'Georgia, serif' }}>{item.label}</span>
                     </div>
                   ))}
                 </div>
@@ -682,7 +682,7 @@ export default function YardPage() {
                     </button>
                   ))}
                 </div>
-                <p className="text-xs mt-1" style={{ color: 'rgba(245,240,232,0.3)', fontFamily: 'Georgia, serif' }}>
+                <p className="text-xs mt-1" style={{ color: 'rgba(245,240,232,0.72)', fontFamily: 'Georgia, serif' }}>
                   Tap anywhere on the map to add a slip pin
                 </p>
               </>
@@ -858,7 +858,7 @@ function LockedTabMessage({ icon, title, message }: { icon: string; title: strin
       style={{ background: 'rgba(10,20,40,0.7)', border: '1px solid rgba(198,139,58,0.25)' }}>
       <span style={{ fontSize: '3rem' }}>{icon}</span>
       <p className="text-base font-bold mt-3 mb-2" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>🔒 {title}</p>
-      <p className="text-xs max-w-xs leading-relaxed mb-5" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>{message}</p>
+      <p className="text-xs max-w-xs leading-relaxed mb-5" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>{message}</p>
       <Link href="/upgrade" className="text-sm px-5 py-2.5 rounded-xl font-bold"
         style={{ background: '#C68B3A', color: '#3D1C02', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
         ⬆️ Upgrade to Admiral
@@ -873,7 +873,7 @@ function ConfirmModal({ message, onConfirm, onCancel }: { message: string; onCon
       <div className="w-full max-w-sm rounded-2xl p-6 text-center" style={{ background: '#0d1f3c', border: '1px solid rgba(232,112,112,0.4)' }}>
         <p className="text-4xl mb-3">⚠️</p>
         <h2 className="text-base font-bold mb-2" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Are you sure?</h2>
-        <p className="text-xs mb-5 leading-relaxed" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>{message}</p>
+        <p className="text-xs mb-5 leading-relaxed" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>{message}</p>
         <div className="flex gap-3">
           <button onClick={onCancel} className="flex-1 py-2.5 rounded-xl text-sm"
             style={{ background: 'rgba(255,255,255,0.07)', color: 'rgba(245,240,232,0.7)', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>

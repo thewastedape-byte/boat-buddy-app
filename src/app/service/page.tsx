@@ -27,7 +27,7 @@ const STATUS_COLS = [
   { key: 'open', label: 'Open', color: '#e87070' },
   { key: 'in_progress', label: 'In Progress', color: '#C68B3A' },
   { key: 'complete', label: 'Complete', color: '#70c070' },
-  { key: 'invoiced', label: 'Invoiced', color: 'rgba(245,240,232,0.4)' },
+  { key: 'invoiced', label: 'Invoiced', color: 'rgba(245,240,232,0.75)' },
 ]
 
 const NEXT_STATUS: Record<string, string> = {
@@ -130,7 +130,7 @@ export default function ServicePage() {
     return acc
   }, {} as Record<string, Job[]>)
 
-  const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
+  const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'system-ui, -apple-system, sans-serif' }
 
   return (
     <div className="bg-wood min-h-screen flex flex-col">
@@ -243,13 +243,13 @@ export default function ServicePage() {
           <div className="w-full max-w-lg rounded-t-2xl p-5" style={{ background: '#0d1f3c', border: '1px solid rgba(198,139,58,0.3)', borderBottom: 'none' }} onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>+ New Job</h2>
-              <button onClick={() => setShowAddJob(false)} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
+              <button onClick={() => setShowAddJob(false)} style={{ color: 'rgba(245,240,232,0.75)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
             </div>
             <div className="flex flex-col gap-3">
               <div>
                 {vessels.length > 0 && (
                   <div className="mb-1">
-                    <label className="text-xs mb-1 block" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Vessel</label>
+                    <label className="text-xs mb-1 block" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>Vessel</label>
                     <select
                       value={addJobForm.vesselId}
                       onChange={e => setAddJobForm(f => ({ ...f, vesselId: e.target.value }))}
@@ -261,7 +261,7 @@ export default function ServicePage() {
                     </select>
                   </div>
                 )}
-                <label className="text-xs mb-1 block" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Issue / Symptom *</label>
+                <label className="text-xs mb-1 block" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>Issue / Symptom *</label>
                 <textarea
                   value={addJobForm.symptom}
                   onChange={e => setAddJobForm(f => ({ ...f, symptom: e.target.value }))}
@@ -272,7 +272,7 @@ export default function ServicePage() {
                 />
               </div>
               <div>
-                <label className="text-xs mb-1 block" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Notes (optional)</label>
+                <label className="text-xs mb-1 block" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>Notes (optional)</label>
                 <textarea
                   value={addJobForm.notes}
                   onChange={e => setAddJobForm(f => ({ ...f, notes: e.target.value }))}
