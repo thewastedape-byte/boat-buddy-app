@@ -94,18 +94,30 @@ export default function InventoryPage() {
 
   const loadParts = async () => {
     setLoading(true)
+    // Always load localStorage first — never let an empty API response wipe local data
+    try {
+      const raw = localStorage.getItem(userKey('bb_inventory'))
+      if (raw) {
+        const local = JSON.parse(raw)
+        if (Array.isArray(local)) setParts(local)
+      }
+    } catch {}
+    // Try API — only replace if it returns actual data
     try {
       const email = auth?.email || ''
-      const r = await fetch(`${API_URL}/api/db/parts?user_email=${encodeURIComponent(email)}`)
-      if (r.ok) {
-        const data = await r.json()
-        setParts(data)
+      if (email) {
+        const r = await fetch(`${API_URL}/api/db/parts?user_email=${encodeURIComponent(email)}`)
+        if (r.ok) {
+          const data = await r.json()
+          if (Array.isArray(data) && data.length > 0) {
+            setParts(data)
+            // Keep localStorage in sync with API
+            localStorage.setItem(userKey('bb_inventory'), JSON.stringify(data))
+          }
+        }
       }
-    } catch {
-      // Fall back to localStorage
-      const raw = localStorage.getItem(userKey('bb_inventory'))
-      if (raw) setParts(JSON.parse(raw))
-    } finally { setLoading(false) }
+    } catch {}
+    setLoading(false)
   }
 
   const saveParts = (updated: Part[]) => {

@@ -33,25 +33,22 @@ function PartPickerModal({ onSelect, onClose }: {
   const [parts, setParts] = useState<InventoryPart[]>([])
 
   useEffect(() => {
-    // Load from localStorage first
+    // Load from localStorage using same key as inventory page
     try {
-      const authRaw = localStorage.getItem('boat_buddy_auth')
-      const email = authRaw ? JSON.parse(authRaw)?.email || '' : ''
-      const prefix = email ? `${email}:` : ''
-      const raw = localStorage.getItem(`${prefix}bb_inventory`)
+      const raw = localStorage.getItem(userKey('bb_inventory'))
       if (raw) {
         const local: InventoryPart[] = JSON.parse(raw)
         setParts(local)
       }
     } catch {}
-    // Also try API
+    // Also try API — only replace if non-empty
     try {
       const authRaw = localStorage.getItem('boat_buddy_auth')
       const email = authRaw ? JSON.parse(authRaw)?.email || '' : ''
       if (email) {
         fetch(`${API_URL}/api/db/parts?user_email=${encodeURIComponent(email)}`)
           .then(r => r.ok ? r.json() : null)
-          .then(data => { if (data && Array.isArray(data)) setParts(data) })
+          .then(data => { if (data && Array.isArray(data) && data.length > 0) setParts(data) })
           .catch(() => {})
       }
     } catch {}
