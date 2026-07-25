@@ -118,22 +118,10 @@ function PartPickerModal({ onSelect, onClose }: {
   )
 }
 
-// Read saved draft synchronously (called during state initialization — before any useEffect)
-function readDraft() {
-  if (typeof window === 'undefined') return null
-  try {
-    const raw = window.localStorage.getItem(DRAFT_KEY)
-    return raw ? JSON.parse(raw) : null
-  } catch { return null }
-}
-
 function WorkOrderContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const entryId = searchParams.get('id')
-
-  // Read draft synchronously right now — before any useEffect can fire and clobber it
-  const _draft = !entryId ? readDraft() : null
 
   const [vessel, setVessel] = useState<VesselProfile | null>(null)
   const [allVessels, setAllVessels] = useState<VesselProfile[]>([])
@@ -141,15 +129,15 @@ function WorkOrderContent() {
   const [shopPhone, setShopPhone] = useState('')
   const [shopAddress, setShopAddress] = useState('')
   const [shopLogo, setShopLogo] = useState('')
-  const [problemDesc, setProblemDesc] = useState<string>(_draft?.problemDesc || '')
-  const [laborNotes, setLaborNotes] = useState<string>(_draft?.laborNotes || '')
-  const [laborHours, setLaborHours] = useState<string>(_draft?.laborHours || '')
-  const [laborRate, setLaborRate] = useState<string>(_draft?.laborRate || '')
-  const [techName, setTechName] = useState<string>(_draft?.techName || '')
-  const [orderDate, setOrderDate] = useState<string>(_draft?.orderDate || '')
-  const [workOrderNum, setWorkOrderNum] = useState<string>(_draft?.workOrderNum || '')
-  const [customerEmail, setCustomerEmail] = useState<string>(_draft?.customerEmail || '')
-  const [customerName, setCustomerName] = useState<string>(_draft?.customerName || '')
+  const [problemDesc, setProblemDesc] = useState('')
+  const [laborNotes, setLaborNotes] = useState('')
+  const [laborHours, setLaborHours] = useState('')
+  const [laborRate, setLaborRate] = useState('')
+  const [techName, setTechName] = useState('')
+  const [orderDate, setOrderDate] = useState('')
+  const [workOrderNum, setWorkOrderNum] = useState('')
+  const [customerEmail, setCustomerEmail] = useState('')
+  const [customerName, setCustomerName] = useState('')
   const [invoiceFromEmail, setInvoiceFromEmail] = useState('')
   const [invoiceAppPw, setInvoiceAppPw] = useState('')
   const [emailSent, setEmailSent] = useState(false)
@@ -157,18 +145,16 @@ function WorkOrderContent() {
   const [showEmailForm, setShowEmailForm] = useState(false)
   const [showPartPicker, setShowPartPicker] = useState(false)
   const [pickerTargetRow, setPickerTargetRow] = useState<number | null>(null)
-  const [parts, setParts] = useState<PartRow[]>(
-    _draft?.parts?.length ? _draft.parts : [
-      { description: '', qty: '1', price: '' },
-      { description: '', qty: '1', price: '' },
-      { description: '', qty: '1', price: '' },
-    ]
-  )
+  const [parts, setParts] = useState<PartRow[]>([
+    { description: '', qty: '1', price: '' },
+    { description: '', qty: '1', price: '' },
+    { description: '', qty: '1', price: '' },
+  ])
   const [savedManually, setSavedManually] = useState(false)
 
   const saveDraft = () => {
     try {
-      window.localStorage.setItem(DRAFT_KEY, JSON.stringify({
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({
         problemDesc, laborNotes, laborHours, laborRate,
         techName, customerEmail, customerName,
         parts, vesselId: vessel?.id,
@@ -182,37 +168,38 @@ function WorkOrderContent() {
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/login'); return }
-    // Load business profile
+
+    // Business profile
     setInvoiceFromEmail(localStorage.getItem(userKey('bb_invoice_email')) || '')
     setInvoiceAppPw(localStorage.getItem(userKey('bb_invoice_app_pw')) || '')
     setShopName(localStorage.getItem(userKey('bb_biz_name')) || 'Boat Buddy Marine')
     setShopPhone(localStorage.getItem(userKey('bb_biz_phone')) || '')
     setShopAddress(localStorage.getItem(userKey('bb_biz_address')) || '')
     setShopLogo(localStorage.getItem(userKey('bb_biz_logo')) || '')
+
+    // Load all vessels
+    let vessels: VesselProfile[] = []
     try {
       const allRaw = localStorage.getItem(userKey('boat_buddy_vessels'))
-      const vessels: VesselProfile[] = allRaw ? JSON.parse(allRaw) : []
+      vessels = allRaw ? JSON.parse(allRaw) : []
       setAllVessels(vessels)
-      // If draft had a vessel, find and set it; otherwise use default
-      if (_draft?.vesselId) {
-        const dv = vessels.find(v => v.id === _draft.vesselId)
-        if (dv) setVessel(dv)
-        else if (vessels.length > 0) setVessel(vessels[0])
-      } else {
-        const vRaw = localStorage.getItem(userKey(VESSEL_KEY))
-        if (vRaw) setVessel(JSON.parse(vRaw))
-        else if (vessels.length > 0) setVessel(vessels[0])
-      }
     } catch {}
 
+    const newWO = () => {
+      const now = new Date()
+      setOrderDate(now.toISOString().split('T')[0])
+      setWorkOrderNum('WO-' + now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + '-' + String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0'))
+    }
+
     if (entryId) {
+      // Coming from a log entry — load it, generate fresh WO#
       try {
         const logRaw = localStorage.getItem(userKey(REPAIR_LOG_KEY))
         if (logRaw) {
           const log: RepairLogEntry[] = JSON.parse(logRaw)
           const found = log.find(e => e.id === entryId)
           if (found) {
-            setProblemDesc(found.symptom)
+            setProblemDesc(found.symptom || '')
             if (found.laborHours) setLaborHours(found.laborHours)
             if (found.notes) setLaborNotes(found.notes)
             if (found.parts && found.parts.length > 0) {
@@ -220,25 +207,60 @@ function WorkOrderContent() {
               setParts([...prefilled, { description: '', qty: '1', price: '' }, { description: '', qty: '1', price: '' }])
             }
             if (found.vessel_id) {
-              const allRaw2 = localStorage.getItem(userKey('boat_buddy_vessels'))
-              const vessels2: VesselProfile[] = allRaw2 ? JSON.parse(allRaw2) : []
-              const matchedVessel = vessels2.find(v => v.id === found.vessel_id)
-              if (matchedVessel) setVessel(matchedVessel)
+              const mv = vessels.find(v => v.id === found.vessel_id)
+              if (mv) setVessel(mv)
             }
           }
         }
       } catch {}
-    }
+      // Default vessel if not set by log entry
+      try {
+        const vRaw = localStorage.getItem(userKey(VESSEL_KEY))
+        if (vRaw) setVessel(prev => prev || JSON.parse(vRaw))
+        else if (vessels.length > 0) setVessel(prev => prev || vessels[0])
+      } catch {}
+      newWO()
+    } else {
+      // No log entry — try to restore draft
+      let draft: any = null
+      try {
+        const draftRaw = localStorage.getItem(DRAFT_KEY)
+        if (draftRaw) draft = JSON.parse(draftRaw)
+      } catch {}
 
-    // Only generate fresh WO# if nothing was loaded from draft or entryId
-    if (!_draft && !entryId) {
-      const now = new Date()
-      setOrderDate(now.toISOString().split('T')[0])
-      setWorkOrderNum('WO-' + now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + '-' + String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0'))
-    } else if (entryId) {
-      const now = new Date()
-      setOrderDate(now.toISOString().split('T')[0])
-      setWorkOrderNum('WO-' + now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + '-' + String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0'))
+      if (draft) {
+        // Restore all draft fields
+        if (draft.problemDesc) setProblemDesc(draft.problemDesc)
+        if (draft.laborNotes) setLaborNotes(draft.laborNotes)
+        if (draft.laborHours) setLaborHours(draft.laborHours)
+        if (draft.laborRate) setLaborRate(draft.laborRate)
+        if (draft.techName) setTechName(draft.techName)
+        if (draft.customerEmail) setCustomerEmail(draft.customerEmail)
+        if (draft.customerName) setCustomerName(draft.customerName)
+        if (draft.parts && draft.parts.length > 0) setParts(draft.parts)
+        if (draft.workOrderNum) setWorkOrderNum(draft.workOrderNum)
+        if (draft.orderDate) setOrderDate(draft.orderDate)
+        // Restore vessel
+        if (draft.vesselId) {
+          const dv = vessels.find(v => v.id === draft.vesselId)
+          if (dv) setVessel(dv)
+        }
+        if (!draft.vesselId || vessels.every(v => v.id !== draft.vesselId)) {
+          try {
+            const vRaw = localStorage.getItem(userKey(VESSEL_KEY))
+            if (vRaw) setVessel(JSON.parse(vRaw))
+            else if (vessels.length > 0) setVessel(vessels[0])
+          } catch {}
+        }
+      } else {
+        // No draft — fresh work order
+        try {
+          const vRaw = localStorage.getItem(userKey(VESSEL_KEY))
+          if (vRaw) setVessel(JSON.parse(vRaw))
+          else if (vessels.length > 0) setVessel(vessels[0])
+        } catch {}
+        newWO()
+      }
     }
   }, [router, entryId])
 
