@@ -21,7 +21,8 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   font-family: Georgia, 'Times New Roman', serif;
-  background: url('/bg-wood.jpg') center center / cover;
+  background-color: #1a0802;
+  background: #1a0802 url('/bg-wood.jpg') center center / cover;
   background-size: cover;
   background-attachment: scroll;
   min-height: 100vh;
@@ -44,7 +45,8 @@ body {
 
 /* Fix background attachment on mobile */
 .bg-wood {
-  background: url('/bg-wood.jpg') center center / cover;
+  background-color: #1a0802;
+  background: #1a0802 url('/bg-wood.jpg') center center / cover;
   background-size: cover;
   background-attachment: scroll;
   min-height: 100vh;
