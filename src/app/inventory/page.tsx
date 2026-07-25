@@ -372,9 +372,9 @@ export default function InventoryPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div><label className="block text-xs mb-1" style={labelStyle}>Quantity in Stock</label>
-                  <input type="number" className="input-field" value={form.qty} onChange={e => setField('qty', parseInt(e.target.value) || 0)} /></div>
+                  <input type="number" className="input-field" value={form.qty} onChange={e => setField('qty', parseInt(e.target.value) || 0)} onFocus={(e) => e.target.select()} /></div>
                 <div><label className="block text-xs mb-1" style={labelStyle}>Min Qty (Low Stock Alert)</label>
-                  <input type="number" className="input-field" value={form.min_qty || 1} onChange={e => setField('min_qty', parseInt(e.target.value) || 1)} /></div>
+                  <input type="number" className="input-field" value={form.min_qty || 1} onChange={e => setField('min_qty', parseInt(e.target.value) || 1)} onFocus={(e) => e.target.select()} /></div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
