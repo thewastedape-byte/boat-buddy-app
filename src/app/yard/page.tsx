@@ -62,6 +62,31 @@ function saveLS(key: string, value: unknown) {
   localStorage.setItem(userKey(key), JSON.stringify(value))
 }
 
+// ── Cloud sync helpers ──
+function getAuthEmail(): string | null {
+  if (typeof window === 'undefined') return null
+  try {
+    return JSON.parse(localStorage.getItem('boat_buddy_auth') || '{}').email || null
+  } catch { return null }
+}
+
+const CLOUD_API = (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_URL) || 'https://gemini-marine-api.onrender.com'
+
+async function cloudGet(email: string, key: string): Promise<string | null> {
+  const res = await fetch(`${CLOUD_API}/api/db/storage?user_email=${encodeURIComponent(email)}&key=${encodeURIComponent(key)}`)
+  if (!res.ok) return null
+  const json = await res.json()
+  return json?.data ?? null
+}
+
+async function cloudSet(email: string, key: string, data: string): Promise<void> {
+  await fetch(`${CLOUD_API}/api/db/storage`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_email: email, key, data }),
+  })
+}
+
 // ── Styles ──
 const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }
 const headStyle = { color: '#F5F0E8', fontFamily: 'Georgia, serif' }
@@ -188,6 +213,49 @@ export default function YardPage() {
     setYardImage(loadLS<string | null>(YARD_IMAGE_KEY, null))
     setPins(loadLS<YardPin[]>(YARD_PINS_KEY, []))
     setSatPins(loadLS<YardPin[]>(YARD_SAT_PINS_KEY, []))
+
+    // ── Cloud sync: migrate-on-first-load ──
+    ;(async () => {
+      try {
+        const email = getAuthEmail()
+        if (!email) return
+
+        // Helper: for each key, either pull cloud → state, or push local → cloud
+        const syncKey = async <T,>(
+          key: string,
+          localValue: T,
+          setter: (v: T) => void,
+          stateSetter: (v: T) => void
+        ) => {
+          try {
+            const cloudRaw = await cloudGet(email, key)
+            if (cloudRaw !== null) {
+              // Cloud has data — use it
+              const parsed = JSON.parse(cloudRaw) as T
+              stateSetter(parsed)
+              setter(parsed)
+            } else if (localValue !== null && !(Array.isArray(localValue) && (localValue as unknown[]).length === 0)) {
+              // Cloud empty but local has data — migrate up
+              await cloudSet(email, key, JSON.stringify(localValue))
+            }
+          } catch { /* cloud failures are non-fatal */ }
+        }
+
+        const localSpots = loadLS<YardSpot[]>(YARD_SPOTS_KEY, [])
+        const localConfig = loadLS<YardConfig>(YARD_CONFIG_KEY, { rows: 10, cols: 10 })
+        const localPins = loadLS<YardPin[]>(YARD_PINS_KEY, [])
+        const localSatPins = loadLS<YardPin[]>(YARD_SAT_PINS_KEY, [])
+
+        await syncKey<YardSpot[]>(YARD_SPOTS_KEY, localSpots,
+          (v) => saveLS(YARD_SPOTS_KEY, v), setSpots)
+        await syncKey<YardConfig>(YARD_CONFIG_KEY, localConfig,
+          (v) => { saveLS(YARD_CONFIG_KEY, v); setDraftConfig(v) }, setConfig)
+        await syncKey<YardPin[]>(YARD_PINS_KEY, localPins,
+          (v) => saveLS(YARD_PINS_KEY, v), setPins)
+        await syncKey<YardPin[]>(YARD_SAT_PINS_KEY, localSatPins,
+          (v) => saveLS(YARD_SAT_PINS_KEY, v), setSatPins)
+      } catch { /* cloud failures are non-fatal */ }
+    })()
   }, [router])
 
   // ── Live subscription lookup ──
@@ -229,21 +297,25 @@ export default function YardPage() {
     newSpots.push(updated)
     setSpots(newSpots)
     saveLS(YARD_SPOTS_KEY, newSpots)
+    const _email1 = getAuthEmail(); if (_email1) cloudSet(_email1, YARD_SPOTS_KEY, JSON.stringify(newSpots)).catch(() => {})
     setSelectedSpot(null)
   }
 
   const clearAll = () => {
     setSpots([])
     saveLS(YARD_SPOTS_KEY, [])
+    const _email2 = getAuthEmail(); if (_email2) cloudSet(_email2, YARD_SPOTS_KEY, JSON.stringify([])).catch(() => {})
     setShowClearConfirm(false)
   }
 
   const applyLayout = () => {
     setConfig(draftConfig)
     saveLS(YARD_CONFIG_KEY, draftConfig)
+    const _email3 = getAuthEmail(); if (_email3) cloudSet(_email3, YARD_CONFIG_KEY, JSON.stringify(draftConfig)).catch(() => {})
     const trimmed = spots.filter(s => s.row < draftConfig.rows && s.col < draftConfig.cols)
     setSpots(trimmed)
     saveLS(YARD_SPOTS_KEY, trimmed)
+    if (_email3) cloudSet(_email3, YARD_SPOTS_KEY, JSON.stringify(trimmed)).catch(() => {})
     setShowEditLayout(false)
   }
 
@@ -279,6 +351,7 @@ export default function YardPage() {
     const updated = [...pins, newPin]
     setPins(updated)
     saveLS(YARD_PINS_KEY, updated)
+    const _pemailA = getAuthEmail(); if (_pemailA) cloudSet(_pemailA, YARD_PINS_KEY, JSON.stringify(updated)).catch(() => {})
     setSelectedPin(newPin)
     setPinForm(emptyPinForm)
   }
@@ -294,12 +367,14 @@ export default function YardPage() {
     const updated = pins.map(p => p.id === selectedPin.id ? { ...p, ...pinForm } : p)
     setPins(updated)
     saveLS(YARD_PINS_KEY, updated)
+    const _pemailB = getAuthEmail(); if (_pemailB) cloudSet(_pemailB, YARD_PINS_KEY, JSON.stringify(updated)).catch(() => {})
     setSelectedPin(null)
   }
 
   const clearPins = () => {
     setPins([])
     saveLS(YARD_PINS_KEY, [])
+    const _pemailC = getAuthEmail(); if (_pemailC) cloudSet(_pemailC, YARD_PINS_KEY, JSON.stringify([])).catch(() => {})
     setShowClearPinsConfirm(false)
   }
 
@@ -415,6 +490,7 @@ export default function YardPage() {
   }, [satPins, mapsLoaded])
 
   const saveSatPin = () => {
+    const _satEmail = getAuthEmail()
     if (pendingSatPin) {
       // New pin from map click
       const newPin: YardPin = {
@@ -427,12 +503,14 @@ export default function YardPage() {
       const updated = [...satPins, newPin]
       setSatPins(updated)
       saveLS(YARD_SAT_PINS_KEY, updated)
+      if (_satEmail) cloudSet(_satEmail, YARD_SAT_PINS_KEY, JSON.stringify(updated)).catch(() => {})
       setPendingSatPin(null)
     } else if (selectedSatPin) {
       // Update existing
       const updated = satPins.map(p => p.id === selectedSatPin.id ? { ...p, ...satPinForm } : p)
       setSatPins(updated)
       saveLS(YARD_SAT_PINS_KEY, updated)
+      if (_satEmail) cloudSet(_satEmail, YARD_SAT_PINS_KEY, JSON.stringify(updated)).catch(() => {})
       setSelectedSatPin(null)
     }
   }
@@ -888,3 +966,4 @@ function ConfirmModal({ message, onConfirm, onCancel }: { message: string; onCon
     </div>
   )
 }
+
