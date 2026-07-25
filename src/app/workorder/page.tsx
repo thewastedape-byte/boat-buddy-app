@@ -155,7 +155,7 @@ function WorkOrderContent() {
 
   const saveDraft = () => {
     try {
-      localStorage.setItem(userKey(DRAFT_KEY), JSON.stringify({
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({
         problemDesc, laborNotes, laborHours, laborRate,
         techName, customerEmail, customerName,
         parts, vesselId: vessel?.id,
@@ -171,7 +171,7 @@ function WorkOrderContent() {
   useEffect(() => {
     if (!problemDesc && !laborNotes && !laborHours && parts.every(p => !p.description.trim())) return
     try {
-      localStorage.setItem(userKey(DRAFT_KEY), JSON.stringify({
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({
         problemDesc, laborNotes, laborHours, laborRate,
         techName, customerEmail, customerName,
         parts, vesselId: vessel?.id,
@@ -231,7 +231,7 @@ function WorkOrderContent() {
     if (!entryId) {
       let loadedFromDraft = false
       try {
-        const draftRaw = localStorage.getItem(userKey(DRAFT_KEY))
+        const draftRaw = localStorage.getItem(DRAFT_KEY)
         if (draftRaw) {
           const draft = JSON.parse(draftRaw)
           if (draft.problemDesc) setProblemDesc(draft.problemDesc)
@@ -344,7 +344,7 @@ function WorkOrderContent() {
           <button
             onClick={() => {
               if (!confirm('Clear this work order and start fresh?')) return
-              try { localStorage.removeItem(userKey(DRAFT_KEY)) } catch {}
+              try { localStorage.removeItem(DRAFT_KEY) } catch {}
               setProblemDesc(''); setLaborNotes(''); setLaborHours(''); setLaborRate('')
               setTechName(''); setCustomerEmail(''); setCustomerName('')
               setParts([{ description: '', qty: '1', price: '' }, { description: '', qty: '1', price: '' }, { description: '', qty: '1', price: '' }])
@@ -357,7 +357,7 @@ function WorkOrderContent() {
             style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
             📋 Log
           </Link>
-          <button onClick={() => { try { localStorage.removeItem(userKey(DRAFT_KEY)) } catch {} window.print() }}
+          <button onClick={() => { try { localStorage.removeItem(DRAFT_KEY) } catch {} window.print() }}
             className="text-xs px-3 py-1.5 rounded-lg font-bold"
             style={{ background: '#C68B3A', color: '#3D1C02', border: 'none', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
             🖨️ Print
@@ -581,7 +581,7 @@ function WorkOrderContent() {
             {savedManually ? '✅ Draft Saved!' : '💾 Save Draft'}
           </button>
           <div className="flex gap-3">
-            <button onClick={() => { try { localStorage.removeItem(userKey(DRAFT_KEY)) } catch {} window.print() }} className="btn-primary flex-1">
+            <button onClick={() => { try { localStorage.removeItem(DRAFT_KEY) } catch {} window.print() }} className="btn-primary flex-1">
               🖨️ Print / Save PDF
             </button>
             <button onClick={() => setShowEmailForm(!showEmailForm)}
@@ -625,7 +625,7 @@ function WorkOrderContent() {
                     const data = await resp.json()
                     if (!resp.ok || data.error) { alert('Failed to send email: ' + (data.error || 'Unknown error')); return }
                     setEmailSent(true)
-                    try { localStorage.removeItem(userKey(DRAFT_KEY)) } catch {}
+                    try { localStorage.removeItem(DRAFT_KEY) } catch {}
                     setTimeout(() => { setEmailSent(false); setShowEmailForm(false) }, 3000)
                   } catch (err: any) { alert('Send failed: ' + (err?.message || 'Network error')) } finally { setEmailSending(false) }
                 }}
@@ -668,3 +668,4 @@ export default function WorkOrderPage() {
     </Suspense>
   )
 }
+
