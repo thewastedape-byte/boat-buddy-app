@@ -151,6 +151,21 @@ function WorkOrderContent() {
     { description: '', qty: '1', price: '' },
   ])
   const [draftSaved, setDraftSaved] = useState(false)
+  const [savedManually, setSavedManually] = useState(false)
+
+  const saveDraft = () => {
+    try {
+      localStorage.setItem(userKey(DRAFT_KEY), JSON.stringify({
+        problemDesc, laborNotes, laborHours, laborRate,
+        techName, customerEmail, customerName,
+        parts, vesselId: vessel?.id,
+        workOrderNum, orderDate,
+        savedAt: Date.now()
+      }))
+      setSavedManually(true)
+      setTimeout(() => setSavedManually(false), 2000)
+    } catch {}
+  }
 
   // Auto-save draft whenever content changes
   useEffect(() => {
@@ -559,6 +574,12 @@ function WorkOrderContent() {
 
         {/* Screen buttons */}
         <div className="no-print flex flex-col gap-3" style={{ maxWidth: '700px', margin: '0 auto' }}>
+          <button
+            onClick={saveDraft}
+            className="w-full py-3 rounded-xl text-sm font-bold"
+            style={{ background: savedManually ? 'rgba(0,160,80,0.35)' : 'rgba(0,120,60,0.2)', color: savedManually ? '#7fffb2' : '#5ae89a', border: `1px solid ${savedManually ? 'rgba(0,160,80,0.6)' : 'rgba(0,160,80,0.35)'}`, fontFamily: 'Georgia, serif', cursor: 'pointer', transition: 'all 0.2s' }}>
+            {savedManually ? '✅ Draft Saved!' : '💾 Save Draft'}
+          </button>
           <div className="flex gap-3">
             <button onClick={() => { try { localStorage.removeItem(userKey(DRAFT_KEY)) } catch {} window.print() }} className="btn-primary flex-1">
               🖨️ Print / Save PDF
