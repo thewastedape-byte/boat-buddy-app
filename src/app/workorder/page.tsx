@@ -10,6 +10,7 @@ import type { RepairLogEntry } from '../log/page'
 
 const VESSEL_KEY = 'boat_buddy_vessel'
 const REPAIR_LOG_KEY = 'boat_buddy_repair_log'
+const DRAFT_KEY = 'bb_workorder_draft'
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://gemini-marine-api.onrender.com'
 
 interface PartRow { description: string; qty: string; price: string }
@@ -149,6 +150,23 @@ function WorkOrderContent() {
     { description: '', qty: '1', price: '' },
     { description: '', qty: '1', price: '' },
   ])
+  const [draftSaved, setDraftSaved] = useState(false)
+
+  // Auto-save draft whenever content changes
+  useEffect(() => {
+    if (!problemDesc && !laborNotes && !laborHours && parts.every(p => !p.description.trim())) return
+    try {
+      localStorage.setItem(userKey(DRAFT_KEY), JSON.stringify({
+        problemDesc, laborNotes, laborHours, laborRate,
+        techName, customerEmail, customerName,
+        parts, vesselId: vessel?.id,
+        workOrderNum, orderDate,
+        savedAt: Date.now()
+      }))
+      setDraftSaved(true)
+      setTimeout(() => setDraftSaved(false), 1500)
+    } catch {}
+  }, [problemDesc, laborNotes, laborHours, laborRate, techName, customerEmail, customerName, parts, vessel, workOrderNum, orderDate])
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/login'); return }
@@ -190,6 +208,31 @@ function WorkOrderContent() {
               if (matchedVessel) setVessel(matchedVessel)
             }
           }
+        }
+      } catch {}
+    }
+
+    // Load draft if no repair log entry was specified
+    if (!entryId) {
+      try {
+        const draftRaw = localStorage.getItem(userKey(DRAFT_KEY))
+        if (draftRaw) {
+          const draft = JSON.parse(draftRaw)
+          if (draft.problemDesc) setProblemDesc(draft.problemDesc)
+          if (draft.laborNotes) setLaborNotes(draft.laborNotes)
+          if (draft.laborHours) setLaborHours(draft.laborHours)
+          if (draft.laborRate) setLaborRate(draft.laborRate)
+          if (draft.techName) setTechName(draft.techName)
+          if (draft.customerEmail) setCustomerEmail(draft.customerEmail)
+          if (draft.customerName) setCustomerName(draft.customerName)
+          if (draft.parts && draft.parts.length > 0) setParts(draft.parts)
+          if (draft.vesselId) {
+            const allRaw2 = localStorage.getItem(userKey('boat_buddy_vessels'))
+            const allV2: VesselProfile[] = allRaw2 ? JSON.parse(allRaw2) : []
+            const v = allV2.find(v => v.id === draft.vesselId)
+            if (v) setVessel(v)
+          }
+          if (draft.workOrderNum) setWorkOrderNum(draft.workOrderNum)
         }
       } catch {}
     }
@@ -271,11 +314,26 @@ function WorkOrderContent() {
         style={{ background: 'rgba(20, 8, 2, 0.95)', borderBottom: '1px solid rgba(198,139,58,0.3)' }}>
         <Logo size="sm" />
         <div className="flex items-center gap-2">
+          {draftSaved && (
+            <span className="text-xs" style={{ color: 'rgba(198,139,58,0.7)', fontFamily: 'Georgia, serif' }}>Draft saved</span>
+          )}
+          <button
+            onClick={() => {
+              if (!confirm('Clear this work order and start fresh?')) return
+              try { localStorage.removeItem(userKey(DRAFT_KEY)) } catch {}
+              setProblemDesc(''); setLaborNotes(''); setLaborHours(''); setLaborRate('')
+              setTechName(''); setCustomerEmail(''); setCustomerName('')
+              setParts([{ description: '', qty: '1', price: '' }, { description: '', qty: '1', price: '' }, { description: '', qty: '1', price: '' }])
+            }}
+            className="text-xs px-3 py-1.5 rounded-lg"
+            style={{ background: 'rgba(139,26,26,0.15)', color: 'rgba(245,240,232,0.82)', border: '1px solid rgba(139,26,26,0.35)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
+            🗑️ Clear
+          </button>
           <Link href="/log" className="text-xs px-3 py-1.5 rounded-lg"
             style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
             📋 Log
           </Link>
-          <button onClick={() => window.print()}
+          <button onClick={() => { try { localStorage.removeItem(userKey(DRAFT_KEY)) } catch {} window.print() }}
             className="text-xs px-3 py-1.5 rounded-lg font-bold"
             style={{ background: '#C68B3A', color: '#3D1C02', border: 'none', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
             🖨️ Print
@@ -493,7 +551,7 @@ function WorkOrderContent() {
         {/* Screen buttons */}
         <div className="no-print flex flex-col gap-3" style={{ maxWidth: '700px', margin: '0 auto' }}>
           <div className="flex gap-3">
-            <button onClick={() => window.print()} className="btn-primary flex-1">
+            <button onClick={() => { try { localStorage.removeItem(userKey(DRAFT_KEY)) } catch {} window.print() }} className="btn-primary flex-1">
               🖨️ Print / Save PDF
             </button>
             <button onClick={() => setShowEmailForm(!showEmailForm)}
@@ -537,6 +595,7 @@ function WorkOrderContent() {
                     const data = await resp.json()
                     if (!resp.ok || data.error) { alert('Failed to send email: ' + (data.error || 'Unknown error')); return }
                     setEmailSent(true)
+                    try { localStorage.removeItem(userKey(DRAFT_KEY)) } catch {}
                     setTimeout(() => { setEmailSent(false); setShowEmailForm(false) }, 3000)
                   } catch (err: any) { alert('Send failed: ' + (err?.message || 'Network error')) } finally { setEmailSending(false) }
                 }}
