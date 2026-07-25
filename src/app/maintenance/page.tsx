@@ -4,6 +4,31 @@ import Link from 'next/link'
 import { userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 
+// ── Cloud sync helpers ──────────────────────────────────────────────────────
+const _API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://gemini-marine-api.onrender.com'
+function getAuthEmail(): string {
+  try { return JSON.parse(localStorage.getItem('boat_buddy_auth') || '{}').email || '' } catch { return '' }
+}
+async function cloudGet(key: string): Promise<string | null> {
+  try {
+    const email = getAuthEmail(); if (!email) return null
+    const res = await fetch(`${_API_URL}/api/db/storage?user_email=${encodeURIComponent(email)}&key=${encodeURIComponent(key)}`)
+    if (!res.ok) return null
+    const json = await res.json(); return json.data ?? null
+  } catch { return null }
+}
+async function cloudSet(key: string, data: string): Promise<void> {
+  try {
+    const email = getAuthEmail(); if (!email) return
+    await fetch(`${_API_URL}/api/db/storage`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_email: email, key, data }),
+    })
+  } catch { /* offline-safe */ }
+}
+// ───────────────────────────────────────────────────────────────────────────
+
 interface VesselProfile {
   id: string
   name: string
@@ -90,7 +115,9 @@ function loadVesselItems(vesselId: string): MaintenanceItem[] {
 }
 
 function saveVesselItems(vesselId: string, items: MaintenanceItem[]) {
-  localStorage.setItem(userKey(`boat_buddy_maintenance_${vesselId}`), JSON.stringify(items))
+  const _mKey = userKey(`boat_buddy_maintenance_${vesselId}`)
+  localStorage.setItem(_mKey, JSON.stringify(items))
+  cloudSet(_mKey, JSON.stringify(items)) // fire-and-forget cloud sync
 }
 
 function loadVesselHours(vessel: VesselProfile): string {
@@ -131,9 +158,33 @@ export default function MaintenancePage() {
       const remembered = localStorage.getItem(userKey('bb_maint_selected_vessel'))
       const initial = (remembered && vs.find(v => v.id === remembered)) ? remembered : vs[0].id
       setSelectedVesselId(initial)
-      setItems(loadVesselItems(initial))
+      const localItems = loadVesselItems(initial)
+      setItems(localItems)
       const firstVessel = vs.find(v => v.id === initial) || vs[0]
-      setEngineHours(loadVesselHours(firstVessel))
+      const localHours = loadVesselHours(firstVessel)
+      setEngineHours(localHours)
+      // Cloud sync for initial vessel (migrate-on-first-load)
+      ;(async () => {
+        try {
+          const maintKey = userKey(`boat_buddy_maintenance_${initial}`)
+          const cloudData = await cloudGet(maintKey)
+          if (cloudData !== null) {
+            const cloudItems: MaintenanceItem[] = JSON.parse(cloudData)
+            localStorage.setItem(maintKey, JSON.stringify(cloudItems))
+            setItems(cloudItems)
+          } else if (localItems.some(i => i.lastDoneDate)) {
+            cloudSet(maintKey, JSON.stringify(localItems)) // migrate local → cloud
+          }
+          const hoursKey = userKey(`bb_engine_hours_${initial}`)
+          const cloudHours = await cloudGet(hoursKey)
+          if (cloudHours !== null) {
+            localStorage.setItem(hoursKey, cloudHours)
+            setEngineHours(cloudHours)
+          } else if (localHours) {
+            cloudSet(hoursKey, localHours) // migrate local → cloud
+          }
+        } catch { /* offline-safe */ }
+      })()
     }
   }, [])
 
@@ -141,12 +192,38 @@ export default function MaintenancePage() {
   function selectVessel(vesselId: string) {
     setSelectedVesselId(vesselId)
     localStorage.setItem(userKey('bb_maint_selected_vessel'), vesselId)
-    setItems(loadVesselItems(vesselId))
+    const localItems = loadVesselItems(vesselId)
+    setItems(localItems)
     setEditingId(null)
     setEditForm({})
     setShowAddForm(false)
     const v = vessels.find(v => v.id === vesselId)
-    if (v) setEngineHours(loadVesselHours(v))
+    const localHours = v ? loadVesselHours(v) : ''
+    if (v) setEngineHours(localHours)
+    // Cloud sync for switched vessel (migrate-on-load)
+    ;(async () => {
+      try {
+        const maintKey = userKey(`boat_buddy_maintenance_${vesselId}`)
+        const cloudData = await cloudGet(maintKey)
+        if (cloudData !== null) {
+          const cloudItems: MaintenanceItem[] = JSON.parse(cloudData)
+          localStorage.setItem(maintKey, JSON.stringify(cloudItems))
+          setItems(cloudItems)
+        } else if (localItems.some(i => i.lastDoneDate)) {
+          cloudSet(maintKey, JSON.stringify(localItems))
+        }
+        if (v) {
+          const hoursKey = userKey(`bb_engine_hours_${vesselId}`)
+          const cloudHours = await cloudGet(hoursKey)
+          if (cloudHours !== null) {
+            localStorage.setItem(hoursKey, cloudHours)
+            setEngineHours(cloudHours)
+          } else if (localHours) {
+            cloudSet(hoursKey, localHours)
+          }
+        }
+      } catch { /* offline-safe */ }
+    })()
   }
 
   function saveItems(updated: MaintenanceItem[]) {
@@ -216,7 +293,11 @@ export default function MaintenancePage() {
 
   function saveHours(val: string) {
     setEngineHours(val)
-    if (selectedVesselId) localStorage.setItem(userKey(`bb_engine_hours_${selectedVesselId}`), val)
+    if (selectedVesselId) {
+      const _hKey = userKey(`bb_engine_hours_${selectedVesselId}`)
+      localStorage.setItem(_hKey, val)
+      cloudSet(_hKey, val) // fire-and-forget cloud sync
+    }
   }
 
   if (!mounted) return null
@@ -584,3 +665,4 @@ const dangerBtnStyle: React.CSSProperties = {
   cursor: 'pointer',
   fontSize: 13,
 }
+
