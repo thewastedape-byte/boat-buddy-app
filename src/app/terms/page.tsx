@@ -1,4 +1,4 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 
 export default function TermsPage() {
   return (
@@ -6,7 +6,7 @@ export default function TermsPage() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="text-3xl mb-2">⚓</div>
+          <div className="text-3xl mb-2">?</div>
           <h1 className="text-2xl font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
             Terms &amp; Conditions
           </h1>
@@ -16,7 +16,7 @@ export default function TermsPage() {
         </div>
 
         <div className="panel p-6" style={{ fontFamily: 'Georgia, serif', color: 'rgba(245,240,232,0.85)', lineHeight: '1.7' }}>
-          <p className="text-xs mb-6" style={{ color: 'rgba(245,240,232,0.5)' }}>
+          <p className="text-xs mb-6" style={{ color: 'rgba(245,240,232,0.82)' }}>
             Last updated: July 4, 2026
           </p>
 
@@ -101,15 +101,15 @@ export default function TermsPage() {
           </section>
 
           <div className="mt-8 pt-6 text-center" style={{ borderTop: '1px solid rgba(198,139,58,0.3)' }}>
-            <p className="text-xs" style={{ color: 'rgba(245,240,232,0.4)' }}>
-              © 2026 WastedApe. All rights reserved.
+            <p className="text-xs" style={{ color: 'rgba(245,240,232,0.78)' }}>
+              � 2026 WastedApe. All rights reserved.
             </p>
           </div>
         </div>
 
         <div className="text-center mt-6">
           <Link href="/login" className="btn-primary inline-block">
-← Back to App
+? Back to App
           </Link>
         </div>
       </div>

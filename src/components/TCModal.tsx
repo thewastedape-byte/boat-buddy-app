@@ -61,7 +61,7 @@ export default function TCModal({ onAccept }: TCModalProps) {
           </button>
         </div>
 
-        <p className="text-center text-xs mt-4" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>
+        <p className="text-center text-xs mt-4" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>
           <a href="/terms" target="_blank" className="underline hover:text-amber-400" style={{ color: 'rgba(198,139,58,0.7)' }}>
             Read full terms
           </a>

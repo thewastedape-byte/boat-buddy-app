@@ -194,7 +194,7 @@ export default function SetupPage() {
 
   const doneCount = Object.values(completed).filter(Boolean).length
   const step = allSteps[current]
-  const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
+  const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }
 
   return (
     <div className="bg-wood min-h-screen flex flex-col">
@@ -222,7 +222,7 @@ export default function SetupPage() {
               className="flex-shrink-0 w-8 h-8 rounded-full text-sm font-bold flex items-center justify-center"
               style={{
                 background: completed[s.id] ? 'rgba(112,192,112,0.3)' : i === current ? '#C68B3A' : 'rgba(198,139,58,0.15)',
-                color: completed[s.id] ? '#70c070' : i === current ? '#3D1C02' : 'rgba(245,240,232,0.4)',
+                color: completed[s.id] ? '#70c070' : i === current ? '#3D1C02' : 'rgba(245,240,232,0.78)',
                 border: i === current ? 'none' : '1px solid rgba(198,139,58,0.2)',
               }}>
               {completed[s.id] ? '✓' : i + 1}
@@ -288,7 +288,7 @@ export default function SetupPage() {
               style={{ borderBottom: i < allSteps.length - 1 ? '1px solid rgba(198,139,58,0.1)' : 'none' }}>
               <span className="text-lg flex-shrink-0">{completed[s.id] ? '✅' : s.icon}</span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm" style={{ color: completed[s.id] ? 'rgba(245,240,232,0.4)' : '#F5F0E8', fontFamily: 'Georgia, serif', textDecoration: completed[s.id] ? 'line-through' : 'none' }}>
+                <p className="text-sm" style={{ color: completed[s.id] ? 'rgba(245,240,232,0.78)' : '#F5F0E8', fontFamily: 'Georgia, serif', textDecoration: completed[s.id] ? 'line-through' : 'none' }}>
                   {s.title}
                 </p>
               </div>

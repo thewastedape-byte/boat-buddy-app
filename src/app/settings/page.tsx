@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -86,7 +86,7 @@ export default function SettingsPage() {
   }
 
   const handleDeleteAccount = () => {
-    if (!confirm('⚠️ Delete Account\n\nThis will permanently delete your account and all saved data. You will be logged out and cannot undo this.\n\nAre you sure?')) return
+    if (!confirm('?? Delete Account\n\nThis will permanently delete your account and all saved data. You will be logged out and cannot undo this.\n\nAre you sure?')) return
     const keys = Object.keys(localStorage).filter(k => k.startsWith('boat_buddy') || k.startsWith('chat_'))
     keys.forEach(k => localStorage.removeItem(k))
     router.push('/login')
@@ -115,7 +115,7 @@ export default function SettingsPage() {
 
       <main className="flex-1 overflow-y-auto px-4 py-4 pb-24">
         <h1 className="text-xl font-bold mb-6" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
-          ⚙️ Settings
+          ?? Settings
         </h1>
 
         {/* Profile */}
@@ -138,11 +138,11 @@ export default function SettingsPage() {
         {/* Business Profile */}
         <div className="panel p-4 mb-4">
           <h2 className="text-xs uppercase tracking-wider mb-3" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>Business Profile</h2>
-          <p className="text-xs mb-3" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>Appears on work orders and invoices</p>
+          <p className="text-xs mb-3" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>Appears on work orders and invoices</p>
           <div className="flex flex-col gap-3">
             {/* Logo upload */}
             <div>
-              <label className="block text-xs mb-1" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Business Logo</label>
+              <label className="block text-xs mb-1" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>Business Logo</label>
               <div className="flex items-center gap-3">
                 {bizLogo
                   ? <img src={bizLogo} alt="Logo" style={{ height: '48px', maxWidth: '120px', objectFit: 'contain', borderRadius: '6px', background: '#fff', padding: '4px' }} />
@@ -151,31 +151,31 @@ export default function SettingsPage() {
                 <div className="flex flex-col gap-1">
                   <label className="text-xs px-3 py-1.5 rounded-lg cursor-pointer"
                     style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif' }}>
-                    📁 Upload
+                    ?? Upload
                     <input type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} />
                   </label>
                   {bizLogo && <button onClick={() => { setBizLogo(''); localStorage.removeItem(userKey('bb_biz_logo')) }}
                     className="text-xs px-3 py-1 rounded-lg"
-                    style={{ background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.5)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif' }}>Remove</button>}
+                    style={{ background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.82)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif' }}>Remove</button>}
                 </div>
               </div>
-              <p className="text-xs mt-1" style={{ color: 'rgba(245,240,232,0.3)', fontFamily: 'Georgia, serif' }}>PNG or JPG, max 500KB. Shows on work orders.</p>
+              <p className="text-xs mt-1" style={{ color: 'rgba(245,240,232,0.72)', fontFamily: 'Georgia, serif' }}>PNG or JPG, max 500KB. Shows on work orders.</p>
             </div>
 
             <div>
-              <label className="block text-xs mb-1" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Shop / Company Name</label>
+              <label className="block text-xs mb-1" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>Shop / Company Name</label>
               <input className="input-field" value={bizName} onChange={e => setBizName(e.target.value)} placeholder="Solomons Marine Service" />
             </div>
             <div>
-              <label className="block text-xs mb-1" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Phone</label>
+              <label className="block text-xs mb-1" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>Phone</label>
               <input className="input-field" value={bizPhone} onChange={e => setBizPhone(e.target.value)} placeholder="(410) 555-0000" />
             </div>
             <div>
-              <label className="block text-xs mb-1" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Address</label>
+              <label className="block text-xs mb-1" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>Address</label>
               <input className="input-field" value={bizAddress} onChange={e => setBizAddress(e.target.value)} placeholder="123 Marina Dr, Solomons MD 20688" />
             </div>
             <button onClick={saveBizProfile} className="btn-primary w-full" style={{ fontSize: '14px', padding: '10px' }}>
-              {bizSaved ? '✓ Saved!' : '💾 Save Business Profile'}
+              {bizSaved ? '? Saved!' : '?? Save Business Profile'}
             </button>
           </div>
         </div>
@@ -187,7 +187,7 @@ export default function SettingsPage() {
             <button onClick={() => { setShowChangePw(!showChangePw); setPwError(''); setPwSuccess(false) }}
               className="text-xs px-3 py-1 rounded-lg"
               style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif' }}>
-              {showChangePw ? 'Cancel' : '🔐 Change Password'}
+              {showChangePw ? 'Cancel' : '?? Change Password'}
             </button>
           </div>
           {showChangePw && (
@@ -216,8 +216,8 @@ export default function SettingsPage() {
 
         {/* Invoice Email Settings */}
         <div className="rounded-2xl p-4 mb-4" style={{ background: 'rgba(198,139,58,0.06)', border: '1px solid rgba(198,139,58,0.2)' }}>
-          <h2 className="text-base font-bold mb-3" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>📧 Invoice Email</h2>
-          <p className="text-xs mb-3" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>
+          <h2 className="text-base font-bold mb-3" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>?? Invoice Email</h2>
+          <p className="text-xs mb-3" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>
             Invoices will send from your email address. Requires a{' '}
             <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener noreferrer" style={{ color: '#C68B3A' }}>Gmail App Password</a>.
           </p>
@@ -228,7 +228,7 @@ export default function SettingsPage() {
               value={invoiceAppPw} onChange={e => setInvoiceAppPw(e.target.value)} />
           </div>
           <button onClick={saveEmailSettings} className="btn-primary w-full" style={{ fontSize: '14px', padding: '10px' }}>
-            {emailSaved ? '✓ Saved!' : 'Save Email Settings'}
+            {emailSaved ? '? Saved!' : 'Save Email Settings'}
           </button>
         </div>
 
@@ -237,12 +237,12 @@ export default function SettingsPage() {
           <h2 className="text-xs uppercase tracking-wider mb-3" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>Language / Idioma / Langue</h2>
           <div className="grid grid-cols-2 gap-2">
             {[
-              { code: 'en', label: '🇺🇸 English' },
-              { code: 'es', label: '🇪🇸 Español' },
-              { code: 'fr', label: '🇫🇷 Français' },
-              { code: 'pt', label: '🇧🇷 Português' },
-              { code: 'de', label: '🇩🇪 Deutsch' },
-              { code: 'nl', label: '🇳🇱 Nederlands' },
+              { code: 'en', label: '???? English' },
+              { code: 'es', label: '???? Espa�ol' },
+              { code: 'fr', label: '???? Fran�ais' },
+              { code: 'pt', label: '???? Portugu�s' },
+              { code: 'de', label: '???? Deutsch' },
+              { code: 'nl', label: '???? Nederlands' },
             ].map(lang => (
               <button key={lang.code}
                 onClick={() => { setLanguage(lang.code); localStorage.setItem(userKey('bb_language'), lang.code); }}
@@ -259,7 +259,7 @@ export default function SettingsPage() {
               </button>
             ))}
           </div>
-          <p className="text-xs mt-2" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>AI responses will be in your selected language.</p>
+          <p className="text-xs mt-2" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>AI responses will be in your selected language.</p>
         </div>
 
         {/* Preferences */}
@@ -270,7 +270,7 @@ export default function SettingsPage() {
           <div className="flex items-center justify-between py-2">
             <div>
               <p className="text-sm font-medium" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Dark Mode</p>
-              <p className="text-xs" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Always on for better visibility</p>
+              <p className="text-xs" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>Always on for better visibility</p>
             </div>
             <div className="w-10 h-6 rounded-full flex items-center px-0.5"
               style={{ background: '#C68B3A' }}>
@@ -280,7 +280,7 @@ export default function SettingsPage() {
           <div className="flex items-center justify-between py-2 border-t" style={{ borderColor: 'rgba(198,139,58,0.2)' }}>
             <div>
               <p className="text-sm font-medium" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Push Notifications</p>
-              <p className="text-xs" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Coming soon</p>
+              <p className="text-xs" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>Coming soon</p>
             </div>
             <button onClick={toggleNotifications}
               className="w-10 h-6 rounded-full flex items-center px-0.5 transition-all"
@@ -298,26 +298,26 @@ export default function SettingsPage() {
           </h2>
           <div className="flex items-center justify-between py-2">
             <p className="text-sm" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>App Version</p>
-            <p className="text-sm" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>1.0.0</p>
+            <p className="text-sm" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>1.0.0</p>
           </div>
           <div className="flex items-center justify-between py-2 border-t" style={{ borderColor: 'rgba(198,139,58,0.2)' }}>
             <p className="text-sm" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>API</p>
-            <p className="text-xs truncate max-w-32" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>
+            <p className="text-xs truncate max-w-32" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>
               gemini-marine-api
             </p>
           </div>
           <Link href="/terms" className="flex items-center justify-between py-2 border-t"
             style={{ borderColor: 'rgba(198,139,58,0.2)' }}>
             <p className="text-sm" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Terms &amp; Conditions</p>
-            <p style={{ color: 'rgba(198,139,58,0.7)' }}>→</p>
+            <p style={{ color: 'rgba(198,139,58,0.7)' }}>?</p>
           </Link>
           <Link href="/contact" className="flex items-center justify-between py-2 border-t"
             style={{ borderColor: 'rgba(198,139,58,0.2)' }}>
             <div>
-              <p className="text-sm" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>✉️ Support &amp; Contact</p>
-              <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>Questions, bugs, feedback</p>
+              <p className="text-sm" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>?? Support &amp; Contact</p>
+              <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>Questions, bugs, feedback</p>
             </div>
-            <p style={{ color: 'rgba(198,139,58,0.7)' }}>→</p>
+            <p style={{ color: 'rgba(198,139,58,0.7)' }}>?</p>
           </Link>
         </div>
 
@@ -329,26 +329,26 @@ export default function SettingsPage() {
               <a href="/team" className="flex items-center justify-between py-2"
                 style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif', textDecoration: 'none', borderBottom: '1px solid rgba(198,139,58,0.1)' }}>
                 <div>
-                  <p className="text-sm">⚓ Team Management</p>
-                  <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>Invite members, manage seats and roles</p>
+                  <p className="text-sm">? Team Management</p>
+                  <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>Invite members, manage seats and roles</p>
                 </div>
-                <span style={{ color: '#C68B3A' }}>→</span>
+                <span style={{ color: '#C68B3A' }}>?</span>
               </a>
               <a href="/integrations" className="flex items-center justify-between py-2"
                 style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif', textDecoration: 'none', borderBottom: '1px solid rgba(198,139,58,0.1)' }}>
                 <div>
-                  <p className="text-sm">🔗 Integrations & Webhooks</p>
-                  <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>Zapier, CSV export, webhook setup</p>
+                  <p className="text-sm">?? Integrations & Webhooks</p>
+                  <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>Zapier, CSV export, webhook setup</p>
                 </div>
-                <span style={{ color: '#C68B3A' }}>→</span>
+                <span style={{ color: '#C68B3A' }}>?</span>
               </a>
               <a href="/api-keys" className="flex items-center justify-between py-2"
                 style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
                 <div>
-                  <p className="text-sm">🔑 Connected Apps</p>
-                  <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>QuickBooks, PierVantage, Google Sheets</p>
+                  <p className="text-sm">?? Connected Apps</p>
+                  <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>QuickBooks, PierVantage, Google Sheets</p>
                 </div>
-                <span style={{ color: '#C68B3A' }}>→</span>
+                <span style={{ color: '#C68B3A' }}>?</span>
               </a>
             </div>
           </div>
@@ -370,7 +370,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>{plan.name}</p>
-                  <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>{plan.desc}</p>
+                  <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>{plan.desc}</p>
                 </div>
                 {sub !== 'stow_away' && (
                   <a href="/settings/cancel" className="text-xs px-3 py-1.5 rounded-lg"
@@ -391,7 +391,7 @@ export default function SettingsPage() {
           <button onClick={handleDeleteAccount}
             className="w-full text-left py-2 text-sm"
             style={{ color: '#ef4444', fontFamily: 'Georgia, serif' }}>
-            🗑️ Delete Account
+            ??? Delete Account
           </button>
           <p style={{ color: 'rgba(245,240,232,0.45)', fontSize: 11, fontFamily: 'Georgia, serif', marginTop: 4 }}>
             Permanently removes your account and all data.
@@ -400,7 +400,7 @@ export default function SettingsPage() {
 
         {/* Logout */}
         <button onClick={handleLogout} className="btn-danger w-full mt-2">
-          ⬅ Sign Out
+          ? Sign Out
         </button>
       </main>
 

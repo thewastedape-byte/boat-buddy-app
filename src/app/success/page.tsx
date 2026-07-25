@@ -116,7 +116,7 @@ function SuccessContent() {
               <p className="text-sm mb-6" style={{ color: 'rgba(245,240,232,0.7)', fontFamily: 'Georgia, serif' }}>
                 Your subscription is active. You now have full {tierLabel} access to Boat Buddy.
               </p>
-              <div className="text-sm" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>
+              <div className="text-sm" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>
                 Redirecting in {countdown}...
               </div>
             </>

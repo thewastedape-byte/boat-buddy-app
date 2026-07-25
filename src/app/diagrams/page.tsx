@@ -24,7 +24,7 @@ export default function DiagramsPage() {
         <h1 className="text-xl font-bold mb-1" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
           📐 Marine Diagrams
         </h1>
-        <p className="text-xs mb-5" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>
+        <p className="text-xs mb-5" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>
           {DIAGRAMS.length} professional system diagrams. Tap to view full size.
         </p>
 

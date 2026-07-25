@@ -129,7 +129,7 @@ export default function UpgradePage() {
       <main className="flex-1 overflow-y-auto px-4 py-6 pb-28">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold mb-1" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Choose Your Plan</h1>
-          <p className="text-sm" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>From solo boater to full service yard</p>
+          <p className="text-sm" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>From solo boater to full service yard</p>
         </div>
 
         {error && (
@@ -165,13 +165,13 @@ export default function UpgradePage() {
                 </div>
                 <div className="text-right flex-shrink-0">
                   {tier.originalPrice && (
-                    <span className="text-xs line-through block" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>{tier.originalPrice}/mo</span>
+                    <span className="text-xs line-through block" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>{tier.originalPrice}/mo</span>
                   )}
                   <span className="text-2xl font-bold" style={{ color: tier.tag === 'MOST POPULAR' ? '#C68B3A' : '#F5F0E8', fontFamily: 'Georgia, serif' }}>{tier.price}</span>
                   {tier.originalPrice && (
                     <span className="text-xs block" style={{ color: '#70c070', fontFamily: 'Georgia, serif' }}>Intro price</span>
                   )}
-                  {tier.period && <span className="text-sm" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>{tier.period}</span>}
+                  {tier.period && <span className="text-sm" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>{tier.period}</span>}
                 </div>
               </div>
 
@@ -195,12 +195,12 @@ export default function UpgradePage() {
                 </button>
               ) : (
                 <div className="text-center py-1">
-                  <p className="text-xs" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>Your current free plan</p>
+                  <p className="text-xs" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>Your current free plan</p>
                 </div>
               )}
 
               {tier.tier && (
-                <p className="text-xs text-center mt-2" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>Cancel anytime from Settings</p>
+                <p className="text-xs text-center mt-2" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>Cancel anytime from Settings</p>
               )}
             </div>
           ))}
@@ -210,7 +210,7 @@ export default function UpgradePage() {
             <p className="text-xs mb-3" style={{ color: 'rgba(245,240,232,0.6)', fontFamily: 'Georgia, serif', lineHeight: '1.6' }}>
               Admiral includes 10 seats. Add 5-seat packs at $35/pack/month.
             </p>
-            <p className="text-xs text-center" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>
+            <p className="text-xs text-center" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>
               <a href="mailto:thewastedape@gmail.com?subject=Enterprise pricing" style={{ color: '#C68B3A' }}>Contact us for enterprise pricing</a>
             </p>
           </div>

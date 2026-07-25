@@ -142,7 +142,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
         style={{ background: 'rgba(20,8,2,0.97)', borderBottom: '1px solid rgba(198,139,58,0.3)' }}>
         <div>
           <p className="text-sm font-bold" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>📷 Scan Barcode</p>
-          <p className="text-xs" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>
+          <p className="text-xs" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>
             {engine === 'native' ? 'Chrome / Android' : engine === 'zxing' ? 'Universal (iOS / Safari / Firefox)' : 'Starting...'}
           </p>
         </div>
@@ -209,7 +209,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
             style={{ background: 'rgba(0,0,0,0.85)' }}>
             <p className="text-4xl mb-4">📵</p>
             <p className="text-sm mb-3" style={{ color: '#e87070', fontFamily: 'Georgia, serif' }}>{error}</p>
-            <p className="text-xs" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>
+            <p className="text-xs" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>
               Bluetooth/USB scanners work without camera. Or type the barcode number manually in the search box.
             </p>
           </div>

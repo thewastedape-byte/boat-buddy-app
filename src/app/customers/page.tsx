@@ -70,7 +70,7 @@ export default function CustomersPage() {
     (c.phone||'').includes(search)
   )
   const set = (k: keyof Customer, v: string) => setForm(f => ({...f, [k]: v}))
-  const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
+  const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }
   const labelStyle = { color: '#C68B3A', fontFamily: 'Georgia, serif' }
 
   return (
@@ -149,7 +149,7 @@ export default function CustomersPage() {
                       </button>
                       {customer.id && (
                         <button onClick={() => deleteCustomer(customer.id!)}
-                          style={{ background: 'rgba(139,26,26,0.15)', color: 'rgba(245,240,232,0.4)', border: '1px solid rgba(139,26,26,0.2)', borderRadius: '6px', padding: '4px 8px', fontSize: '11px', cursor: 'pointer' }}>
+                          style={{ background: 'rgba(139,26,26,0.15)', color: 'rgba(245,240,232,0.78)', border: '1px solid rgba(139,26,26,0.2)', borderRadius: '6px', padding: '4px 8px', fontSize: '11px', cursor: 'pointer' }}>
                           🗑️
                         </button>
                       )}

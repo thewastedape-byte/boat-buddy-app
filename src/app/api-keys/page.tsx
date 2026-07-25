@@ -46,7 +46,7 @@ export default function ApiKeysPage() {
     setQbConnected(false)
   }
 
-  const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
+  const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }
 
   const apps = [
     {
@@ -143,7 +143,7 @@ export default function ApiKeysPage() {
                       ) : app.connected ? (
                         <button onClick={app.disconnect}
                           className="text-xs px-3 py-1.5 rounded-lg"
-                          style={{ background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.5)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
+                          style={{ background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.82)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
                           Disconnect
                         </button>
                       ) : (
