@@ -45,6 +45,8 @@ interface Slip {
   status: SlipStatus
   rentalId?: string
   notes: string
+  vesselName: string
+  ownerName: string
 }
 
 interface Payment {
@@ -517,7 +519,7 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
   const [form, setForm] = useState<Partial<Slip>>(slip || {
     name: '', dock: defaultDock || docks[0]?.name || 'Ungrouped', length: 30, beam: 12,
     amenities: { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false },
-    status: 'available', notes: '',
+    status: 'available', notes: '', vesselName: '', ownerName: '',
   })
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [nameError, setNameError] = useState(false)
@@ -555,6 +557,9 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
           </div>
 
           <Field label="Slip Name / Number" value={form.name || ''} onChange={v => setForm(f => ({ ...f, name: v }))} placeholder="e.g. A1, B3, 12" />
+
+          <Field label="Vessel Name" value={form.vesselName || ''} onChange={v => setForm(f => ({ ...f, vesselName: v }))} placeholder="e.g. Sea Wolf" />
+          <Field label="Owner / Contact" value={form.ownerName || ''} onChange={v => setForm(f => ({ ...f, ownerName: v }))} placeholder="John Smith" />
 
           <div className="flex gap-3">
             <div className="flex-1">
@@ -1089,7 +1094,7 @@ export default function MarinaPage() {
     const loadedSlips = loadLS<Slip[]>(SLIPS_KEY, [])
     // Migrate old slips without dock field
     const defaultAmenities = { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false }
-    const migratedSlips = loadedSlips.map(s => ({ dock: 'Main', amenities: defaultAmenities, ...s }))
+    const migratedSlips = loadedSlips.map(s => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s }))
     const localDocks = loadLS<Dock[]>(DOCKS_KEY, [])
     const localRentals = loadLS<Rental[]>(RENTALS_KEY, [])
     const localTransient = loadLS<TransientBooking[]>(TRANSIENT_KEY, [])
@@ -1111,7 +1116,7 @@ export default function MarinaPage() {
           const cloudSlips = await cloudGet(email, SLIPS_KEY)
           if (cloudSlips !== null) {
             const parsed: Slip[] = JSON.parse(cloudSlips)
-            const migrated = parsed.map((s: Slip) => ({ dock: 'Main', amenities: defaultAmenities, ...s }))
+            const migrated = parsed.map((s: Slip) => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s }))
             setSlips(migrated)
             localStorage.setItem(userKey(SLIPS_KEY), cloudSlips)
           } else if (migratedSlips.length > 0) {
@@ -1204,6 +1209,8 @@ export default function MarinaPage() {
           amenities: { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false },
           status: 'available' as SlipStatus,
           notes: '',
+          vesselName: '',
+          ownerName: '',
         }
       })
       setSlips(prev => {
@@ -1248,6 +1255,7 @@ export default function MarinaPage() {
         length: form.length || 30, beam: form.beam || 12,
         amenities: form.amenities || { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false },
         status: form.status || 'available', notes: form.notes || '',
+        vesselName: form.vesselName || '', ownerName: form.ownerName || '',
       }
       const updated = [...slips, newSlip]
       setSlips(updated); saveLS(SLIPS_KEY, updated)
@@ -1494,6 +1502,8 @@ export default function MarinaPage() {
                   const rental = rentals.find(r => r.slipId === s.id)
                   const booking = transient.find(b => b.slipId === s.id)
                   return s.name.toLowerCase().includes(searchQuery.toLowerCase())
+                    || s.vesselName?.toLowerCase().includes(searchQuery.toLowerCase())
+                    || s.ownerName?.toLowerCase().includes(searchQuery.toLowerCase())
                     || rental?.vesselName.toLowerCase().includes(searchQuery.toLowerCase())
                     || rental?.ownerName.toLowerCase().includes(searchQuery.toLowerCase())
                     || booking?.vesselName.toLowerCase().includes(searchQuery.toLowerCase())
@@ -1524,7 +1534,7 @@ export default function MarinaPage() {
                       {filteredDockSlips.map(slip => {
                         const rental = rentals.find(r => r.slipId === slip.id)
                         const booking = transient.find(b => b.slipId === slip.id && b.status !== 'checked_out')
-                        const occupant = rental?.vesselName || booking?.vesselName
+                        const occupant = rental?.vesselName || booking?.vesselName || slip.vesselName || undefined
                         return (
                           <SlipCell
                             key={slip.id}
@@ -1804,4 +1814,5 @@ export default function MarinaPage() {
     </div>
   )
 }
+
 
