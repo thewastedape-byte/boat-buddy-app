@@ -214,6 +214,7 @@ function WorkOrderContent() {
 
     // Load draft if no repair log entry was specified
     if (!entryId) {
+      let loadedFromDraft = false
       try {
         const draftRaw = localStorage.getItem(userKey(DRAFT_KEY))
         if (draftRaw) {
@@ -229,17 +230,25 @@ function WorkOrderContent() {
           if (draft.vesselId) {
             const allRaw2 = localStorage.getItem(userKey('boat_buddy_vessels'))
             const allV2: VesselProfile[] = allRaw2 ? JSON.parse(allRaw2) : []
-            const v = allV2.find(v => v.id === draft.vesselId)
-            if (v) setVessel(v)
+            const found2 = allV2.find(vv => vv.id === draft.vesselId)
+            if (found2) setVessel(found2)
           }
           if (draft.workOrderNum) setWorkOrderNum(draft.workOrderNum)
+          if (draft.orderDate) setOrderDate(draft.orderDate)
+          loadedFromDraft = true
         }
       } catch {}
+      // Only generate fresh WO# and date if there was no saved draft
+      if (!loadedFromDraft) {
+        const now = new Date()
+        setOrderDate(now.toISOString().split('T')[0])
+        setWorkOrderNum('WO-' + now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + '-' + String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0'))
+      }
+    } else {
+      const now = new Date()
+      setOrderDate(now.toISOString().split('T')[0])
+      setWorkOrderNum('WO-' + now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + '-' + String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0'))
     }
-
-    const now = new Date()
-    setOrderDate(now.toISOString().split('T')[0])
-    setWorkOrderNum('WO-' + now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + '-' + String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0'))
   }, [router, entryId])
 
   const updatePart = (i: number, field: keyof PartRow, val: string) => {
