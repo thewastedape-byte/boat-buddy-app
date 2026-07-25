@@ -7,6 +7,31 @@ import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 import { getVesselProfile } from '@/app/vessel/page'
 
+// ── Cloud sync helpers ──────────────────────────────────────────────────────
+const _API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://gemini-marine-api.onrender.com'
+function getAuthEmail(): string {
+  try { return JSON.parse(localStorage.getItem('boat_buddy_auth') || '{}').email || '' } catch { return '' }
+}
+async function cloudGet(key: string): Promise<string | null> {
+  try {
+    const email = getAuthEmail(); if (!email) return null
+    const res = await fetch(`${_API_URL}/api/db/storage?user_email=${encodeURIComponent(email)}&key=${encodeURIComponent(key)}`)
+    if (!res.ok) return null
+    const json = await res.json(); return json.data ?? null
+  } catch { return null }
+}
+async function cloudSet(key: string, data: string): Promise<void> {
+  try {
+    const email = getAuthEmail(); if (!email) return
+    await fetch(`${_API_URL}/api/db/storage`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_email: email, key, data }),
+    })
+  } catch { /* offline-safe */ }
+}
+// ───────────────────────────────────────────────────────────────────────────
+
 export interface RepairLogEntry {
   id: string
   date: number
@@ -65,12 +90,26 @@ export default function RepairLogPage() {
     // Check for upcoming service reminders (within 14 days)
     const now = Date.now()
     const fourteenDays = 14 * 24 * 60 * 60 * 1000
-    const due = log.filter(e => {
+    const checkReminders = (data: RepairLogEntry[]) => data.filter(e => {
       if (!e.nextServiceDate) return false
-      const dueTime = new Date(e.nextServiceDate).getTime()
-      return dueTime <= now + fourteenDays
+      return new Date(e.nextServiceDate).getTime() <= now + fourteenDays
     })
-    setServiceReminders(due)
+    setServiceReminders(checkReminders(log))
+    // Cloud sync: fetch from cloud → override local if data found; else migrate local → cloud
+    const cloudKey = userKey(REPAIR_LOG_KEY)
+    ;(async () => {
+      try {
+        const cloudData = await cloudGet(cloudKey)
+        if (cloudData !== null) {
+          const cloudLog: RepairLogEntry[] = JSON.parse(cloudData)
+          localStorage.setItem(cloudKey, JSON.stringify(cloudLog))
+          setEntries(cloudLog)
+          setServiceReminders(checkReminders(cloudLog))
+        } else if (log.length > 0) {
+          cloudSet(cloudKey, JSON.stringify(log)) // silent migration: local → cloud
+        }
+      } catch { /* offline-safe: app works without cloud */ }
+    })()
   }, [router])
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
@@ -93,6 +132,7 @@ export default function RepairLogPage() {
     }
     const updated = [entry, ...entries]
     localStorage.setItem(userKey(REPAIR_LOG_KEY), JSON.stringify(updated))
+    cloudSet(userKey(REPAIR_LOG_KEY), JSON.stringify(updated)) // fire-and-forget cloud sync
     setEntries(updated)
     setSaved(true)
     setShowForm(false)
@@ -111,11 +151,13 @@ export default function RepairLogPage() {
     const updated = entries.filter(e => e.id !== id)
     setEntries(updated)
     localStorage.setItem(userKey(REPAIR_LOG_KEY), JSON.stringify(updated))
+    cloudSet(userKey(REPAIR_LOG_KEY), JSON.stringify(updated)) // fire-and-forget cloud sync
   }
 
   const clearAll = () => {
     if (!confirm('Clear all repair log entries?')) return
     localStorage.removeItem(userKey(REPAIR_LOG_KEY))
+    cloudSet(userKey(REPAIR_LOG_KEY), JSON.stringify([])) // cloud sync empty
     setEntries([])
   }
 
@@ -192,6 +234,7 @@ export default function RepairLogPage() {
                       const updated = entries.map(en => en.id === e.id ? { ...en, nextServiceDate: undefined, nextServiceNote: undefined } : en)
                       setEntries(updated)
                       localStorage.setItem(userKey(REPAIR_LOG_KEY), JSON.stringify(updated))
+                      cloudSet(userKey(REPAIR_LOG_KEY), JSON.stringify(updated)) // fire-and-forget cloud sync
                       setServiceReminders(prev => prev.filter(r => r.id !== e.id))
                     }}
                     className="text-xs px-2 py-1 rounded-lg"
@@ -446,4 +489,5 @@ export default function RepairLogPage() {
     </div>
   )
 }
+
 
