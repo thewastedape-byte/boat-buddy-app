@@ -1432,8 +1432,8 @@ export default function MarinaPage() {
 
   // ── Dock grouping ──
   const allDockNames = [
-    ...docks.map(d => d.name),
-    ...Array.from(new Set(slips.map(s => s.dock).filter(d => !docks.find(dk => dk.name === d)))),
+    ...docks.map(d => d.name).sort((a, b) => a.localeCompare(b)),
+    ...Array.from(new Set(slips.map(s => s.dock).filter(d => !docks.find(dk => dk.name === d)))).sort((a, b) => a.localeCompare(b)),
   ]
 
   // ── Locked view ──
@@ -1555,7 +1555,7 @@ export default function MarinaPage() {
 
             {/* Dock grids */}
             {allDockNames.map(dockName => {
-              const dockSlips = slips.filter(s => s.dock === dockName)
+              const dockSlips = slips.filter(s => s.dock === dockName).sort((a, b) => a.name.localeCompare(b.name, undefined, {numeric: true, sensitivity: 'base'}))
               const isNamed = !!docks.find(d => d.name === dockName)
               if (dockSlips.length === 0 && !isNamed) return null
               const isCollapsed = collapsedDocks.has(dockName)
@@ -1939,6 +1939,7 @@ export default function MarinaPage() {
     </div>
   )
 }
+
 
 
 
