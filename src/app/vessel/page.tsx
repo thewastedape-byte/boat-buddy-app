@@ -5,6 +5,8 @@ import { isLoggedIn, userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://gemini-marine-api.onrender.com'
+
 export interface VesselProfile {
   id: string
   name: string
@@ -21,7 +23,7 @@ export interface VesselProfile {
 }
 
 const VESSELS_KEY = 'boat_buddy_vessels'
-const ACTIVE_VESSEL_KEY = 'boat_buddy_vessel'
+const ACTIVE_VESSEL_KEY = 'boat_buddy_active_vessel'
 
 export function getVesselProfile(): VesselProfile | null {
   if (typeof window === 'undefined') return null
@@ -48,13 +50,48 @@ export function setActiveVessel(vessel: VesselProfile) {
 }
 
 function generateId() {
-  // Use crypto.randomUUID() so IDs are valid UUIDs for Supabase sync
   if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID()
-  // Fallback: RFC-4122 v4 UUID
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     const r = Math.random() * 16 | 0
     return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16)
   })
+}
+
+// camelCase (frontend) → snake_case (DB)
+function toApiPayload(vessel: VesselProfile, userEmail: string) {
+  return {
+    id: vessel.id,
+    user_id: userEmail,
+    name: vessel.name,
+    type: vessel.type,
+    year: vessel.year,
+    make: vessel.make,
+    model: vessel.model,
+    engine_make: vessel.engineMake,
+    engine_model: vessel.engineModel,
+    engine_serial: vessel.engineSerial,
+    engine_hours: vessel.engineHours,
+    home_port: vessel.homePort,
+    document_number: vessel.documentNumber,
+  }
+}
+
+// snake_case (DB) → camelCase (frontend)
+function fromApiVessel(cv: any): VesselProfile {
+  return {
+    id: cv.id,
+    name: cv.name || '',
+    type: cv.type || '',
+    year: cv.year || '',
+    make: cv.make || '',
+    model: cv.model || '',
+    engineMake: cv.engine_make || '',
+    engineModel: cv.engine_model || '',
+    engineSerial: cv.engine_serial || '',
+    engineHours: cv.engine_hours || '',
+    homePort: cv.home_port || '',
+    documentNumber: cv.document_number || '',
+  }
 }
 
 const EMPTY: Omit<VesselProfile, 'id'> = {
@@ -72,42 +109,75 @@ export default function VesselPage() {
   const router = useRouter()
   const [vessels, setVessels] = useState<VesselProfile[]>([])
   const [activeId, setActiveId] = useState<string | null>(null)
-  const [editingId, setEditingId] = useState<string | null>(null) // null = list view, 'new' = new form, id = editing
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [form, setForm] = useState<Omit<VesselProfile, 'id'>>(EMPTY)
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [syncError, setSyncError] = useState<string | null>(null)
+  const [loadingCloud, setLoadingCloud] = useState(false)
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/login'); return }
 
-    let all = getAllVessels()
-    // Migrate old single vessel if exists
-    if (all.length === 0) {
+    // 1. Load from localStorage immediately (instant, no flash)
+    let local = getAllVessels()
+
+    // Migrate legacy single-vessel format
+    if (local.length === 0) {
       try {
         const old = localStorage.getItem(userKey(ACTIVE_VESSEL_KEY))
         if (old) {
           const parsed = JSON.parse(old)
           if (parsed.name && !parsed.id) {
             const migrated = { ...parsed, id: generateId() }
-            all = [migrated]
-            saveAllVessels(all)
+            local = [migrated]
+            saveAllVessels(local)
           }
         }
       } catch {}
     }
 
-    setVessels(all)
+    setVessels(local)
     const active = getVesselProfile()
     if (active?.id) setActiveId(active.id)
-    else if (all.length > 0) {
-      setActiveId(all[0].id)
-      setActiveVessel(all[0])
+    else if (local.length > 0) {
+      setActiveId(local[0].id)
+      setActiveVessel(local[0])
     }
+
+    // 2. Fetch from cloud and merge (cloud is source of truth)
+    const auth = JSON.parse(localStorage.getItem('boat_buddy_auth') || '{}')
+    const email = auth.email
+    if (!email) return
+
+    setLoadingCloud(true)
+    fetch(`${API_URL}/api/db/vessels?user_email=${encodeURIComponent(email)}`)
+      .then(r => r.ok ? r.json() : [])
+      .then((cloud: any[]) => {
+        if (!Array.isArray(cloud) || cloud.length === 0) return
+        const mapped = cloud.map(fromApiVessel)
+        const cloudIds = new Set(mapped.map(v => v.id))
+        // Cloud wins; keep any local-only (unsynced) entries
+        const merged = [
+          ...mapped,
+          ...local.filter(v => !cloudIds.has(v.id)),
+        ]
+        saveAllVessels(merged)
+        setVessels(merged)
+        if (!active?.id && merged.length > 0) {
+          setActiveId(merged[0].id)
+          setActiveVessel(merged[0])
+        }
+      })
+      .catch(() => {}) // Cloud unreachable — local data stands
+      .finally(() => setLoadingCloud(false))
   }, [router])
 
   const startNew = () => {
     setForm(EMPTY)
     setEditingId('new')
     setSaved(false)
+    setSyncError(null)
   }
 
   const startEdit = (v: VesselProfile) => {
@@ -115,48 +185,64 @@ export default function VesselPage() {
     setForm(rest)
     setEditingId(id)
     setSaved(false)
+    setSyncError(null)
   }
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!form.name.trim()) { alert('Vessel name is required.'); return }
+    setSaving(true)
+    setSyncError(null)
+
+    const auth = JSON.parse(localStorage.getItem('boat_buddy_auth') || '{}')
+    const email = auth.email || ''
 
     let updated: VesselProfile[]
+    let targetVessel: VesselProfile
+
     if (editingId === 'new') {
-      const newVessel: VesselProfile = { id: generateId(), ...form }
-      updated = [...vessels, newVessel]
-      // Auto-set as active if first vessel
+      targetVessel = { id: generateId(), ...form }
+      updated = [...vessels, targetVessel]
       if (vessels.length === 0) {
-        setActiveId(newVessel.id)
-        setActiveVessel(newVessel)
+        setActiveId(targetVessel.id)
+        setActiveVessel(targetVessel)
       }
     } else {
-      updated = vessels.map(v => v.id === editingId ? { id: editingId, ...form } : v)
-      // Update active vessel if editing the active one
-      if (editingId === activeId) {
-        setActiveVessel({ id: editingId, ...form })
-      }
+      targetVessel = { id: editingId!, ...form }
+      updated = vessels.map(v => v.id === editingId ? targetVessel : v)
+      if (editingId === activeId) setActiveVessel(targetVessel)
     }
 
+    // Save locally first (instant)
     saveAllVessels(updated)
     setVessels(updated)
-    setSaved(true)
 
-    // Sync to Supabase in background
+    // Await cloud sync — no more silent failures
     try {
-      const auth = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('boat_buddy_auth') || '{}') : {}
-      const payload = editingId === 'new'
-        ? { ...form, id: updated[updated.length-1]?.id, user_id: auth.email }
-        : { ...form, id: editingId, user_id: auth.email }
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://gemini-marine-api.onrender.com'
-      if (editingId === 'new') {
-        fetch(`${apiUrl}/api/db/vessels`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }).catch(() => {})
-      } else {
-        fetch(`${apiUrl}/api/db/vessels/${editingId}`, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }).catch(() => {})
+      const isNew = editingId === 'new'
+      const url = isNew
+        ? `${API_URL}/api/db/vessels`
+        : `${API_URL}/api/db/vessels/${targetVessel.id}`
+      const res = await fetch(url, {
+        method: isNew ? 'POST' : 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(toApiPayload(targetVessel, email)),
+      })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        setSyncError(`Saved locally. Cloud sync failed: ${err.error || res.status}`)
+        setSaving(false)
+        return
       }
-    } catch {}
-
-    setTimeout(() => { setSaved(false); setEditingId(null) }, 1200)
+      setSaved(true)
+      setTimeout(() => { setSaved(false); setEditingId(null) }, 1200)
+    } catch {
+      setSyncError('Saved locally. Cloud unavailable — data will persist until next sync.')
+      setSaved(true)
+      setTimeout(() => { setSaved(false); setEditingId(null) }, 1500)
+    } finally {
+      setSaving(false)
+    }
   }
 
   const handleSetActive = (v: VesselProfile) => {
@@ -164,12 +250,11 @@ export default function VesselPage() {
     setActiveVessel(v)
   }
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Delete this vessel profile?')) return
     const updated = vessels.filter(v => v.id !== id)
     saveAllVessels(updated)
     setVessels(updated)
-    // If deleting active, switch to first remaining
     if (id === activeId) {
       if (updated.length > 0) {
         setActiveId(updated[0].id)
@@ -179,10 +264,13 @@ export default function VesselPage() {
         localStorage.removeItem(userKey(ACTIVE_VESSEL_KEY))
       }
     }
+    // Cloud delete (best-effort, non-blocking)
+    fetch(`${API_URL}/api/db/vessels/${id}`, { method: 'DELETE' }).catch(() => {})
   }
 
   const set = (field: keyof Omit<VesselProfile, 'id'>, value: string) => {
     setSaved(false)
+    setSyncError(null)
     setForm(prev => ({ ...prev, [field]: value }))
   }
 
@@ -210,6 +298,13 @@ export default function VesselPage() {
             <div className="mb-4 px-4 py-3 rounded-lg text-sm text-center"
               style={{ background: 'rgba(0,100,50,0.35)', border: '1px solid rgba(0,200,100,0.4)', color: '#7fffb2', fontFamily: 'Georgia, serif' }}>
               ✅ Saved!
+            </div>
+          )}
+
+          {syncError && (
+            <div className="mb-4 px-4 py-3 rounded-lg text-sm"
+              style={{ background: 'rgba(139,26,26,0.3)', border: '1px solid rgba(200,80,80,0.4)', color: '#ffaaaa', fontFamily: 'Georgia, serif' }}>
+              ⚠️ {syncError}
             </div>
           )}
 
@@ -279,7 +374,10 @@ export default function VesselPage() {
               </div>
             </div>
 
-            <button type="submit" className="btn-primary w-full">💾 Save Vessel</button>
+            <button type="submit" disabled={saving} className="btn-primary w-full"
+              style={saving ? { opacity: 0.7, cursor: 'not-allowed' } : {}}>
+              {saving ? '⏳ Saving...' : '💾 Save Vessel'}
+            </button>
           </form>
         </main>
         <NavBar />
@@ -302,14 +400,21 @@ export default function VesselPage() {
       <main className="flex-1 overflow-y-auto px-4 py-4 pb-28">
         <h1 className="text-xl font-bold mb-1" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>⚓ My Fleet</h1>
         <p className="text-xs mb-5" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>
-          {vessels.length} vessel{vessels.length !== 1 ? 's' : ''}. Active vessel is used in chat and work orders.
+          {vessels.length} vessel{vessels.length !== 1 ? 's' : ''}.{loadingCloud ? ' ☁️ Syncing...' : ''} Active vessel is used in chat and work orders.
         </p>
 
-        {vessels.length === 0 && (
+        {vessels.length === 0 && !loadingCloud && (
           <div className="text-center py-12">
             <p className="text-4xl mb-3">⚓</p>
             <p className="text-sm mb-4" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>No vessels yet.</p>
             <button onClick={startNew} className="btn-primary px-8">+ Add Your First Vessel</button>
+          </div>
+        )}
+
+        {vessels.length === 0 && loadingCloud && (
+          <div className="text-center py-12">
+            <p className="text-2xl mb-3">☁️</p>
+            <p className="text-sm" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Loading your fleet...</p>
           </div>
         )}
 
