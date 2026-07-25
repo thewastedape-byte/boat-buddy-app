@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -62,6 +62,8 @@ interface Rental {
   ownerName: string
   phone: string
   email: string
+  address: string       // customer street/mailing address
+  cardOnFile: string    // text note only e.g. "Visa •••• 4567 exp 12/27" — NOT raw card numbers
   leaseType: LeaseType
   startDate: string
   endDate: string
@@ -77,6 +79,8 @@ interface TransientBooking {
   vesselName: string
   captainName: string
   phone: string
+  address: string
+  cardOnFile: string
   checkin: string
   checkout: string
   nightlyRate: number
@@ -669,6 +673,7 @@ interface RentalModalProps {
 function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModalProps) {
   const [form, setForm] = useState<Partial<Rental>>(rental || {
     slipId: '', vesselName: '', ownerName: '', phone: '', email: '',
+    address: '', cardOnFile: '',
     leaseType: 'monthly', startDate: '', endDate: '', monthlyRate: 0,
     autoRenew: false, notes: '', payments: [],
   })
@@ -706,6 +711,15 @@ function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModa
               <Field label="Email" value={form.email || ''} onChange={v => setForm(f => ({ ...f, email: v }))} placeholder="owner@email.com" />
             </div>
           </div>
+
+          <div>
+            <label style={labelStyle}>Address</label>
+            <textarea value={form.address || ''} onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
+              rows={2} placeholder="123 Harbor Way, Annapolis, MD 21401"
+              style={{ ...inputStyle, resize: 'none' }} />
+          </div>
+
+          <Field label="Card on File" value={form.cardOnFile || ''} onChange={v => setForm(f => ({ ...f, cardOnFile: v }))} placeholder="Visa •••• 1234 exp 12/27" />
 
           <div>
             <label style={labelStyle}>Assign Slip</label>
@@ -827,6 +841,7 @@ interface TransientModalProps {
 function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps) {
   const [form, setForm] = useState<Partial<TransientBooking>>(booking || {
     slipId: '', vesselName: '', captainName: '', phone: '',
+    address: '', cardOnFile: '',
     checkin: '', checkout: '', nightlyRate: 0, notes: '', status: 'upcoming',
     powerType: 'none', loa: 0, beam: 0, waterAtSlip: false,
     discountCard: 'none', discountCardNumber: '',
@@ -872,6 +887,15 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
               <Field label="Phone" value={form.phone || ''} onChange={v => setForm(f => ({ ...f, phone: v }))} placeholder="(555) 000-0000" />
             </div>
           </div>
+
+          <div>
+            <label style={labelStyle}>Address</label>
+            <textarea value={form.address || ''} onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
+              rows={2} placeholder="123 Harbor Way, Annapolis, MD 21401"
+              style={{ ...inputStyle, resize: 'none' }} />
+          </div>
+
+          <Field label="Card on File" value={form.cardOnFile || ''} onChange={v => setForm(f => ({ ...f, cardOnFile: v }))} placeholder="Visa •••• 1234 exp 12/27" />
 
           {/* Vessel dimensions */}
           <div className="flex gap-3">
@@ -1096,8 +1120,8 @@ export default function MarinaPage() {
     const defaultAmenities = { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false }
     const migratedSlips = loadedSlips.map(s => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s }))
     const localDocks = loadLS<Dock[]>(DOCKS_KEY, [])
-    const localRentals = loadLS<Rental[]>(RENTALS_KEY, [])
-    const localTransient = loadLS<TransientBooking[]>(TRANSIENT_KEY, [])
+    const localRentals = loadLS<Rental[]>(RENTALS_KEY, []).map(r => ({ address: r.address || '', cardOnFile: r.cardOnFile || '', ...r }))
+    const localTransient = loadLS<TransientBooking[]>(TRANSIENT_KEY, []).map(b => ({ address: b.address || '', cardOnFile: b.cardOnFile || '', ...b }))
     const localWaitlist = loadLS<WaitlistEntry[]>(WAITLIST_KEY, [])
     setSlips(migratedSlips)
     setDocks(localDocks)
@@ -1139,7 +1163,9 @@ export default function MarinaPage() {
         try {
           const cloudRentals = await cloudGet(email, RENTALS_KEY)
           if (cloudRentals !== null) {
-            setRentals(JSON.parse(cloudRentals))
+            const parsedRentals: Rental[] = JSON.parse(cloudRentals)
+            const migratedRentals = parsedRentals.map((r: Rental) => ({ address: r.address || '', cardOnFile: r.cardOnFile || '', ...r }))
+            setRentals(migratedRentals)
             localStorage.setItem(userKey(RENTALS_KEY), cloudRentals)
           } else if (localRentals.length > 0) {
             await cloudSet(email, RENTALS_KEY, JSON.stringify(localRentals))
@@ -1150,7 +1176,9 @@ export default function MarinaPage() {
         try {
           const cloudTransient = await cloudGet(email, TRANSIENT_KEY)
           if (cloudTransient !== null) {
-            setTransient(JSON.parse(cloudTransient))
+            const parsedTransient: TransientBooking[] = JSON.parse(cloudTransient)
+            const migratedTransient = parsedTransient.map((b: TransientBooking) => ({ address: b.address || '', cardOnFile: b.cardOnFile || '', ...b }))
+            setTransient(migratedTransient)
             localStorage.setItem(userKey(TRANSIENT_KEY), cloudTransient)
           } else if (localTransient.length > 0) {
             await cloudSet(email, TRANSIENT_KEY, JSON.stringify(localTransient))
@@ -1282,6 +1310,7 @@ export default function MarinaPage() {
       const newRental: Rental = {
         id: genId(), slipId: form.slipId || '', vesselName: form.vesselName || '',
         ownerName: form.ownerName || '', phone: form.phone || '', email: form.email || '',
+        address: form.address || '', cardOnFile: form.cardOnFile || '',
         leaseType: form.leaseType || 'monthly', startDate: form.startDate || '',
         endDate: form.endDate || '', monthlyRate: form.monthlyRate || 0,
         autoRenew: form.autoRenew || false, notes: form.notes || '', payments: form.payments || [],
@@ -1316,6 +1345,7 @@ export default function MarinaPage() {
       const newBooking: TransientBooking = {
         id: genId(), slipId: form.slipId || '', vesselName: form.vesselName || '',
         captainName: form.captainName || '', phone: form.phone || '',
+        address: form.address || '', cardOnFile: form.cardOnFile || '',
         checkin: form.checkin || '', checkout: form.checkout || '',
         nightlyRate: form.nightlyRate || 0, notes: form.notes || '',
         status: form.status || 'upcoming',
@@ -1612,6 +1642,12 @@ export default function MarinaPage() {
                         <span>💰 ${rental.monthlyRate}/mo</span>
                         {rental.startDate && <span>📅 {rental.startDate}{rental.endDate ? ` → ${rental.endDate}` : ' · Ongoing'}</span>}
                       </div>
+                      {(rental.address || rental.cardOnFile) && (
+                        <div className="flex flex-col gap-0.5 mt-1.5 text-xs" style={dimStyle}>
+                          {rental.address && <span>🏠 {rental.address}</span>}
+                          {rental.cardOnFile && <span>💳 {rental.cardOnFile}</span>}
+                        </div>
+                      )}
                       <div className="mt-2">
                         <span style={{ color: paymentStatusColor(payStatus), fontSize: '12px', fontFamily: 'Georgia, serif' }}>
                           {paymentStatusLabel(payStatus)}
@@ -1814,5 +1850,6 @@ export default function MarinaPage() {
     </div>
   )
 }
+
 
 
