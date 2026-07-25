@@ -5,8 +5,6 @@ import Link from 'next/link'
 import { isLoggedIn, userKey } from '@/lib/auth'
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
-import { getVesselProfile } from '@/app/vessel/page'
-
 // ── Cloud sync helpers ──────────────────────────────────────────────────────
 const _API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://gemini-marine-api.onrender.com'
 function getAuthEmail(): string {
@@ -57,6 +55,27 @@ export function getRepairLog(): RepairLogEntry[] {
   } catch { return [] }
 }
 
+function getActiveVesselName(): string {
+  try {
+    if (typeof window === 'undefined') return ''
+    // Try active vessel first
+    const activeRaw = localStorage.getItem(userKey('boat_buddy_vessel'))
+    if (activeRaw) {
+      const v = JSON.parse(activeRaw)
+      if (v?.name) return v.name
+    }
+    // Fall back to first vessel in list
+    const allRaw = localStorage.getItem(userKey('boat_buddy_vessels'))
+    if (allRaw) {
+      const vessels = JSON.parse(allRaw)
+      if (Array.isArray(vessels) && vessels.length > 0 && vessels[0]?.name) {
+        return vessels[0].name
+      }
+    }
+    return ''
+  } catch { return '' }
+}
+
 const EMPTY_FORM = {
   date: new Date().toISOString().split('T')[0],
   vessel: '',
@@ -85,10 +104,8 @@ function RepairLogContent() {
     const log = getRepairLog()
     setEntries(log)
     // Pre-fill vessel name from profile
-    try {
-      const vessel = getVesselProfile()
-      if (vessel?.name) setForm(f => ({ ...f, vessel: vessel.name }))
-    } catch { /* safe fallback */ }
+    const vesselName = getActiveVesselName()
+    if (vesselName) setForm(f => ({ ...f, vessel: vesselName }))
     // Check for upcoming service reminders (within 14 days)
     const now = Date.now()
     const fourteenDays = 14 * 24 * 60 * 60 * 1000
