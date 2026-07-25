@@ -685,6 +685,7 @@ function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModa
     autoRenew: false, notes: '', payments: [],
   })
   const [showEndConfirm, setShowEndConfirm] = useState(false)
+  const [slipSearch, setSlipSearch] = useState('')
 
   const availableSlips = slips.filter(s => s.status === 'available' || s.id === form.slipId)
 
@@ -697,7 +698,7 @@ function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModa
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.7)' }} onClick={onClose}>
       <div className="w-full max-w-lg rounded-t-2xl p-5 overflow-y-auto"
-        style={{ background: '#0d1f3c', border: '1px solid rgba(74,144,226,0.3)', borderBottom: 'none', maxHeight: '92vh' }}
+        style={{ background: '#0d1f3c', border: '1px solid rgba(74,144,226,0.3)', borderBottom: 'none', maxHeight: '92vh', paddingBottom: '80px' }}
         onClick={e => e.stopPropagation()}
         onTouchStart={e => e.stopPropagation()}
         onTouchEnd={e => e.stopPropagation()}>
@@ -730,15 +731,33 @@ function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModa
 
           <div>
             <label style={labelStyle}>Assign Slip</label>
-            <select value={form.slipId || ''} onChange={e => setForm(f => ({ ...f, slipId: e.target.value }))}
-              style={{ ...inputStyle, cursor: 'pointer' }}>
-              <option value="">— Select slip —</option>
-              {availableSlips.map(s => (
-                <option key={s.id} value={s.id} style={{ background: '#0d1f3c' }}>
-                  {s.name} ({s.length}×{s.beam}ft)
-                </option>
-              ))}
-            </select>
+            <div style={{ position: 'relative', marginBottom: '6px' }}>
+              <input
+                type="text"
+                value={slipSearch}
+                onChange={e => setSlipSearch(e.target.value)}
+                placeholder="Search slips…"
+                style={{ ...inputStyle, paddingRight: '32px' }}
+              />
+              {slipSearch && (
+                <button onClick={() => setSlipSearch('')}
+                  style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'rgba(245,240,232,0.5)', cursor: 'pointer', fontSize: '14px', lineHeight: 1, padding: 0 }}>✕</button>
+              )}
+            </div>
+            <div style={{ maxHeight: '140px', overflowY: 'auto', border: '1px solid rgba(74,144,226,0.25)', borderRadius: '8px', background: 'rgba(255,255,255,0.04)' }}>
+              <div onClick={() => setForm(f => ({ ...f, slipId: '' }))}
+                style={{ padding: '8px 12px', cursor: 'pointer', background: !form.slipId ? 'rgba(74,144,226,0.2)' : 'transparent', color: !form.slipId ? '#4A90E2' : 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif', fontSize: '13px', borderBottom: '1px solid rgba(74,144,226,0.1)' }}>
+                — No slip assigned —
+              </div>
+              {availableSlips
+                .filter(s => !slipSearch || s.name.toLowerCase().includes(slipSearch.toLowerCase()) || s.dock.toLowerCase().includes(slipSearch.toLowerCase()))
+                .map(s => (
+                  <div key={s.id} onClick={() => setForm(f => ({ ...f, slipId: s.id }))}
+                    style={{ padding: '8px 12px', cursor: 'pointer', background: form.slipId === s.id ? 'rgba(74,144,226,0.2)' : 'transparent', color: form.slipId === s.id ? '#4A90E2' : '#F5F0E8', fontFamily: 'Georgia, serif', fontSize: '13px', borderBottom: '1px solid rgba(74,144,226,0.08)' }}>
+                    {s.name} ({s.length}×{s.beam}ft)
+                  </div>
+                ))}
+            </div>
           </div>
 
           <div>
@@ -854,6 +873,8 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
     discountCard: 'none', discountCardNumber: '',
   })
 
+  const [slipSearch, setSlipSearch] = useState('')
+
   const nights = form.checkin && form.checkout ? diffDays(form.checkin, form.checkout) : 0
   const total = nights * (form.nightlyRate || 0)
   const availableSlips = slips.filter(s => s.status === 'available' || s.id === form.slipId)
@@ -921,18 +942,36 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
           {/* Slip */}
           <div>
             <label style={labelStyle}>Assign Slip (Available Only)</label>
-            <select value={form.slipId || ''} onChange={e => setForm(f => ({ ...f, slipId: e.target.value }))}
-              style={{ ...inputStyle, cursor: 'pointer' }}>
-              <option value="">— Select slip —</option>
-              {availableSlips.map(s => (
-                <option key={s.id} value={s.id} style={{ background: '#0d1f3c' }}>
-                  {s.name} ({s.length}ft × {s.beam}ft)
-                  {s.amenities?.amp30 ? ' · 30A' : ''}
-                  {s.amenities?.amp50 ? ' · 50A' : ''}
-                  {s.amenities?.water ? ' · Water' : ''}
-                </option>
-              ))}
-            </select>
+            <div style={{ position: 'relative', marginBottom: '6px' }}>
+              <input
+                type="text"
+                value={slipSearch}
+                onChange={e => setSlipSearch(e.target.value)}
+                placeholder="Search slips…"
+                style={{ ...inputStyle, paddingRight: '32px' }}
+              />
+              {slipSearch && (
+                <button onClick={() => setSlipSearch('')}
+                  style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'rgba(245,240,232,0.5)', cursor: 'pointer', fontSize: '14px', lineHeight: 1, padding: 0 }}>✕</button>
+              )}
+            </div>
+            <div style={{ maxHeight: '140px', overflowY: 'auto', border: '1px solid rgba(74,144,226,0.25)', borderRadius: '8px', background: 'rgba(255,255,255,0.04)' }}>
+              <div onClick={() => setForm(f => ({ ...f, slipId: '' }))}
+                style={{ padding: '8px 12px', cursor: 'pointer', background: !form.slipId ? 'rgba(74,144,226,0.2)' : 'transparent', color: !form.slipId ? '#4A90E2' : 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif', fontSize: '13px', borderBottom: '1px solid rgba(74,144,226,0.1)' }}>
+                — No slip assigned —
+              </div>
+              {availableSlips
+                .filter(s => !slipSearch || s.name.toLowerCase().includes(slipSearch.toLowerCase()) || s.dock.toLowerCase().includes(slipSearch.toLowerCase()))
+                .map(s => (
+                  <div key={s.id} onClick={() => setForm(f => ({ ...f, slipId: s.id }))}
+                    style={{ padding: '8px 12px', cursor: 'pointer', background: form.slipId === s.id ? 'rgba(74,144,226,0.2)' : 'transparent', color: form.slipId === s.id ? '#4A90E2' : '#F5F0E8', fontFamily: 'Georgia, serif', fontSize: '13px', borderBottom: '1px solid rgba(74,144,226,0.08)' }}>
+                    {s.name} ({s.length}ft × {s.beam}ft)
+                    {s.amenities?.amp30 ? <span style={{ color: '#C68B3A' }}> · 30A</span> : null}
+                    {s.amenities?.amp50 ? <span style={{ color: '#C68B3A' }}> · 50A</span> : null}
+                    {s.amenities?.water ? <span style={{ color: '#4caf82' }}> · Water</span> : null}
+                  </div>
+                ))}
+            </div>
           </div>
 
           {/* Dates & nights */}
