@@ -118,10 +118,22 @@ function PartPickerModal({ onSelect, onClose }: {
   )
 }
 
+// Read saved draft synchronously (called during state initialization — before any useEffect)
+function readDraft() {
+  if (typeof window === 'undefined') return null
+  try {
+    const raw = window.localStorage.getItem(DRAFT_KEY)
+    return raw ? JSON.parse(raw) : null
+  } catch { return null }
+}
+
 function WorkOrderContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const entryId = searchParams.get('id')
+
+  // Read draft synchronously right now — before any useEffect can fire and clobber it
+  const _draft = !entryId ? readDraft() : null
 
   const [vessel, setVessel] = useState<VesselProfile | null>(null)
   const [allVessels, setAllVessels] = useState<VesselProfile[]>([])
@@ -129,15 +141,15 @@ function WorkOrderContent() {
   const [shopPhone, setShopPhone] = useState('')
   const [shopAddress, setShopAddress] = useState('')
   const [shopLogo, setShopLogo] = useState('')
-  const [problemDesc, setProblemDesc] = useState('')
-  const [laborNotes, setLaborNotes] = useState('')
-  const [laborHours, setLaborHours] = useState('')
-  const [laborRate, setLaborRate] = useState('')
-  const [techName, setTechName] = useState('')
-  const [orderDate, setOrderDate] = useState('')
-  const [workOrderNum, setWorkOrderNum] = useState('')
-  const [customerEmail, setCustomerEmail] = useState('')
-  const [customerName, setCustomerName] = useState('')
+  const [problemDesc, setProblemDesc] = useState<string>(_draft?.problemDesc || '')
+  const [laborNotes, setLaborNotes] = useState<string>(_draft?.laborNotes || '')
+  const [laborHours, setLaborHours] = useState<string>(_draft?.laborHours || '')
+  const [laborRate, setLaborRate] = useState<string>(_draft?.laborRate || '')
+  const [techName, setTechName] = useState<string>(_draft?.techName || '')
+  const [orderDate, setOrderDate] = useState<string>(_draft?.orderDate || '')
+  const [workOrderNum, setWorkOrderNum] = useState<string>(_draft?.workOrderNum || '')
+  const [customerEmail, setCustomerEmail] = useState<string>(_draft?.customerEmail || '')
+  const [customerName, setCustomerName] = useState<string>(_draft?.customerName || '')
   const [invoiceFromEmail, setInvoiceFromEmail] = useState('')
   const [invoiceAppPw, setInvoiceAppPw] = useState('')
   const [emailSent, setEmailSent] = useState(false)
@@ -145,17 +157,18 @@ function WorkOrderContent() {
   const [showEmailForm, setShowEmailForm] = useState(false)
   const [showPartPicker, setShowPartPicker] = useState(false)
   const [pickerTargetRow, setPickerTargetRow] = useState<number | null>(null)
-  const [parts, setParts] = useState<PartRow[]>([
-    { description: '', qty: '1', price: '' },
-    { description: '', qty: '1', price: '' },
-    { description: '', qty: '1', price: '' },
-  ])
-  const [draftSaved, setDraftSaved] = useState(false)
+  const [parts, setParts] = useState<PartRow[]>(
+    _draft?.parts?.length ? _draft.parts : [
+      { description: '', qty: '1', price: '' },
+      { description: '', qty: '1', price: '' },
+      { description: '', qty: '1', price: '' },
+    ]
+  )
   const [savedManually, setSavedManually] = useState(false)
 
   const saveDraft = () => {
     try {
-      localStorage.setItem(DRAFT_KEY, JSON.stringify({
+      window.localStorage.setItem(DRAFT_KEY, JSON.stringify({
         problemDesc, laborNotes, laborHours, laborRate,
         techName, customerEmail, customerName,
         parts, vesselId: vessel?.id,
@@ -163,25 +176,9 @@ function WorkOrderContent() {
         savedAt: Date.now()
       }))
       setSavedManually(true)
-      setTimeout(() => setSavedManually(false), 2000)
+      setTimeout(() => setSavedManually(false), 2500)
     } catch {}
   }
-
-  // Auto-save draft whenever content changes
-  useEffect(() => {
-    if (!problemDesc && !laborNotes && !laborHours && parts.every(p => !p.description.trim())) return
-    try {
-      localStorage.setItem(DRAFT_KEY, JSON.stringify({
-        problemDesc, laborNotes, laborHours, laborRate,
-        techName, customerEmail, customerName,
-        parts, vesselId: vessel?.id,
-        workOrderNum, orderDate,
-        savedAt: Date.now()
-      }))
-      setDraftSaved(true)
-      setTimeout(() => setDraftSaved(false), 1500)
-    } catch {}
-  }, [problemDesc, laborNotes, laborHours, laborRate, techName, customerEmail, customerName, parts, vessel, workOrderNum, orderDate])
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/login'); return }
@@ -193,14 +190,19 @@ function WorkOrderContent() {
     setShopAddress(localStorage.getItem(userKey('bb_biz_address')) || '')
     setShopLogo(localStorage.getItem(userKey('bb_biz_logo')) || '')
     try {
-      // Load all vessels
       const allRaw = localStorage.getItem(userKey('boat_buddy_vessels'))
       const vessels: VesselProfile[] = allRaw ? JSON.parse(allRaw) : []
       setAllVessels(vessels)
-      // Load active vessel
-      const vRaw = localStorage.getItem(userKey(VESSEL_KEY))
-      if (vRaw) setVessel(JSON.parse(vRaw))
-      else if (vessels.length > 0) setVessel(vessels[0])
+      // If draft had a vessel, find and set it; otherwise use default
+      if (_draft?.vesselId) {
+        const dv = vessels.find(v => v.id === _draft.vesselId)
+        if (dv) setVessel(dv)
+        else if (vessels.length > 0) setVessel(vessels[0])
+      } else {
+        const vRaw = localStorage.getItem(userKey(VESSEL_KEY))
+        if (vRaw) setVessel(JSON.parse(vRaw))
+        else if (vessels.length > 0) setVessel(vessels[0])
+      }
     } catch {}
 
     if (entryId) {
@@ -217,9 +219,10 @@ function WorkOrderContent() {
               const prefilled = found.parts.map(p => ({ description: p, qty: '1', price: '' }))
               setParts([...prefilled, { description: '', qty: '1', price: '' }, { description: '', qty: '1', price: '' }])
             }
-            // Auto-select vessel matching this job
             if (found.vessel_id) {
-              const matchedVessel = vessels.find(v => v.id === found.vessel_id)
+              const allRaw2 = localStorage.getItem(userKey('boat_buddy_vessels'))
+              const vessels2: VesselProfile[] = allRaw2 ? JSON.parse(allRaw2) : []
+              const matchedVessel = vessels2.find(v => v.id === found.vessel_id)
               if (matchedVessel) setVessel(matchedVessel)
             }
           }
@@ -227,39 +230,12 @@ function WorkOrderContent() {
       } catch {}
     }
 
-    // Load draft if no repair log entry was specified
-    if (!entryId) {
-      let loadedFromDraft = false
-      try {
-        const draftRaw = localStorage.getItem(DRAFT_KEY)
-        if (draftRaw) {
-          const draft = JSON.parse(draftRaw)
-          if (draft.problemDesc) setProblemDesc(draft.problemDesc)
-          if (draft.laborNotes) setLaborNotes(draft.laborNotes)
-          if (draft.laborHours) setLaborHours(draft.laborHours)
-          if (draft.laborRate) setLaborRate(draft.laborRate)
-          if (draft.techName) setTechName(draft.techName)
-          if (draft.customerEmail) setCustomerEmail(draft.customerEmail)
-          if (draft.customerName) setCustomerName(draft.customerName)
-          if (draft.parts && draft.parts.length > 0) setParts(draft.parts)
-          if (draft.vesselId) {
-            const allRaw2 = localStorage.getItem(userKey('boat_buddy_vessels'))
-            const allV2: VesselProfile[] = allRaw2 ? JSON.parse(allRaw2) : []
-            const found2 = allV2.find(vv => vv.id === draft.vesselId)
-            if (found2) setVessel(found2)
-          }
-          if (draft.workOrderNum) setWorkOrderNum(draft.workOrderNum)
-          if (draft.orderDate) setOrderDate(draft.orderDate)
-          loadedFromDraft = true
-        }
-      } catch {}
-      // Only generate fresh WO# and date if there was no saved draft
-      if (!loadedFromDraft) {
-        const now = new Date()
-        setOrderDate(now.toISOString().split('T')[0])
-        setWorkOrderNum('WO-' + now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + '-' + String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0'))
-      }
-    } else {
+    // Only generate fresh WO# if nothing was loaded from draft or entryId
+    if (!_draft && !entryId) {
+      const now = new Date()
+      setOrderDate(now.toISOString().split('T')[0])
+      setWorkOrderNum('WO-' + now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + '-' + String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0'))
+    } else if (entryId) {
       const now = new Date()
       setOrderDate(now.toISOString().split('T')[0])
       setWorkOrderNum('WO-' + now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + '-' + String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0'))
@@ -338,8 +314,8 @@ function WorkOrderContent() {
         style={{ background: 'rgba(20, 8, 2, 0.95)', borderBottom: '1px solid rgba(198,139,58,0.3)' }}>
         <Logo size="sm" />
         <div className="flex items-center gap-2">
-          {draftSaved && (
-            <span className="text-xs" style={{ color: 'rgba(198,139,58,0.7)', fontFamily: 'Georgia, serif' }}>Draft saved</span>
+          {savedManually && (
+            <span className="text-xs" style={{ color: 'rgba(100,220,130,0.9)', fontFamily: 'Georgia, serif' }}>✅ Saved!</span>
           )}
           <button
             onClick={() => {
