@@ -27,6 +27,9 @@ interface YardSpot {
   ownerName: string
   notes: string
   status: SpotStatus
+  cardType: 'visa' | 'mastercard' | 'amex' | 'discover' | 'other' | ''
+  cardLast4: string
+  cardExpiry: string
   insuranceCompany: string
   policyNumber: string
   insuranceExpiry: string  // YYYY-MM
@@ -46,6 +49,9 @@ interface YardPin {
   ownerName: string
   notes: string
   status: SpotStatus
+  cardType: 'visa' | 'mastercard' | 'amex' | 'discover' | 'other' | ''
+  cardLast4: string
+  cardExpiry: string
   insuranceCompany: string
   policyNumber: string
   insuranceExpiry: string  // YYYY-MM
@@ -101,8 +107,8 @@ const goldStyle = { color: '#C68B3A', fontFamily: 'Georgia, serif' }
 // ── Spot Modal (shared between grid + custom map + satellite) ──
 interface PinModalProps {
   title: string
-  form: { vesselName: string; ownerName: string; notes: string; status: SpotStatus; insuranceCompany: string; policyNumber: string; insuranceExpiry: string }
-  onChange: (f: { vesselName: string; ownerName: string; notes: string; status: SpotStatus; insuranceCompany: string; policyNumber: string; insuranceExpiry: string }) => void
+  form: { vesselName: string; ownerName: string; notes: string; status: SpotStatus; cardType: string; cardLast4: string; cardExpiry: string; insuranceCompany: string; policyNumber: string; insuranceExpiry: string }
+  onChange: (f: { vesselName: string; ownerName: string; notes: string; status: SpotStatus; cardType: string; cardLast4: string; cardExpiry: string; insuranceCompany: string; policyNumber: string; insuranceExpiry: string }) => void
   onSave: () => void
   onClose: () => void
   extraInfo?: string
@@ -152,6 +158,46 @@ function SlipModal({ title, form, onChange, onSave, onClose, extraInfo }: PinMod
               className="w-full px-3 py-2 rounded-lg text-sm resize-none"
               style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(74,144,226,0.25)', color: '#F5F0E8', fontFamily: 'Georgia, serif', outline: 'none' }} />
           </div>
+          {/* Card on File */}
+          <div style={{ marginTop: 8 }}>
+            <p style={{ color: '#C68B3A', fontSize: 11, fontFamily: 'Georgia, serif', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Card on File</p>
+            <div style={{ display: 'flex', gap: 6, marginBottom: 4 }}>
+              <select
+                value={form.cardType || ''}
+                onChange={e => onChange({ ...form, cardType: e.target.value as any })}
+                style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(74,144,226,0.25)', color: '#F5F0E8', fontFamily: 'Georgia, serif', outline: 'none', borderRadius: '8px', padding: '8px 12px', flex: 2, fontSize: '14px' }}
+              >
+                <option value="" style={{ background: '#0d1f3c' }}>Card Type</option>
+                <option value="visa" style={{ background: '#0d1f3c' }}>Visa</option>
+                <option value="mastercard" style={{ background: '#0d1f3c' }}>Mastercard</option>
+                <option value="amex" style={{ background: '#0d1f3c' }}>Amex</option>
+                <option value="discover" style={{ background: '#0d1f3c' }}>Discover</option>
+                <option value="other" style={{ background: '#0d1f3c' }}>Other</option>
+              </select>
+              <input
+                type="text"
+                inputMode="numeric"
+                maxLength={4}
+                placeholder="Last 4"
+                value={form.cardLast4 || ''}
+                onChange={e => onChange({ ...form, cardLast4: e.target.value.replace(/\D/g, '').slice(0, 4) })}
+                style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(74,144,226,0.25)', color: '#F5F0E8', fontFamily: 'Georgia, serif', outline: 'none', borderRadius: '8px', padding: '8px 12px', flex: 1, fontSize: '14px' }}
+              />
+              <input
+                type="text"
+                placeholder="MM/YY"
+                maxLength={5}
+                value={form.cardExpiry || ''}
+                onChange={e => {
+                  let v = e.target.value.replace(/[^\d/]/g, '')
+                  if (v.length === 2 && !v.includes('/')) v = v + '/'
+                  onChange({ ...form, cardExpiry: v.slice(0, 5) })
+                }}
+                style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(74,144,226,0.25)', color: '#F5F0E8', fontFamily: 'Georgia, serif', outline: 'none', borderRadius: '8px', padding: '8px 12px', flex: 1, fontSize: '14px' }}
+              />
+            </div>
+          </div>
+
           {/* Insurance */}
           <div style={{ marginTop: 4 }}>
             <p style={{ color: '#C68B3A', fontSize: 11, fontFamily: 'Georgia, serif', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Insurance</p>
@@ -187,7 +233,7 @@ function SlipModal({ title, form, onChange, onSave, onClose, extraInfo }: PinMod
 }
 
 // ── Empty pin form ──
-const emptyPinForm = { vesselName: '', ownerName: '', notes: '', status: 'available' as SpotStatus, insuranceCompany: '', policyNumber: '', insuranceExpiry: '' }
+const emptyPinForm = { vesselName: '', ownerName: '', notes: '', status: 'available' as SpotStatus, cardType: '', cardLast4: '', cardExpiry: '', insuranceCompany: '', policyNumber: '', insuranceExpiry: '' }
 
 // ── Main Page ──
 export default function YardPage() {
@@ -311,13 +357,13 @@ export default function YardPage() {
   const getSpot = useCallback((row: number, col: number): YardSpot => {
     const found = spots.find(s => s.row === row && s.col === col)
     if (found) return { insuranceCompany: '', policyNumber: '', insuranceExpiry: '', ...found }
-    return { id: `${row}-${col}`, row, col, label: generateLabel(row, col), vesselName: '', ownerName: '', notes: '', status: 'available', insuranceCompany: '', policyNumber: '', insuranceExpiry: '' }
+    return { id: `${row}-${col}`, row, col, label: generateLabel(row, col), vesselName: '', ownerName: '', notes: '', status: 'available', cardType: '' as const, cardLast4: '', cardExpiry: '', insuranceCompany: '', policyNumber: '', insuranceExpiry: '' }
   }, [spots])
 
   const openSpot = (row: number, col: number) => {
     const spot = getSpot(row, col)
     setSelectedSpot(spot)
-    setGridForm({ vesselName: spot.vesselName, ownerName: spot.ownerName, notes: spot.notes, status: spot.status, insuranceCompany: spot.insuranceCompany || '', policyNumber: spot.policyNumber || '', insuranceExpiry: spot.insuranceExpiry || '' })
+    setGridForm({ vesselName: spot.vesselName, ownerName: spot.ownerName, notes: spot.notes, status: spot.status, cardType: spot.cardType || '', cardLast4: spot.cardLast4 || '', cardExpiry: spot.cardExpiry || '', insuranceCompany: spot.insuranceCompany || '', policyNumber: spot.policyNumber || '', insuranceExpiry: spot.insuranceExpiry || '' })
   }
 
   const saveSpot = () => {
@@ -377,6 +423,7 @@ export default function YardPage() {
       x, y,
       label: `P${pins.length + 1}`,
       vesselName: '', ownerName: '', notes: '', status: 'available',
+      cardType: '' as const, cardLast4: '', cardExpiry: '',
       insuranceCompany: '', policyNumber: '', insuranceExpiry: '',
     }
     const updated = [...pins, newPin]
@@ -390,7 +437,7 @@ export default function YardPage() {
   const openPin = (pin: YardPin, e: React.MouseEvent) => {
     e.stopPropagation()
     setSelectedPin(pin)
-    setPinForm({ vesselName: pin.vesselName, ownerName: pin.ownerName, notes: pin.notes, status: pin.status, insuranceCompany: pin.insuranceCompany || '', policyNumber: pin.policyNumber || '', insuranceExpiry: pin.insuranceExpiry || '' })
+    setPinForm({ vesselName: pin.vesselName, ownerName: pin.ownerName, notes: pin.notes, status: pin.status, cardType: pin.cardType || '', cardLast4: pin.cardLast4 || '', cardExpiry: pin.cardExpiry || '', insuranceCompany: pin.insuranceCompany || '', policyNumber: pin.policyNumber || '', insuranceExpiry: pin.insuranceExpiry || '' })
   }
 
   const savePin = () => {
@@ -503,7 +550,7 @@ export default function YardPage() {
       })
       marker.addListener('click', () => {
         setSelectedSatPin(pin)
-        setSatPinForm({ vesselName: pin.vesselName, ownerName: pin.ownerName, notes: pin.notes, status: pin.status, insuranceCompany: pin.insuranceCompany || '', policyNumber: pin.policyNumber || '', insuranceExpiry: pin.insuranceExpiry || '' })
+        setSatPinForm({ vesselName: pin.vesselName, ownerName: pin.ownerName, notes: pin.notes, status: pin.status, cardType: pin.cardType || '', cardLast4: pin.cardLast4 || '', cardExpiry: pin.cardExpiry || '', insuranceCompany: pin.insuranceCompany || '', policyNumber: pin.policyNumber || '', insuranceExpiry: pin.insuranceExpiry || '' })
         setPendingSatPin(null)
       })
       markersRef.current.push(marker)

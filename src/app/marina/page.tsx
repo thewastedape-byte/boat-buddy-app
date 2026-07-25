@@ -49,7 +49,9 @@ interface Slip {
   ownerName: string
   phone: string
   address: string
-  cardOnFile: string
+  cardType: 'visa' | 'mastercard' | 'amex' | 'discover' | 'other' | ''
+  cardLast4: string
+  cardExpiry: string
   insuranceCompany: string
   policyNumber: string
   insuranceExpiry: string  // YYYY-MM
@@ -69,7 +71,9 @@ interface Rental {
   phone: string
   email: string
   address: string       // customer street/mailing address
-  cardOnFile: string    // text note only e.g. "Visa •••• 4567 exp 12/27" — NOT raw card numbers
+  cardType: 'visa' | 'mastercard' | 'amex' | 'discover' | 'other' | ''
+  cardLast4: string
+  cardExpiry: string
   leaseType: LeaseType
   startDate: string
   endDate: string
@@ -86,7 +90,9 @@ interface TransientBooking {
   captainName: string
   phone: string
   address: string
-  cardOnFile: string
+  cardType: 'visa' | 'mastercard' | 'amex' | 'discover' | 'other' | ''
+  cardLast4: string
+  cardExpiry: string
   checkin: string
   checkout: string
   nightlyRate: number
@@ -544,7 +550,7 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
     name: '', dock: defaultDock || docks[0]?.name || 'Ungrouped', length: 30, beam: 12,
     amenities: { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false },
     status: 'available', notes: '', vesselName: '', ownerName: '',
-    phone: '', address: '', cardOnFile: '',
+    phone: '', address: '', cardType: '', cardLast4: '', cardExpiry: '',
     insuranceCompany: '', policyNumber: '', insuranceExpiry: '',
   })
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
@@ -588,7 +594,46 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
           <Field label="Owner / Contact" value={form.ownerName || ''} onChange={v => setForm(f => ({ ...f, ownerName: v }))} placeholder="John Smith" />
           <Field label="Phone" value={form.phone || ''} onChange={v => setForm(f => ({ ...f, phone: v }))} type="tel" placeholder="e.g. (410) 555-1234" />
           <Field label="Address" value={form.address || ''} onChange={v => setForm(f => ({ ...f, address: v }))} placeholder="e.g. 123 Marina Blvd" />
-          <Field label="Card on File" value={form.cardOnFile || ''} onChange={v => setForm(f => ({ ...f, cardOnFile: v }))} placeholder="Visa •••• 1234 exp 12/27" />
+
+          {/* Card on File */}
+          <div style={{ marginTop: 8 }}>
+            <p style={labelStyle}>Card on File</p>
+            <div style={{ display: 'flex', gap: 6, marginBottom: 4 }}>
+              <select
+                value={form.cardType || ''}
+                onChange={e => setForm(f => ({ ...f, cardType: e.target.value as any }))}
+                style={{ ...inputStyle, flex: 2 }}
+              >
+                <option value="">Card Type</option>
+                <option value="visa">Visa</option>
+                <option value="mastercard">Mastercard</option>
+                <option value="amex">Amex</option>
+                <option value="discover">Discover</option>
+                <option value="other">Other</option>
+              </select>
+              <input
+                type="text"
+                inputMode="numeric"
+                maxLength={4}
+                placeholder="Last 4"
+                value={form.cardLast4 || ''}
+                onChange={e => setForm(f => ({ ...f, cardLast4: e.target.value.replace(/\D/g, '').slice(0, 4) }))}
+                style={{ ...inputStyle, flex: 1 }}
+              />
+              <input
+                type="text"
+                placeholder="MM/YY"
+                maxLength={5}
+                value={form.cardExpiry || ''}
+                onChange={e => {
+                  let v = e.target.value.replace(/[^\d/]/g, '')
+                  if (v.length === 2 && !v.includes('/')) v = v + '/'
+                  setForm(f => ({ ...f, cardExpiry: v.slice(0, 5) }))
+                }}
+                style={{ ...inputStyle, flex: 1 }}
+              />
+            </div>
+          </div>
 
           {/* Insurance */}
           <div style={{ marginTop: 4 }}>
@@ -712,7 +757,7 @@ interface RentalModalProps {
 function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModalProps) {
   const [form, setForm] = useState<Partial<Rental>>(rental || {
     slipId: '', vesselName: '', ownerName: '', phone: '', email: '',
-    address: '', cardOnFile: '',
+    address: '', cardType: '', cardLast4: '', cardExpiry: '',
     leaseType: 'monthly', startDate: '', endDate: '', monthlyRate: 0,
     autoRenew: false, notes: '', payments: [],
   })
@@ -759,7 +804,45 @@ function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModa
               style={{ ...inputStyle, resize: 'none' }} />
           </div>
 
-          <Field label="Card on File" value={form.cardOnFile || ''} onChange={v => setForm(f => ({ ...f, cardOnFile: v }))} placeholder="Visa •••• 1234 exp 12/27" />
+          {/* Card on File */}
+          <div style={{ marginTop: 8 }}>
+            <p style={labelStyle}>Card on File</p>
+            <div style={{ display: 'flex', gap: 6, marginBottom: 4 }}>
+              <select
+                value={form.cardType || ''}
+                onChange={e => setForm(f => ({ ...f, cardType: e.target.value as any }))}
+                style={{ ...inputStyle, flex: 2 }}
+              >
+                <option value="">Card Type</option>
+                <option value="visa">Visa</option>
+                <option value="mastercard">Mastercard</option>
+                <option value="amex">Amex</option>
+                <option value="discover">Discover</option>
+                <option value="other">Other</option>
+              </select>
+              <input
+                type="text"
+                inputMode="numeric"
+                maxLength={4}
+                placeholder="Last 4"
+                value={form.cardLast4 || ''}
+                onChange={e => setForm(f => ({ ...f, cardLast4: e.target.value.replace(/\D/g, '').slice(0, 4) }))}
+                style={{ ...inputStyle, flex: 1 }}
+              />
+              <input
+                type="text"
+                placeholder="MM/YY"
+                maxLength={5}
+                value={form.cardExpiry || ''}
+                onChange={e => {
+                  let v = e.target.value.replace(/[^\d/]/g, '')
+                  if (v.length === 2 && !v.includes('/')) v = v + '/'
+                  setForm(f => ({ ...f, cardExpiry: v.slice(0, 5) }))
+                }}
+                style={{ ...inputStyle, flex: 1 }}
+              />
+            </div>
+          </div>
 
           <div>
             <label style={labelStyle}>Assign Slip</label>
@@ -899,7 +982,7 @@ interface TransientModalProps {
 function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps) {
   const [form, setForm] = useState<Partial<TransientBooking>>(booking || {
     slipId: '', vesselName: '', captainName: '', phone: '',
-    address: '', cardOnFile: '',
+    address: '', cardType: '', cardLast4: '', cardExpiry: '',
     checkin: '', checkout: '', nightlyRate: 0, notes: '', status: 'upcoming',
     powerType: 'none', loa: 0, beam: 0, waterAtSlip: false,
     discountCard: 'none', discountCardNumber: '',
@@ -955,7 +1038,45 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
               style={{ ...inputStyle, resize: 'none' }} />
           </div>
 
-          <Field label="Card on File" value={form.cardOnFile || ''} onChange={v => setForm(f => ({ ...f, cardOnFile: v }))} placeholder="Visa •••• 1234 exp 12/27" />
+          {/* Card on File */}
+          <div style={{ marginTop: 8 }}>
+            <p style={labelStyle}>Card on File</p>
+            <div style={{ display: 'flex', gap: 6, marginBottom: 4 }}>
+              <select
+                value={form.cardType || ''}
+                onChange={e => setForm(f => ({ ...f, cardType: e.target.value as any }))}
+                style={{ ...inputStyle, flex: 2 }}
+              >
+                <option value="">Card Type</option>
+                <option value="visa">Visa</option>
+                <option value="mastercard">Mastercard</option>
+                <option value="amex">Amex</option>
+                <option value="discover">Discover</option>
+                <option value="other">Other</option>
+              </select>
+              <input
+                type="text"
+                inputMode="numeric"
+                maxLength={4}
+                placeholder="Last 4"
+                value={form.cardLast4 || ''}
+                onChange={e => setForm(f => ({ ...f, cardLast4: e.target.value.replace(/\D/g, '').slice(0, 4) }))}
+                style={{ ...inputStyle, flex: 1 }}
+              />
+              <input
+                type="text"
+                placeholder="MM/YY"
+                maxLength={5}
+                value={form.cardExpiry || ''}
+                onChange={e => {
+                  let v = e.target.value.replace(/[^\d/]/g, '')
+                  if (v.length === 2 && !v.includes('/')) v = v + '/'
+                  setForm(f => ({ ...f, cardExpiry: v.slice(0, 5) }))
+                }}
+                style={{ ...inputStyle, flex: 1 }}
+              />
+            </div>
+          </div>
 
           {/* Vessel dimensions */}
           <div className="flex gap-3">
@@ -1201,10 +1322,10 @@ export default function MarinaPage() {
     const loadedSlips = loadLS<Slip[]>(SLIPS_KEY, [])
     // Migrate old slips without dock field
     const defaultAmenities = { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false }
-    const migratedSlips = loadedSlips.map(s => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s, phone: s.phone || '', address: s.address || '', cardOnFile: s.cardOnFile || '', insuranceCompany: s.insuranceCompany || '', policyNumber: s.policyNumber || '', insuranceExpiry: s.insuranceExpiry || '' }))
+    const migratedSlips = loadedSlips.map(s => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s, phone: s.phone || '', address: s.address || '', cardType: (s as any).cardType || '', cardLast4: (s as any).cardLast4 || '', cardExpiry: (s as any).cardExpiry || '', insuranceCompany: s.insuranceCompany || '', policyNumber: s.policyNumber || '', insuranceExpiry: s.insuranceExpiry || '' }))
     const localDocks = loadLS<Dock[]>(DOCKS_KEY, [])
-    const localRentals = loadLS<Rental[]>(RENTALS_KEY, []).map(r => ({ address: r.address || '', cardOnFile: r.cardOnFile || '', ...r }))
-    const localTransient = loadLS<TransientBooking[]>(TRANSIENT_KEY, []).map(b => ({ address: b.address || '', cardOnFile: b.cardOnFile || '', ...b }))
+    const localRentals = loadLS<Rental[]>(RENTALS_KEY, []).map(r => ({ address: r.address || '', cardType: (r as any).cardType || '', cardLast4: (r as any).cardLast4 || '', cardExpiry: (r as any).cardExpiry || '', ...r }))
+    const localTransient = loadLS<TransientBooking[]>(TRANSIENT_KEY, []).map(b => ({ address: b.address || '', cardType: (b as any).cardType || '', cardLast4: (b as any).cardLast4 || '', cardExpiry: (b as any).cardExpiry || '', ...b }))
     const localWaitlist = loadLS<WaitlistEntry[]>(WAITLIST_KEY, [])
     setSlips(migratedSlips)
     setDocks(localDocks)
@@ -1223,7 +1344,7 @@ export default function MarinaPage() {
           const cloudSlips = await cloudGet(email, SLIPS_KEY)
           if (cloudSlips !== null) {
             const parsed: Slip[] = JSON.parse(cloudSlips)
-            const migrated = parsed.map((s: Slip) => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s, phone: s.phone || '', address: s.address || '', cardOnFile: s.cardOnFile || '', insuranceCompany: s.insuranceCompany || '', policyNumber: s.policyNumber || '', insuranceExpiry: s.insuranceExpiry || '' }))
+            const migrated = parsed.map((s: Slip) => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s, phone: s.phone || '', address: s.address || '', cardType: (s as any).cardType || '', cardLast4: (s as any).cardLast4 || '', cardExpiry: (s as any).cardExpiry || '', insuranceCompany: s.insuranceCompany || '', policyNumber: s.policyNumber || '', insuranceExpiry: s.insuranceExpiry || '' }))
             setSlips(migrated)
             localStorage.setItem(userKey(SLIPS_KEY), cloudSlips)
           } else if (migratedSlips.length > 0) {
@@ -1247,7 +1368,7 @@ export default function MarinaPage() {
           const cloudRentals = await cloudGet(email, RENTALS_KEY)
           if (cloudRentals !== null) {
             const parsedRentals: Rental[] = JSON.parse(cloudRentals)
-            const migratedRentals = parsedRentals.map((r: Rental) => ({ address: r.address || '', cardOnFile: r.cardOnFile || '', ...r }))
+            const migratedRentals = parsedRentals.map((r: Rental) => ({ address: r.address || '', cardType: (r as any).cardType || '', cardLast4: (r as any).cardLast4 || '', cardExpiry: (r as any).cardExpiry || '', ...r }))
             setRentals(migratedRentals)
             localStorage.setItem(userKey(RENTALS_KEY), cloudRentals)
           } else if (localRentals.length > 0) {
@@ -1260,7 +1381,7 @@ export default function MarinaPage() {
           const cloudTransient = await cloudGet(email, TRANSIENT_KEY)
           if (cloudTransient !== null) {
             const parsedTransient: TransientBooking[] = JSON.parse(cloudTransient)
-            const migratedTransient = parsedTransient.map((b: TransientBooking) => ({ address: b.address || '', cardOnFile: b.cardOnFile || '', ...b }))
+            const migratedTransient = parsedTransient.map((b: TransientBooking) => ({ address: b.address || '', cardType: (b as any).cardType || '', cardLast4: (b as any).cardLast4 || '', cardExpiry: (b as any).cardExpiry || '', ...b }))
             setTransient(migratedTransient)
             localStorage.setItem(userKey(TRANSIENT_KEY), cloudTransient)
           } else if (localTransient.length > 0) {
@@ -1324,7 +1445,9 @@ export default function MarinaPage() {
           ownerName: '',
           phone: '',
           address: '',
-          cardOnFile: '',
+          cardType: '',
+          cardLast4: '',
+          cardExpiry: '',
           insuranceCompany: '',
           policyNumber: '',
           insuranceExpiry: '',
@@ -1387,7 +1510,7 @@ export default function MarinaPage() {
         amenities: form.amenities || { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false },
         status: form.status || 'available', notes: form.notes || '',
         vesselName: form.vesselName || '', ownerName: form.ownerName || '',
-        phone: form.phone || '', address: form.address || '', cardOnFile: form.cardOnFile || '',
+        phone: form.phone || '', address: form.address || '', cardType: form.cardType || '', cardLast4: form.cardLast4 || '', cardExpiry: form.cardExpiry || '',
         insuranceCompany: form.insuranceCompany || '', policyNumber: form.policyNumber || '', insuranceExpiry: form.insuranceExpiry || '',
       }
       const updated = [...slips, newSlip]
@@ -1415,7 +1538,7 @@ export default function MarinaPage() {
       const newRental: Rental = {
         id: genId(), slipId: form.slipId || '', vesselName: form.vesselName || '',
         ownerName: form.ownerName || '', phone: form.phone || '', email: form.email || '',
-        address: form.address || '', cardOnFile: form.cardOnFile || '',
+        address: form.address || '', cardType: form.cardType || '', cardLast4: form.cardLast4 || '', cardExpiry: form.cardExpiry || '',
         leaseType: form.leaseType || 'monthly', startDate: form.startDate || '',
         endDate: form.endDate || '', monthlyRate: form.monthlyRate || 0,
         autoRenew: form.autoRenew || false, notes: form.notes || '', payments: form.payments || [],
@@ -1450,7 +1573,7 @@ export default function MarinaPage() {
       const newBooking: TransientBooking = {
         id: genId(), slipId: form.slipId || '', vesselName: form.vesselName || '',
         captainName: form.captainName || '', phone: form.phone || '',
-        address: form.address || '', cardOnFile: form.cardOnFile || '',
+        address: form.address || '', cardType: form.cardType || '', cardLast4: form.cardLast4 || '', cardExpiry: form.cardExpiry || '',
         checkin: form.checkin || '', checkout: form.checkout || '',
         nightlyRate: form.nightlyRate || 0, notes: form.notes || '',
         status: form.status || 'upcoming',
@@ -1768,10 +1891,10 @@ export default function MarinaPage() {
                         <span>💰 ${rental.monthlyRate}/mo</span>
                         {rental.startDate && <span>📅 {rental.startDate}{rental.endDate ? ` → ${rental.endDate}` : ' · Ongoing'}</span>}
                       </div>
-                      {(rental.address || rental.cardOnFile) && (
+                      {(rental.address || rental.cardType) && (
                         <div className="flex flex-col gap-0.5 mt-1.5 text-xs" style={dimStyle}>
                           {rental.address && <span>🏠 {rental.address}</span>}
-                          {rental.cardOnFile && <span>💳 {rental.cardOnFile}</span>}
+                          {rental.cardType && <span>💳 {rental.cardType.charAt(0).toUpperCase() + rental.cardType.slice(1)} ••••{rental.cardLast4} {rental.cardExpiry}</span>}
                         </div>
                       )}
                       <div className="mt-2">
