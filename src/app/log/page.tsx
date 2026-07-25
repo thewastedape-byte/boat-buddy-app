@@ -237,10 +237,6 @@ function RepairLogContent() {
             🔧 Repair Log
           </h1>
           <div className="flex items-center gap-2">
-            <Link href="/workorder" className="text-sm px-3 py-2 rounded-lg font-bold"
-              style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
-              📄
-            </Link>
             <button
               onClick={() => setShowForm(!showForm)}
               className="text-sm px-4 py-2 rounded-lg font-bold"

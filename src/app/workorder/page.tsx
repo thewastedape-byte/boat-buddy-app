@@ -152,7 +152,22 @@ function WorkOrderContent() {
   ])
   const [savedManually, setSavedManually] = useState(false)
 
+  // Write a patch to the draft immediately — called on every field change
+  const writeWO = (patch: object) => {
+    if (entryId) return // never overwrite draft when editing a log entry
+    try {
+      let current: any = {}
+      try { current = JSON.parse(localStorage.getItem(DRAFT_KEY) || '{}') } catch {}
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({
+        ...current,
+        ...patch,
+        savedAt: Date.now()
+      }))
+    } catch {}
+  }
+
   const saveDraft = () => {
+    if (entryId) return
     try {
       localStorage.setItem(DRAFT_KEY, JSON.stringify({
         problemDesc, laborNotes, laborHours, laborRate,
@@ -265,7 +280,11 @@ function WorkOrderContent() {
   }, [router, entryId])
 
   const updatePart = (i: number, field: keyof PartRow, val: string) => {
-    setParts(prev => prev.map((p, idx) => idx === i ? { ...p, [field]: val } : p))
+    setParts(prev => {
+      const next = prev.map((p, idx) => idx === i ? { ...p, [field]: val } : p)
+      writeWO({ parts: next })
+      return next
+    })
   }
   const addPartRow = () => setParts(prev => [...prev, { description: '', qty: '1', price: '' }])
   const removePartRow = (i: number) => setParts(prev => prev.filter((_, idx) => idx !== i))
@@ -392,11 +411,11 @@ function WorkOrderContent() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
             <div>
               <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '4px' }}>Work Order #</div>
-              <input value={workOrderNum} onChange={e => setWorkOrderNum(e.target.value)} style={{ ...iStyle, fontSize: '14px', fontWeight: 'bold' }} />
+              <input value={workOrderNum} onChange={e => { setWorkOrderNum(e.target.value); writeWO({ workOrderNum: e.target.value }) }} style={{ ...iStyle, fontSize: '14px', fontWeight: 'bold' }} />
             </div>
             <div>
               <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '4px' }}>Date</div>
-              <input type="date" value={orderDate} onChange={e => setOrderDate(e.target.value)} style={{ ...iStyle }} />
+              <input type="date" value={orderDate} onChange={e => { setOrderDate(e.target.value); writeWO({ orderDate: e.target.value }) }} style={{ ...iStyle }} />
             </div>
           </div>
 
@@ -408,7 +427,7 @@ function WorkOrderContent() {
                 value={vessel?.id || ''}
                 onChange={e => {
                   const v = allVessels.find(v => v.id === e.target.value)
-                  if (v) setVessel(v)
+                  if (v) { setVessel(v); writeWO({ vesselId: v.id }) }
                 }}
                 style={{ width: '100%', padding: '8px 12px', border: '1px solid #ccc', borderRadius: '6px', fontSize: '14px', fontFamily: 'Georgia, serif', background: '#f9f9f9', color: '#1a1a1a' }}
               >
@@ -443,7 +462,7 @@ function WorkOrderContent() {
           {/* Problem */}
           <div style={{ marginBottom: '20px' }}>
             <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px', fontWeight: 'bold' }}>Problem / Symptom</div>
-            <textarea value={problemDesc} onChange={e => setProblemDesc(e.target.value)} rows={3}
+            <textarea value={problemDesc} onChange={e => { setProblemDesc(e.target.value); writeWO({ problemDesc: e.target.value }) }} rows={3}
               placeholder="Describe the problem or symptom reported..."
               style={{ ...iStyle, resize: 'none', borderBottom: 'none', border: '1px solid #ccc', borderRadius: '4px', padding: '8px', width: '100%', fontSize: '13px', boxSizing: 'border-box' }} />
           </div>
@@ -509,17 +528,17 @@ function WorkOrderContent() {
           {/* Labor */}
           <div style={{ marginBottom: '20px' }}>
             <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '8px', fontWeight: 'bold' }}>Labor</div>
-            <textarea value={laborNotes} onChange={e => setLaborNotes(e.target.value)} rows={3}
+            <textarea value={laborNotes} onChange={e => { setLaborNotes(e.target.value); writeWO({ laborNotes: e.target.value }) }} rows={3}
               placeholder="Describe work performed..."
               style={{ ...iStyle, resize: 'none', borderBottom: 'none', border: '1px solid #ccc', borderRadius: '4px', padding: '8px', width: '100%', fontSize: '13px', marginBottom: '10px', boxSizing: 'border-box' }} />
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', background: '#f5f5f5', borderRadius: '6px', padding: '10px' }}>
               <div>
                 <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>Hours</div>
-                <input value={laborHours} onChange={e => setLaborHours(e.target.value)} placeholder="0.0" style={{ ...iStyle }} />
+                <input value={laborHours} onChange={e => { setLaborHours(e.target.value); writeWO({ laborHours: e.target.value }) }} placeholder="0.0" style={{ ...iStyle }} />
               </div>
               <div>
                 <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>Rate ($/hr)</div>
-                <input value={laborRate} onChange={e => setLaborRate(e.target.value)} placeholder="0.00" style={{ ...iStyle }} />
+                <input value={laborRate} onChange={e => { setLaborRate(e.target.value); writeWO({ laborRate: e.target.value }) }} placeholder="0.00" style={{ ...iStyle }} />
               </div>
               <div>
                 <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>Labor Total</div>
@@ -538,7 +557,7 @@ function WorkOrderContent() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
             <div>
               <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px' }}>Technician Name</div>
-              <input value={techName} onChange={e => setTechName(e.target.value)} placeholder="Name"
+              <input value={techName} onChange={e => { setTechName(e.target.value); writeWO({ techName: e.target.value }) }} placeholder="Name"
                 style={{ ...iStyle }} />
             </div>
             <div>
