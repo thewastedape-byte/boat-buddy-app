@@ -47,11 +47,29 @@ export interface RepairLogEntry {
 
 export const REPAIR_LOG_KEY = 'boat_buddy_repair_log'
 
+function sanitizeEntry(e: any): RepairLogEntry {
+  return {
+    id: e?.id || Date.now().toString(),
+    date: typeof e?.date === 'number' ? e.date : Date.now(),
+    vessel: e?.vessel || 'Unknown Vessel',
+    symptom: e?.symptom || '',
+    diagnosis: e?.diagnosis || '',
+    parts: Array.isArray(e?.parts) ? e.parts : [],
+    laborHours: e?.laborHours || undefined,
+    notes: e?.notes || undefined,
+    nextServiceDate: e?.nextServiceDate || undefined,
+    nextServiceNote: e?.nextServiceNote || undefined,
+    sessionId: e?.sessionId || 'unknown',
+    manual: e?.manual || false,
+  }
+}
+
 export function getRepairLog(): RepairLogEntry[] {
   if (typeof window === 'undefined') return []
   try {
     const raw = localStorage.getItem(userKey(REPAIR_LOG_KEY))
-    return raw ? JSON.parse(raw) : []
+    const parsed = raw ? JSON.parse(raw) : []
+    return Array.isArray(parsed) ? parsed.map(sanitizeEntry) : []
   } catch { return [] }
 }
 
@@ -120,7 +138,8 @@ function RepairLogContent() {
       try {
         const cloudData = await cloudGet(cloudKey)
         if (cloudData !== null) {
-          const cloudLog: RepairLogEntry[] = JSON.parse(cloudData)
+          const parsed = JSON.parse(cloudData)
+          const cloudLog: RepairLogEntry[] = Array.isArray(parsed) ? parsed.map(sanitizeEntry) : []
           localStorage.setItem(cloudKey, JSON.stringify(cloudLog))
           setEntries(cloudLog)
           setServiceReminders(checkReminders(cloudLog))
@@ -188,7 +207,7 @@ function RepairLogContent() {
     }
     if (search) {
       const q = search.toLowerCase()
-      if (!e.symptom.toLowerCase().includes(q) && !e.vessel.toLowerCase().includes(q) && !e.diagnosis.toLowerCase().includes(q)) return false
+      if (!(e.symptom||'').toLowerCase().includes(q) && !(e.vessel||'').toLowerCase().includes(q) && !(e.diagnosis||'').toLowerCase().includes(q)) return false
     }
     return true
   })
@@ -397,7 +416,7 @@ function RepairLogContent() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-semibold truncate" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
-                          {entry.symptom}
+                          {entry.symptom || ''}
                         </p>
                         {entry.manual && (
                           <span className="text-xs px-1.5 py-0.5 rounded flex-shrink-0"
@@ -408,7 +427,7 @@ function RepairLogContent() {
                       </div>
                       <div className="flex items-center gap-3 mt-1 flex-wrap">
                         <span className="text-xs" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>
-                          ⚓ {entry.vessel}
+                          ⚓ {entry.vessel || ''}
                         </span>
                         <span className="text-xs" style={dimStyle}>
                           {formatDate(entry.date)}
@@ -419,17 +438,17 @@ function RepairLogContent() {
                           </span>
                         )}
                       </div>
-                      {entry.parts.length > 0 && (
+                      {(entry.parts||[]).length > 0 && (
                         <div className="flex flex-wrap gap-1 mt-2">
-                          {entry.parts.slice(0, 3).map((p, i) => (
+                          {(entry.parts||[]).slice(0, 3).map((p, i) => (
                             <span key={i} className="text-xs px-2 py-0.5 rounded-full"
                               style={{ background: 'rgba(198,139,58,0.15)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.3)', fontFamily: 'Georgia, serif' }}>
                               {p.length > 25 ? p.substring(0, 25) + '…' : p}
                             </span>
                           ))}
-                          {entry.parts.length > 3 && (
+                          {(entry.parts||[]).length > 3 && (
                             <span className="text-xs px-2 py-0.5 rounded-full" style={{ color: 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif' }}>
-                              +{entry.parts.length - 3} more
+                              +{(entry.parts||[]).length - 3} more
                             </span>
                           )}
                         </div>
@@ -447,16 +466,16 @@ function RepairLogContent() {
                       {entry.manual ? 'Work Performed' : 'AI Diagnosis'}
                     </p>
                     <div className="text-sm leading-relaxed whitespace-pre-wrap" style={textStyle}>
-                      {entry.diagnosis}
+                      {entry.diagnosis || ''}
                     </div>
 
-                    {entry.parts.length > 0 && (
+                    {(entry.parts||[]).length > 0 && (
                       <>
                         <p className="text-xs uppercase tracking-wider mt-4 mb-2" style={labelStyle}>
                           Parts Used
                         </p>
                         <ul className="flex flex-col gap-1">
-                          {entry.parts.map((p, i) => (
+                          {(entry.parts||[]).map((p, i) => (
                             <li key={i} className="text-sm flex items-start gap-2" style={textStyle}>
                               <span style={{ color: '#C68B3A' }}>•</span> {p}
                             </li>
