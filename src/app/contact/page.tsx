@@ -53,7 +53,7 @@ export default function ContactPage() {
       <main className="flex-1 overflow-y-auto px-4 py-6 pb-28">
         <div className="max-w-sm mx-auto">
           <h1 className="text-xl font-bold mb-1" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>✉️ Contact Us</h1>
-          <p className="text-xs mb-6" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>
+          <p className="text-xs mb-6" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>
             Questions, bug reports, feature requests, or feedback — we read everything.
           </p>
 
@@ -82,7 +82,7 @@ export default function ContactPage() {
                 <div>
                   <label className="block text-xs mb-1" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>Subject</label>
                   <select className="input-field" value={subject} onChange={e => setSubject(e.target.value)}
-                    style={{ background: 'rgba(245,240,232,0.1)', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '8px', color: subject ? '#F5F0E8' : 'rgba(245,240,232,0.78)', padding: '12px 16px', fontFamily: 'Georgia, serif', fontSize: '16px', width: '100%' }}>
+                    style={{ background: 'rgba(245,240,232,0.1)', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '8px', color: subject ? '#F5F0E8' : 'rgba(245,240,232,0.4)', padding: '12px 16px', fontFamily: 'Georgia, serif', fontSize: '16px', width: '100%' }}>
                     <option value="" style={{ background: '#1a0a02' }}>— Select a topic —</option>
                     <option value="Bug Report" style={{ background: '#1a0a02' }}>🐛 Bug Report</option>
                     <option value="Feature Request" style={{ background: '#1a0a02' }}>💡 Feature Request</option>
@@ -109,7 +109,7 @@ export default function ContactPage() {
 
           {/* Direct email fallback */}
           <div className="mt-5 text-center">
-            <p className="text-xs mb-1" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>Or email us directly:</p>
+            <p className="text-xs mb-1" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>Or email us directly:</p>
             <a href="mailto:thewastedape@gmail.com" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: '13px' }}>
               thewastedape@gmail.com
             </a>

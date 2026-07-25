@@ -93,7 +93,7 @@ export default function IntegrationsPage() {
     setTimeout(() => setTestResult(prev => { const n = {...prev}; delete n[wh.id!]; return n }), 3000)
   }
 
-  const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }
+  const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
   const labelStyle = { color: '#C68B3A', fontFamily: 'Georgia, serif' }
 
   return (
@@ -194,7 +194,7 @@ export default function IntegrationsPage() {
                       )}
                       {wh.id && (
                         <button onClick={() => deleteWebhook(wh.id!)}
-                          style={{ background: 'rgba(139,26,26,0.15)', color: 'rgba(245,240,232,0.78)', border: '1px solid rgba(139,26,26,0.2)', borderRadius: '6px', padding: '3px 8px', fontSize: '11px', cursor: 'pointer' }}>
+                          style={{ background: 'rgba(139,26,26,0.15)', color: 'rgba(245,240,232,0.4)', border: '1px solid rgba(139,26,26,0.2)', borderRadius: '6px', padding: '3px 8px', fontSize: '11px', cursor: 'pointer' }}>
                           ✕
                         </button>
                       )}
@@ -221,7 +221,7 @@ export default function IntegrationsPage() {
                       const email = getAuth()?.email || ''
                       await fetch(`${API_URL}/api/qb/disconnect`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ user_email: email }) })
                       setQbConnected(false)
-                    }} style={{ background: 'none', border: 'none', color: 'rgba(245,240,232,0.78)', fontSize: '11px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>Disconnect</button>
+                    }} style={{ background: 'none', border: 'none', color: 'rgba(245,240,232,0.4)', fontSize: '11px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>Disconnect</button>
                   </div>
                 ) : (
                   <button onClick={() => {

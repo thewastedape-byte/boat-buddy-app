@@ -134,7 +134,7 @@ export default function GroupChatPage() {
     return email.split('@')[0].substring(0, 2).toUpperCase()
   }
 
-  const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }
+  const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
 
   return (
     <div className="bg-wood min-h-screen flex flex-col">

@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
               <h1 className="text-lg font-bold mb-1" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
                 Forgot Password
               </h1>
-              <p className="text-xs mb-5" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>
+              <p className="text-xs mb-5" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>
                 Enter your email and we&apos;ll send a 6-digit reset code.
               </p>
               <form onSubmit={handleSendCode}>
@@ -91,7 +91,7 @@ export default function ForgotPasswordPage() {
               <h1 className="text-lg font-bold mb-1" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
                 Check Your Email
               </h1>
-              <p className="text-xs mb-5" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>
+              <p className="text-xs mb-5" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>
                 Sent a 6-digit code to <span style={{ color: '#C68B3A' }}>{email}</span>. Expires in 15 minutes.
               </p>
               <form onSubmit={handleResetPassword}>
@@ -115,7 +115,7 @@ export default function ForgotPasswordPage() {
                   🔐 Reset Password
                 </button>
                 <button type="button" onClick={() => setStep('email')}
-                  className="w-full mt-2 text-xs py-2" style={{ color: 'rgba(245,240,232,0.82)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
+                  className="w-full mt-2 text-xs py-2" style={{ color: 'rgba(245,240,232,0.5)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
                   ← Resend code
                 </button>
               </form>
@@ -126,12 +126,12 @@ export default function ForgotPasswordPage() {
             <div className="text-center py-4">
               <p className="text-3xl mb-3">✅</p>
               <p className="text-lg font-bold mb-1" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Password Reset!</p>
-              <p className="text-xs" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>Redirecting to sign in...</p>
+              <p className="text-xs" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Redirecting to sign in...</p>
             </div>
           )}
         </div>
 
-        <p className="text-center mt-4 text-xs" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>
+        <p className="text-center mt-4 text-xs" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>
           <Link href="/login" style={{ color: '#C68B3A', textDecoration: 'none' }}>← Back to Sign In</Link>
         </p>
       </div>

@@ -206,7 +206,7 @@ function SignupContent() {
           </div>
         )}
 
-        <p className="text-center text-xs mt-6" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>
+        <p className="text-center text-xs mt-6" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>
           By creating an account you agree to our{' '}
           <Link href="/terms" style={{ color: 'rgba(198,139,58,0.6)' }} className="underline">Terms &amp; Conditions</Link>
         </p>

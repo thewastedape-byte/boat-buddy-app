@@ -97,7 +97,7 @@ B1,Blue Horizon,Tom Brown,410-555-9012,tom@email.com,Winter storage,reserved
 B2,Ocean Spirit,Sarah Davis,410-555-3456,sarah@email.com,,available
 C1,Wind Dancer,Mike Wilson,410-555-7890,mike@email.com,New customer,occupied`
 
-const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }
+const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
 const headStyle = { color: '#F5F0E8', fontFamily: 'Georgia, serif' }
 
 export default function ImportPage() {
@@ -236,7 +236,7 @@ export default function ImportPage() {
     <div className="bg-wood min-h-screen flex flex-col">
       <header className="flex items-center gap-3 px-4 py-3 sticky top-0 z-40"
         style={{ background: 'rgba(20,8,2,0.95)', borderBottom: '1px solid rgba(198,139,58,0.3)' }}>
-        <Link href="/yard" style={{ color: 'rgba(245,240,232,0.82)', textDecoration: 'none', fontSize: '18px' }}>←</Link>
+        <Link href="/yard" style={{ color: 'rgba(245,240,232,0.5)', textDecoration: 'none', fontSize: '18px' }}>←</Link>
         <Logo size="sm" />
         <span className="text-sm font-bold ml-auto" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>📥 Import Data</span>
       </header>
@@ -296,7 +296,7 @@ export default function ImportPage() {
                     <div className="flex-1 text-xs px-3 py-2 rounded-lg truncate" style={{ background: 'rgba(255,255,255,0.06)', color: '#F5F0E8', fontFamily: 'Georgia, serif', border: '1px solid rgba(255,255,255,0.1)' }}>
                       {header}
                     </div>
-                    <span style={{ color: 'rgba(245,240,232,0.72)', fontSize: '12px' }}>→</span>
+                    <span style={{ color: 'rgba(245,240,232,0.3)', fontSize: '12px' }}>→</span>
                     <select
                       value={mapping[idx]}
                       onChange={e => {
@@ -330,9 +330,9 @@ export default function ImportPage() {
                     <div key={rowIdx} className="flex items-center gap-3 px-4 py-2.5"
                       style={{ borderBottom: '1px solid rgba(74,144,226,0.08)', background: rowIdx % 2 === 0 ? 'rgba(10,20,40,0.6)' : 'rgba(10,20,40,0.3)' }}>
                       <span className="text-xs font-bold w-10 shrink-0" style={{ color: '#4A90E2', fontFamily: 'Georgia, serif' }}>{label}</span>
-                      <span className="text-xs flex-1 truncate" style={headStyle}>{vessel || <span style={{ color: 'rgba(245,240,232,0.72)' }}>—</span>}</span>
+                      <span className="text-xs flex-1 truncate" style={headStyle}>{vessel || <span style={{ color: 'rgba(245,240,232,0.3)' }}>—</span>}</span>
                       <span className="text-xs flex-1 truncate" style={{ color: 'rgba(245,240,232,0.6)', fontFamily: 'Georgia, serif' }}>{owner || '—'}</span>
-                      <span className="text-xs w-16 text-right capitalize shrink-0" style={{ color: status ? 'rgba(245,240,232,0.7)' : 'rgba(245,240,232,0.72)', fontFamily: 'Georgia, serif' }}>{status || 'available'}</span>
+                      <span className="text-xs w-16 text-right capitalize shrink-0" style={{ color: status ? 'rgba(245,240,232,0.7)' : 'rgba(245,240,232,0.3)', fontFamily: 'Georgia, serif' }}>{status || 'available'}</span>
                     </div>
                   )
                 })}

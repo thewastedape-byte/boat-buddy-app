@@ -330,7 +330,7 @@ export default function HelpPage() {
 
       <main className="flex-1 overflow-y-auto px-4 py-4 pb-36">
         <h1 className="text-xl font-bold mb-1" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>❓ Help Guide</h1>
-        <p className="text-xs mb-2" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>
+        <p className="text-xs mb-2" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>
           Your complete guide to Boat Buddy — tap any section to learn how it works.
         </p>
 

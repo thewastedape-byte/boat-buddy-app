@@ -236,7 +236,7 @@ export default function AboutPage() {
             style={{ textDecoration: 'none', display: 'inline-block', padding: '14px 32px', fontSize: '16px' }}>
             ⚓ Get First Mate — $9.99/mo
           </Link>
-          <p className="text-xs mt-4" style={{ color: 'rgba(245,240,232,0.78)', fontFamily: 'Georgia, serif' }}>
+          <p className="text-xs mt-4" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>
             Already have an account? <Link href="/login" style={{ color: '#C68B3A', textDecoration: 'none' }}>Sign in</Link>
           </p>
         </div>

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -6,14 +6,14 @@ import { isLoggedIn, getAuth, updateAuthSubscription, userKey } from '@/lib/auth
 import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 
-// -- Storage keys --
+// ── Storage keys ──
 const SLIPS_KEY = 'bb_marina_slips'
 const RENTALS_KEY = 'bb_marina_rentals'
 const TRANSIENT_KEY = 'bb_marina_transient'
 const WAITLIST_KEY = 'bb_marina_waitlist'
 const DOCKS_KEY = 'bb_marina_docks'
 
-// -- Types --
+// ── Types ──
 type SlipStatus = 'available' | 'rented' | 'reserved' | 'maintenance'
 type LeaseType = 'monthly' | 'seasonal' | 'annual'
 type PaymentStatus = 'paid' | 'due_soon' | 'overdue'
@@ -66,7 +66,7 @@ interface Rental {
   phone: string
   email: string
   address: string       // customer street/mailing address
-  cardOnFile: string    // text note only e.g. "Visa ���� 4567 exp 12/27" � NOT raw card numbers
+  cardOnFile: string    // text note only e.g. "Visa •••• 4567 exp 12/27" — NOT raw card numbers
   leaseType: LeaseType
   startDate: string
   endDate: string
@@ -109,7 +109,7 @@ interface WaitlistEntry {
   notified: boolean
 }
 
-// -- Cloud sync helpers --
+// ── Cloud sync helpers ──
 const _CLOUD_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://gemini-marine-api.onrender.com'
 
 function getAuthEmail(): string | null {
@@ -136,7 +136,7 @@ async function cloudSet(email: string, key: string, data: string): Promise<void>
   } catch {}
 }
 
-// -- Helpers --
+// ── Helpers ──
 function loadLS<T>(key: string, fallback: T): T {
   if (typeof window === 'undefined') return fallback
   try {
@@ -167,9 +167,9 @@ function diffDays(a: string, b: string) {
 }
 
 function paymentStatusLabel(s: PaymentStatus) {
-  if (s === 'paid') return '? Paid'
-  if (s === 'due_soon') return '?? Due Soon'
-  return '?? Overdue'
+  if (s === 'paid') return '✅ Paid'
+  if (s === 'due_soon') return '⚠️ Due Soon'
+  return '🔴 Overdue'
 }
 
 function paymentStatusColor(s: PaymentStatus) {
@@ -181,7 +181,7 @@ function paymentStatusColor(s: PaymentStatus) {
 function bookingStatusColor(s: BookingStatus) {
   if (s === 'active') return '#4A90E2'
   if (s === 'upcoming') return '#C68B3A'
-  return 'rgba(245,240,232,0.72)'
+  return 'rgba(245,240,232,0.3)'
 }
 
 function slipStatusColor(s: SlipStatus) {
@@ -198,7 +198,7 @@ function slipStatusBg(s: SlipStatus) {
   return 'rgba(232,112,112,0.18)'
 }
 
-// -- Styles --
+// ── Styles ──
 const dimStyle = { color: 'rgba(245,240,232,0.8)', fontFamily: 'Georgia, serif' }
 const headStyle = { color: '#F5F0E8', fontFamily: 'Georgia, serif' }
 const goldStyle = { color: '#C68B3A', fontFamily: 'Georgia, serif' }
@@ -216,7 +216,7 @@ const inputStyle: React.CSSProperties = {
 }
 const labelStyle: React.CSSProperties = { ...dimStyle, fontSize: '13px', display: 'block', marginBottom: '4px' }
 
-// -- Input component --
+// ── Input component ──
 function Field({ label, value, onChange, type = 'text', placeholder = '' }: {
   label: string; value: string | number; onChange: (v: string) => void; type?: string; placeholder?: string
 }) {
@@ -229,7 +229,7 @@ function Field({ label, value, onChange, type = 'text', placeholder = '' }: {
   )
 }
 
-// -- Tab Pill --
+// ── Tab Pill ──
 function TabPill({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
   return (
     <button onClick={onClick}
@@ -250,7 +250,7 @@ function TabPill({ label, active, onClick }: { label: string; active: boolean; o
   )
 }
 
-// -- Status Badge --
+// ── Status Badge ──
 function StatusBadge({ status, label }: { status: string; label: string }) {
   const color = slipStatusColor(status as SlipStatus)
   const bg = slipStatusBg(status as SlipStatus)
@@ -261,21 +261,21 @@ function StatusBadge({ status, label }: { status: string; label: string }) {
   )
 }
 
-// -- Amenity Badge --
+// ── Amenity Badge ──
 function AmenityBadge({ label }: { label: string }) {
   return (
-    <span style={{ background: 'rgba(74,144,226,0.12)', color: '#4A90E2', border: '1px solid rgba(74,144,226,0.3)', borderRadius: '5px', padding: '1px 6px', fontSize: '13px', fontFamily: 'Georgia, serif' }}>
+    <span style={{ background: 'rgba(74,144,226,0.12)', color: '#4A90E2', border: '1px solid rgba(74,144,226,0.3)', borderRadius: '5px', padding: '1px 6px', fontSize: '10px', fontFamily: 'Georgia, serif' }}>
       {label}
     </span>
   )
 }
 
-// -- Confirm Modal --
+// ── Confirm Modal ──
 function ConfirmModal({ message, onConfirm, onCancel }: { message: string; onConfirm: () => void; onCancel: () => void }) {
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center px-6" style={{ background: 'rgba(0,0,0,0.75)' }}>
       <div className="w-full max-w-sm rounded-2xl p-6 text-center" style={{ background: '#0d1f3c', border: '1px solid rgba(232,112,112,0.4)' }}>
-        <p className="text-4xl mb-3">??</p>
+        <p className="text-4xl mb-3">⚠️</p>
         <h2 className="text-base font-bold mb-2" style={headStyle}>Are you sure?</h2>
         <p className="text-xs mb-5 leading-relaxed" style={dimStyle}>{message}</p>
         <div className="flex gap-3">
@@ -293,9 +293,9 @@ function ConfirmModal({ message, onConfirm, onCancel }: { message: string; onCon
   )
 }
 
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 // SLIP GRID CELL
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 function SlipCell({ slip, occupantName, effectiveStatus, onClick }: {
   slip: Slip; occupantName?: string; effectiveStatus?: SlipStatus; onClick: () => void
 }) {
@@ -337,9 +337,9 @@ function SlipCell({ slip, occupantName, effectiveStatus, onClick }: {
   )
 }
 
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 // DOCK MANAGER MODAL
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 interface DockManagerProps {
   docks: Dock[]
   onAddDock: (dock: Dock, slipCount: number, slipLength: number, slipBeam: number) => void
@@ -386,8 +386,8 @@ function DockManagerModal({ docks, onAddDock, onRenameDock, onDeleteDock, onClos
         onTouchEnd={e => e.stopPropagation()}>
 
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold" style={headStyle}>? Configure Docks</h2>
-          <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.78)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>?</button>
+          <h2 className="text-lg font-bold" style={headStyle}>⚓ Configure Docks</h2>
+          <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
         </div>
 
         {/* Existing docks */}
@@ -410,22 +410,22 @@ function DockManagerModal({ docks, onAddDock, onRenameDock, onDeleteDock, onClos
                         Save
                       </button>
                       <button onClick={() => setEditingDock(null)}
-                        style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(245,240,232,0.82)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '8px 10px', fontSize: '13px', cursor: 'pointer' }}>
-                        ?
+                        style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(245,240,232,0.5)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '8px 10px', fontSize: '13px', cursor: 'pointer' }}>
+                        ✕
                       </button>
                     </div>
                   ) : (
                     <div className="flex items-center justify-between px-3 py-2.5 rounded-xl"
                       style={{ background: 'rgba(74,144,226,0.08)', border: '1px solid rgba(74,144,226,0.2)' }}>
-                      <span className="text-sm font-bold" style={headStyle}>? Dock {dock.name}</span>
+                      <span className="text-sm font-bold" style={headStyle}>⚓ Dock {dock.name}</span>
                       <div className="flex gap-2">
                         <button onClick={() => setEditingDock({ id: dock.id, name: dock.name })}
                           style={{ background: 'rgba(74,144,226,0.15)', color: '#4A90E2', border: '1px solid rgba(74,144,226,0.3)', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
-                          ?? Rename
+                          ✏️ Rename
                         </button>
                         <button onClick={() => setDeleteConfirm(dock.id)}
                           style={{ background: 'rgba(232,112,112,0.12)', color: '#e87070', border: '1px solid rgba(232,112,112,0.3)', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
-                          ??
+                          🗑
                         </button>
                       </div>
                     </div>
@@ -510,9 +510,9 @@ function DockManagerModal({ docks, onAddDock, onRenameDock, onDeleteDock, onClos
   )
 }
 
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 // SLIP DETAIL MODAL
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 interface SlipModalProps {
   slip: Partial<Slip> | null
   rentals: Rental[]
@@ -549,7 +549,7 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
 
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={headStyle}>{slip?.id ? `Slip: ${slip.name}` : '+ New Slip'}</h2>
-          <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.78)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>?</button>
+          <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
         </div>
 
         <div className="flex flex-col gap-3">
@@ -571,7 +571,7 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
           <Field label="Owner / Contact" value={form.ownerName || ''} onChange={v => setForm(f => ({ ...f, ownerName: v }))} placeholder="John Smith" />
           <Field label="Phone" value={form.phone || ''} onChange={v => setForm(f => ({ ...f, phone: v }))} type="tel" placeholder="e.g. (410) 555-1234" />
           <Field label="Address" value={form.address || ''} onChange={v => setForm(f => ({ ...f, address: v }))} placeholder="e.g. 123 Marina Blvd" />
-          <Field label="Card on File" value={form.cardOnFile || ''} onChange={v => setForm(f => ({ ...f, cardOnFile: v }))} placeholder="Visa ���� 1234 exp 12/27" />
+          <Field label="Card on File" value={form.cardOnFile || ''} onChange={v => setForm(f => ({ ...f, cardOnFile: v }))} placeholder="Visa •••• 1234 exp 12/27" />
 
           <div className="flex gap-3">
             <div className="flex-1">
@@ -594,7 +594,7 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
                 <button key={key} onClick={() => toggle(key)}
                   style={{
                     background: form.amenities?.[key] ? 'rgba(74,144,226,0.3)' : 'rgba(255,255,255,0.05)',
-                    color: form.amenities?.[key] ? '#4A90E2' : 'rgba(245,240,232,0.78)',
+                    color: form.amenities?.[key] ? '#4A90E2' : 'rgba(245,240,232,0.4)',
                     border: form.amenities?.[key] ? '1px solid #4A90E2' : '1px solid rgba(255,255,255,0.1)',
                     borderRadius: '6px', padding: '4px 10px', fontSize: '12px', cursor: 'pointer', fontFamily: 'Georgia, serif',
                   }}>
@@ -612,7 +612,7 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
                 <button key={s} onClick={() => setForm(f => ({ ...f, status: s }))}
                   style={{
                     background: form.status === s ? slipStatusBg(s) : 'rgba(255,255,255,0.05)',
-                    color: form.status === s ? slipStatusColor(s) : 'rgba(245,240,232,0.78)',
+                    color: form.status === s ? slipStatusColor(s) : 'rgba(245,240,232,0.4)',
                     border: form.status === s ? `1px solid ${slipStatusColor(s)}` : '1px solid rgba(255,255,255,0.1)',
                     borderRadius: '8px', padding: '5px 12px', fontSize: '12px', cursor: 'pointer', fontFamily: 'Georgia, serif', textTransform: 'capitalize',
                   }}>
@@ -625,8 +625,8 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
           {linkedRental && (
             <div style={{ background: 'rgba(74,144,226,0.08)', border: '1px solid rgba(74,144,226,0.2)', borderRadius: '10px', padding: '10px 12px' }}>
               <p className="text-xs font-bold mb-1" style={{ color: '#4A90E2', fontFamily: 'Georgia, serif' }}>Linked Rental</p>
-              <p className="text-xs" style={headStyle}>{linkedRental.vesselName} � {linkedRental.ownerName}</p>
-              <p className="text-xs mt-0.5" style={dimStyle}>{linkedRental.leaseType} � ${linkedRental.monthlyRate}/mo</p>
+              <p className="text-xs" style={headStyle}>{linkedRental.vesselName} — {linkedRental.ownerName}</p>
+              <p className="text-xs mt-0.5" style={dimStyle}>{linkedRental.leaseType} · ${linkedRental.monthlyRate}/mo</p>
             </div>
           )}
 
@@ -639,7 +639,7 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
 
           {nameError && (
             <p style={{ color: '#e87070', fontSize: '12px', fontFamily: 'Georgia, serif', textAlign: 'center', margin: '0' }}>
-              ?? Slip name is required
+              ⚠️ Slip name is required
             </p>
           )}
           <button onClick={() => { if (!form.name?.trim()) { setNameError(true); return } setNameError(false); onSave(form) }}
@@ -650,7 +650,7 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
           {onDelete && (
             <button onClick={() => setShowDeleteConfirm(true)}
               style={{ background: 'rgba(232,112,112,0.12)', color: '#e87070', border: '1px solid rgba(232,112,112,0.3)', borderRadius: '12px', padding: '10px', fontSize: '13px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
-              ?? Delete Slip
+              🗑 Delete Slip
             </button>
           )}
         </div>
@@ -667,9 +667,9 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
   )
 }
 
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 // RENTAL DETAIL MODAL
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 interface RentalModalProps {
   rental: Partial<Rental> | null
   slips: Slip[]
@@ -706,7 +706,7 @@ function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModa
 
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={headStyle}>{rental?.id ? 'Rental Details' : '+ New Rental'}</h2>
-          <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.78)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>?</button>
+          <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
         </div>
 
         <div className="flex flex-col gap-3">
@@ -728,7 +728,7 @@ function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModa
               style={{ ...inputStyle, resize: 'none' }} />
           </div>
 
-          <Field label="Card on File" value={form.cardOnFile || ''} onChange={v => setForm(f => ({ ...f, cardOnFile: v }))} placeholder="Visa ���� 1234 exp 12/27" />
+          <Field label="Card on File" value={form.cardOnFile || ''} onChange={v => setForm(f => ({ ...f, cardOnFile: v }))} placeholder="Visa •••• 1234 exp 12/27" />
 
           <div>
             <label style={labelStyle}>Assign Slip</label>
@@ -737,25 +737,25 @@ function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModa
                 type="text"
                 value={slipSearch}
                 onChange={e => setSlipSearch(e.target.value)}
-                placeholder="Search slips�"
+                placeholder="Search slips…"
                 style={{ ...inputStyle, paddingRight: '32px' }}
               />
               {slipSearch && (
                 <button onClick={() => setSlipSearch('')}
-                  style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'rgba(245,240,232,0.82)', cursor: 'pointer', fontSize: '14px', lineHeight: 1, padding: 0 }}>?</button>
+                  style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'rgba(245,240,232,0.5)', cursor: 'pointer', fontSize: '14px', lineHeight: 1, padding: 0 }}>✕</button>
               )}
             </div>
             <div style={{ maxHeight: '140px', overflowY: 'auto', border: '1px solid rgba(74,144,226,0.25)', borderRadius: '8px', background: 'rgba(255,255,255,0.04)' }}>
               <div onClick={() => setForm(f => ({ ...f, slipId: '' }))}
-                style={{ padding: '8px 12px', cursor: 'pointer', background: !form.slipId ? 'rgba(74,144,226,0.2)' : 'transparent', color: !form.slipId ? '#4A90E2' : 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif', fontSize: '13px', borderBottom: '1px solid rgba(74,144,226,0.1)' }}>
-                � No slip assigned �
+                style={{ padding: '8px 12px', cursor: 'pointer', background: !form.slipId ? 'rgba(74,144,226,0.2)' : 'transparent', color: !form.slipId ? '#4A90E2' : 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif', fontSize: '13px', borderBottom: '1px solid rgba(74,144,226,0.1)' }}>
+                — No slip assigned —
               </div>
               {availableSlips
                 .filter(s => !slipSearch || s.name.toLowerCase().includes(slipSearch.toLowerCase()) || s.dock.toLowerCase().includes(slipSearch.toLowerCase()))
                 .map(s => (
                   <div key={s.id} onClick={() => setForm(f => ({ ...f, slipId: s.id }))}
                     style={{ padding: '8px 12px', cursor: 'pointer', background: form.slipId === s.id ? 'rgba(74,144,226,0.2)' : 'transparent', color: form.slipId === s.id ? '#4A90E2' : '#F5F0E8', fontFamily: 'Georgia, serif', fontSize: '13px', borderBottom: '1px solid rgba(74,144,226,0.08)' }}>
-                    {s.name} ({s.length}�{s.beam}ft)
+                    {s.name} ({s.length}×{s.beam}ft)
                   </div>
                 ))}
             </div>
@@ -769,7 +769,7 @@ function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModa
                   style={{
                     flex: 1, padding: '7px 4px', borderRadius: '8px', fontSize: '12px', cursor: 'pointer', fontFamily: 'Georgia, serif', textTransform: 'capitalize',
                     background: form.leaseType === t ? 'rgba(74,144,226,0.3)' : 'rgba(255,255,255,0.05)',
-                    color: form.leaseType === t ? '#4A90E2' : 'rgba(245,240,232,0.82)',
+                    color: form.leaseType === t ? '#4A90E2' : 'rgba(245,240,232,0.5)',
                     border: form.leaseType === t ? '1px solid #4A90E2' : '1px solid rgba(255,255,255,0.1)',
                   }}>
                   {t}
@@ -826,7 +826,7 @@ function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModa
           {rental?.id && (
             <button onClick={markPaid}
               style={{ background: 'rgba(76,175,130,0.15)', color: '#4caf82', border: '1px solid rgba(76,175,130,0.3)', borderRadius: '10px', padding: '10px', fontSize: '13px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
-              ? Mark as Paid (This Month)
+              ✅ Mark as Paid (This Month)
             </button>
           )}
 
@@ -838,7 +838,7 @@ function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModa
           {onEnd && (
             <button onClick={() => setShowEndConfirm(true)}
               style={{ background: 'rgba(232,112,112,0.12)', color: '#e87070', border: '1px solid rgba(232,112,112,0.3)', borderRadius: '12px', padding: '10px', fontSize: '13px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
-              ?? End Rental
+              🚫 End Rental
             </button>
           )}
         </div>
@@ -855,9 +855,9 @@ function RentalDetailModal({ rental, slips, onSave, onEnd, onClose }: RentalModa
   )
 }
 
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 // TRANSIENT BOOKING MODAL
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 interface TransientModalProps {
   booking: Partial<TransientBooking> | null
   slips: Slip[]
@@ -883,7 +883,7 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
   const btnToggle = (active: boolean) => ({
     padding: '7px 10px', borderRadius: '8px', fontSize: '12px', cursor: 'pointer', fontFamily: 'Georgia, serif',
     background: active ? 'rgba(74,144,226,0.3)' : 'rgba(255,255,255,0.05)',
-    color: active ? '#4A90E2' : 'rgba(245,240,232,0.78)',
+    color: active ? '#4A90E2' : 'rgba(245,240,232,0.4)',
     border: active ? '1px solid #4A90E2' : '1px solid rgba(255,255,255,0.1)',
   } as React.CSSProperties)
 
@@ -901,7 +901,7 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
 
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={headStyle}>{booking?.id ? 'Booking Details' : '+ New Booking'}</h2>
-          <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.78)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>?</button>
+          <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
         </div>
 
         <div className="flex flex-col gap-3">
@@ -924,7 +924,7 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
               style={{ ...inputStyle, resize: 'none' }} />
           </div>
 
-          <Field label="Card on File" value={form.cardOnFile || ''} onChange={v => setForm(f => ({ ...f, cardOnFile: v }))} placeholder="Visa ���� 1234 exp 12/27" />
+          <Field label="Card on File" value={form.cardOnFile || ''} onChange={v => setForm(f => ({ ...f, cardOnFile: v }))} placeholder="Visa •••• 1234 exp 12/27" />
 
           {/* Vessel dimensions */}
           <div className="flex gap-3">
@@ -948,28 +948,28 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
                 type="text"
                 value={slipSearch}
                 onChange={e => setSlipSearch(e.target.value)}
-                placeholder="Search slips�"
+                placeholder="Search slips…"
                 style={{ ...inputStyle, paddingRight: '32px' }}
               />
               {slipSearch && (
                 <button onClick={() => setSlipSearch('')}
-                  style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'rgba(245,240,232,0.82)', cursor: 'pointer', fontSize: '14px', lineHeight: 1, padding: 0 }}>?</button>
+                  style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'rgba(245,240,232,0.5)', cursor: 'pointer', fontSize: '14px', lineHeight: 1, padding: 0 }}>✕</button>
               )}
             </div>
             <div style={{ maxHeight: '140px', overflowY: 'auto', border: '1px solid rgba(74,144,226,0.25)', borderRadius: '8px', background: 'rgba(255,255,255,0.04)' }}>
               <div onClick={() => setForm(f => ({ ...f, slipId: '' }))}
-                style={{ padding: '8px 12px', cursor: 'pointer', background: !form.slipId ? 'rgba(74,144,226,0.2)' : 'transparent', color: !form.slipId ? '#4A90E2' : 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif', fontSize: '13px', borderBottom: '1px solid rgba(74,144,226,0.1)' }}>
-                � No slip assigned �
+                style={{ padding: '8px 12px', cursor: 'pointer', background: !form.slipId ? 'rgba(74,144,226,0.2)' : 'transparent', color: !form.slipId ? '#4A90E2' : 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif', fontSize: '13px', borderBottom: '1px solid rgba(74,144,226,0.1)' }}>
+                — No slip assigned —
               </div>
               {availableSlips
                 .filter(s => !slipSearch || s.name.toLowerCase().includes(slipSearch.toLowerCase()) || s.dock.toLowerCase().includes(slipSearch.toLowerCase()))
                 .map(s => (
                   <div key={s.id} onClick={() => setForm(f => ({ ...f, slipId: s.id }))}
                     style={{ padding: '8px 12px', cursor: 'pointer', background: form.slipId === s.id ? 'rgba(74,144,226,0.2)' : 'transparent', color: form.slipId === s.id ? '#4A90E2' : '#F5F0E8', fontFamily: 'Georgia, serif', fontSize: '13px', borderBottom: '1px solid rgba(74,144,226,0.08)' }}>
-                    {s.name} ({s.length}ft � {s.beam}ft)
-                    {s.amenities?.amp30 ? <span style={{ color: '#C68B3A' }}> � 30A</span> : null}
-                    {s.amenities?.amp50 ? <span style={{ color: '#C68B3A' }}> � 50A</span> : null}
-                    {s.amenities?.water ? <span style={{ color: '#4caf82' }}> � Water</span> : null}
+                    {s.name} ({s.length}ft × {s.beam}ft)
+                    {s.amenities?.amp30 ? <span style={{ color: '#C68B3A' }}> · 30A</span> : null}
+                    {s.amenities?.amp50 ? <span style={{ color: '#C68B3A' }}> · 50A</span> : null}
+                    {s.amenities?.water ? <span style={{ color: '#4caf82' }}> · Water</span> : null}
                   </div>
                 ))}
             </div>
@@ -987,7 +987,7 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
           {nights > 0 && (
             <div className="rounded-lg px-3 py-2 flex items-center justify-between"
               style={{ background: 'rgba(74,144,226,0.08)', border: '1px solid rgba(74,144,226,0.2)' }}>
-              <span style={{ fontSize: '12px', ...dimStyle }}>?? {nights} night{nights !== 1 ? 's' : ''}</span>
+              <span style={{ fontSize: '12px', ...dimStyle }}>🌙 {nights} night{nights !== 1 ? 's' : ''}</span>
               {total > 0 && <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#4A90E2', fontFamily: 'Georgia, serif' }}>Total: ${total}</span>}
             </div>
           )}
@@ -1012,7 +1012,7 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
             <label style={{ ...labelStyle, marginBottom: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <input type="checkbox" checked={!!form.waterAtSlip} onChange={e => setForm(f => ({ ...f, waterAtSlip: e.target.checked }))}
                 style={{ accentColor: '#4A90E2', width: '16px', height: '16px', cursor: 'pointer' }} />
-              <span style={{ ...dimStyle, fontSize: '13px' }}>?? Water at slip</span>
+              <span style={{ ...dimStyle, fontSize: '13px' }}>💧 Water at slip</span>
             </label>
           </div>
 
@@ -1047,7 +1047,7 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
                   style={{
                     flex: 1, padding: '7px 4px', borderRadius: '8px', fontSize: '11px', cursor: 'pointer', fontFamily: 'Georgia, serif',
                     background: form.status === s ? `${bookingStatusColor(s)}22` : 'rgba(255,255,255,0.05)',
-                    color: form.status === s ? bookingStatusColor(s) : 'rgba(245,240,232,0.78)',
+                    color: form.status === s ? bookingStatusColor(s) : 'rgba(245,240,232,0.4)',
                     border: form.status === s ? `1px solid ${bookingStatusColor(s)}` : '1px solid rgba(255,255,255,0.1)',
                   }}>
                   {s.replace('_', ' ')}
@@ -1073,9 +1073,9 @@ function TransientModal({ booking, slips, onSave, onClose }: TransientModalProps
   )
 }
 
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 // WAITLIST ENTRY MODAL
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 interface WaitlistModalProps {
   entry: Partial<WaitlistEntry> | null
   onSave: (e: Partial<WaitlistEntry>) => void
@@ -1097,7 +1097,7 @@ function WaitlistModal({ entry, onSave, onClose }: WaitlistModalProps) {
         onTouchEnd={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={headStyle}>{entry?.id ? 'Edit Waitlist Entry' : '+ Add to Waitlist'}</h2>
-          <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.78)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>?</button>
+          <button onClick={onClose} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
         </div>
         <div className="flex flex-col gap-3">
           <Field label="Name" value={form.name || ''} onChange={v => setForm(f => ({ ...f, name: v }))} placeholder="John Smith" />
@@ -1134,9 +1134,9 @@ function WaitlistModal({ entry, onSave, onClose }: WaitlistModalProps) {
   )
 }
 
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 // MAIN PAGE
-// ---------------------------------------------------------
+// ─────────────────────────────────────────────────────────
 export default function MarinaPage() {
   const router = useRouter()
   const auth = getAuth()
@@ -1181,7 +1181,7 @@ export default function MarinaPage() {
     setTransient(localTransient)
     setWaitlist(localWaitlist)
 
-    // Cloud sync � migrate-on-first-load pattern
+    // Cloud sync – migrate-on-first-load pattern
     ;(async () => {
       try {
         const email = getAuthEmail()
@@ -1267,7 +1267,7 @@ export default function MarinaPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth?.email])
 
-  // -- DOCK handlers --
+  // ── DOCK handlers ──
   const addDock = (dock: Dock, slipCount: number, slipLen: number, slipBeam: number) => {
     // Use functional update to avoid stale closure when adding multiple docks
     setDocks(prev => {
@@ -1343,7 +1343,7 @@ export default function MarinaPage() {
     setUngroupedDeleteConfirm(false)
   }
 
-  // -- SLIP handlers --
+  // ── SLIP handlers ──
   const saveSlip = (form: Partial<Slip>) => {
     if (!form.name) return
     if (editSlip === 'new') {
@@ -1373,7 +1373,7 @@ export default function MarinaPage() {
     setEditSlip(null)
   }
 
-  // -- RENTAL handlers --
+  // ── RENTAL handlers ──
   const saveRental = (form: Partial<Rental>) => {
     if (!form.vesselName) return
     if (editRental === 'new') {
@@ -1408,7 +1408,7 @@ export default function MarinaPage() {
     setEditRental(null)
   }
 
-  // -- TRANSIENT handlers --
+  // ── TRANSIENT handlers ──
   const saveBooking = (form: Partial<TransientBooking>) => {
     if (!form.vesselName) return
     if (editBooking === 'new') {
@@ -1434,7 +1434,7 @@ export default function MarinaPage() {
     setEditBooking(null)
   }
 
-  // -- WAITLIST handlers --
+  // ── WAITLIST handlers ──
   const saveWaitlistEntry = (form: Partial<WaitlistEntry>) => {
     if (!form.name) return
     if (editWaitlist === 'new') {
@@ -1464,7 +1464,7 @@ export default function MarinaPage() {
     setWaitlist(updated); saveLS(WAITLIST_KEY, updated)
   }
 
-  // -- Stats --
+  // ── Stats ──
   const activeTransientSlipIds = new Set(transient.filter(b => b.status === 'active' && b.slipId).map(b => b.slipId))
   const upcomingTransientSlipIds = new Set(transient.filter(b => b.status === 'upcoming' && b.slipId).map(b => b.slipId))
   const totalSlips = slips.length
@@ -1473,13 +1473,13 @@ export default function MarinaPage() {
   const availableSlips = slips.filter(s => s.status === 'available' && !activeTransientSlipIds.has(s.id) && !upcomingTransientSlipIds.has(s.id)).length
   const maintenanceSlips = slips.filter(s => s.status === 'maintenance').length
 
-  // -- Dock grouping --
+  // ── Dock grouping ──
   const allDockNames = [
     ...docks.map(d => d.name).sort((a, b) => a.localeCompare(b)),
     ...Array.from(new Set(slips.map(s => s.dock).filter(d => !docks.find(dk => dk.name === d)))).sort((a, b) => a.localeCompare(b)),
   ]
 
-  // -- Locked view --
+  // ── Locked view ──
   if (!isCaptainPlus) {
     return (
       <div className="bg-wood min-h-screen flex flex-col">
@@ -1487,7 +1487,7 @@ export default function MarinaPage() {
           style={{ background: 'rgba(20,8,2,0.95)', borderBottom: '1px solid rgba(198,139,58,0.3)' }}>
           <Logo size="sm" />
           <span className="text-xs px-3 py-1.5 rounded-lg" style={{ background: 'rgba(198,139,58,0.15)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.3)', fontFamily: 'Georgia, serif' }}>
-            ? Marina Manager
+            ⚓ Marina Manager
           </span>
         </header>
         <main className="flex-1 flex flex-col items-center justify-center px-6 py-12 pb-28 text-center">
@@ -1500,22 +1500,22 @@ export default function MarinaPage() {
               </div>
             </div>
             <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ background: 'rgba(10,20,40,0.65)' }}>
-              <span style={{ fontSize: '2.5rem' }}>??</span>
+              <span style={{ fontSize: '2.5rem' }}>🔒</span>
               <p className="text-sm font-bold mt-2" style={headStyle}>Marina Manager Locked</p>
             </div>
           </div>
-          <h1 className="text-xl font-bold mb-2" style={{ ...headStyle, fontFamily: 'Georgia, serif' }}>? Marina Manager</h1>
+          <h1 className="text-xl font-bold mb-2" style={{ ...headStyle, fontFamily: 'Georgia, serif' }}>⚓ Marina Manager</h1>
           <p className="text-sm mb-6 max-w-xs leading-relaxed" style={{ ...dimStyle, color: 'rgba(245,240,232,0.85)' }}>
             Marina Manager is included with <strong style={goldStyle}>Captain</strong> and <strong style={goldStyle}>Admiral</strong> plans.
           </p>
           <div className="flex flex-col gap-3 w-full max-w-xs">
             <Link href="/upgrade" className="text-sm px-5 py-3 rounded-xl text-center font-bold"
               style={{ background: '#C68B3A', color: '#3D1C02', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
-              ?? Upgrade to Captain
+              ⬆️ Upgrade to Captain
             </Link>
             <Link href="/marina-addon-checkout" className="text-sm px-5 py-3 rounded-xl text-center"
               style={{ background: 'rgba(74,144,226,0.15)', color: '#4A90E2', border: '1px solid rgba(74,144,226,0.4)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
-              ? Add Marina Manager ($49/mo)
+              ⚓ Add Marina Manager ($49/mo)
             </Link>
           </div>
         </main>
@@ -1529,13 +1529,13 @@ export default function MarinaPage() {
       <header className="flex items-center justify-between px-4 py-3 sticky top-0 z-40"
         style={{ background: 'rgba(20,8,2,0.95)', borderBottom: '1px solid rgba(198,139,58,0.3)' }}>
         <Logo size="sm" />
-        <span className="text-sm font-bold" style={goldStyle}>? Marina Manager</span>
+        <span className="text-sm font-bold" style={goldStyle}>⚓ Marina Manager</span>
       </header>
 
       <main className="flex-1 overflow-y-auto px-3 py-4 pb-28">
         {/* Search bar */}
         <div className="relative mb-3">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm" style={{ color: 'rgba(245,240,232,0.78)' }}>??</span>
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm" style={{ color: 'rgba(245,240,232,0.4)' }}>🔍</span>
           <input
             type="search"
             placeholder="Search by vessel or owner..."
@@ -1545,19 +1545,19 @@ export default function MarinaPage() {
             style={{ background: 'rgba(255,255,255,0.85)', border: '2px solid rgba(26,10,0,0.3)', color: '#1A0A00', fontFamily: 'system-ui, sans-serif', outline: 'none' }}
           />
           {searchQuery && (
-            <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs" style={{ color: '#1A0A00', background: 'none', border: 'none', cursor: 'pointer' }}>?</button>
+            <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs" style={{ color: '#1A0A00', background: 'none', border: 'none', cursor: 'pointer' }}>✕</button>
           )}
         </div>
 
         {/* Tab pills */}
         <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
-          <TabPill label="? Slips" active={activeTab === 'slips'} onClick={() => setActiveTab('slips')} />
-          <TabPill label="?? Rentals" active={activeTab === 'rentals'} onClick={() => setActiveTab('rentals')} />
-          <TabPill label="??? Transient" active={activeTab === 'transient'} onClick={() => setActiveTab('transient')} />
-          <TabPill label="?? Waitlist" active={activeTab === 'waitlist'} onClick={() => setActiveTab('waitlist')} />
+          <TabPill label="⚓ Slips" active={activeTab === 'slips'} onClick={() => setActiveTab('slips')} />
+          <TabPill label="📋 Rentals" active={activeTab === 'rentals'} onClick={() => setActiveTab('rentals')} />
+          <TabPill label="🛥️ Transient" active={activeTab === 'transient'} onClick={() => setActiveTab('transient')} />
+          <TabPill label="📋 Waitlist" active={activeTab === 'waitlist'} onClick={() => setActiveTab('waitlist')} />
         </div>
 
-        {/* --- SLIPS TAB --- */}
+        {/* ─── SLIPS TAB ─── */}
         {activeTab === 'slips' && (
           <>
             {/* Summary stats */}
@@ -1581,18 +1581,18 @@ export default function MarinaPage() {
             <button onClick={() => setShowDockManager(true)}
               className="w-full mb-3 py-2.5 rounded-xl text-sm"
               style={{ background: 'rgba(198,139,58,0.12)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.35)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
-              ?? Configure Docks
+              ⚙️ Configure Docks
             </button>
 
             {/* No slips at all */}
             {slips.length === 0 && (
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <span style={{ fontSize: '3rem' }}>?</span>
+                <span style={{ fontSize: '3rem' }}>⚓</span>
                 <p className="text-sm mt-3 mb-1 font-bold" style={headStyle}>No slips yet</p>
                 <p className="text-xs mb-4" style={dimStyle}>Configure your docks to auto-generate slips, or add them individually.</p>
                 <button onClick={() => setShowDockManager(true)}
                   style={{ background: '#4A90E2', color: '#fff', border: 'none', borderRadius: '10px', padding: '10px 20px', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
-                  ?? Set Up Docks
+                  ⚙️ Set Up Docks
                 </button>
               </div>
             )}
@@ -1622,8 +1622,8 @@ export default function MarinaPage() {
                   {/* Dock header */}
                   <div className="flex items-center justify-between mb-2" onClick={() => toggleDock(dockName)} style={{ cursor: 'pointer' }}>
                     <h2 className="text-sm font-bold uppercase tracking-wider flex items-center gap-1.5" style={goldStyle}>
-                      <span style={{ fontSize: '9px', opacity: 0.8, lineHeight: 1 }}>{isCollapsed ? '?' : '?'}</span>
-                      ? {isNamed ? `Dock ${dockName}` : dockName}
+                      <span style={{ fontSize: '9px', opacity: 0.8, lineHeight: 1 }}>{isCollapsed ? '▶' : '▼'}</span>
+                      ⚓ {isNamed ? `Dock ${dockName}` : dockName}
                       <span className="ml-1 text-xs font-normal" style={dimStyle}>
                         {dockSlips.filter(s => s.status === 'available').length} open / {dockSlips.length} total
                       </span>
@@ -1633,7 +1633,7 @@ export default function MarinaPage() {
                         <button
                           onClick={e => { e.stopPropagation(); setUngroupedManagerDock(dockName); setUngroupedTargetDock('') }}
                           style={{ background: 'rgba(198,139,58,0.15)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.3)', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
-                          ?? Manage
+                          ⚙️ Manage
                         </button>
                       )}
                       <button
@@ -1669,7 +1669,7 @@ export default function MarinaPage() {
                   ) : searchQuery ? (
                     <p className="text-xs py-2" style={dimStyle}>No matches in {isNamed ? `Dock ${dockName}` : dockName}</p>
                   ) : (
-                    <p className="text-xs py-2" style={dimStyle}>No slips in this dock yet � tap + Slip to add one.</p>
+                    <p className="text-xs py-2" style={dimStyle}>No slips in this dock yet — tap + Slip to add one.</p>
                   ))}
                 </div>
               )
@@ -1689,7 +1689,7 @@ export default function MarinaPage() {
           </>
         )}
 
-        {/* --- RENTALS TAB --- */}
+        {/* ─── RENTALS TAB ─── */}
         {activeTab === 'rentals' && (
           <>
             <button onClick={() => setEditRental('new')}
@@ -1700,7 +1700,7 @@ export default function MarinaPage() {
 
             {rentals.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-center">
-                <span style={{ fontSize: '3rem' }}>??</span>
+                <span style={{ fontSize: '3rem' }}>📋</span>
                 <p className="text-sm mt-3 mb-1 font-bold" style={headStyle}>No rentals yet</p>
                 <p className="text-xs" style={dimStyle}>Create a rental agreement to track slip leases</p>
               </div>
@@ -1729,14 +1729,14 @@ export default function MarinaPage() {
                         </span>
                       </div>
                       <div className="flex items-center gap-3 flex-wrap text-xs" style={dimStyle}>
-                        {slip && <span>?? {slip.name}</span>}
-                        <span>?? ${rental.monthlyRate}/mo</span>
-                        {rental.startDate && <span>?? {rental.startDate}{rental.endDate ? ` ? ${rental.endDate}` : ' � Ongoing'}</span>}
+                        {slip && <span>📍 {slip.name}</span>}
+                        <span>💰 ${rental.monthlyRate}/mo</span>
+                        {rental.startDate && <span>📅 {rental.startDate}{rental.endDate ? ` → ${rental.endDate}` : ' · Ongoing'}</span>}
                       </div>
                       {(rental.address || rental.cardOnFile) && (
                         <div className="flex flex-col gap-0.5 mt-1.5 text-xs" style={dimStyle}>
-                          {rental.address && <span>?? {rental.address}</span>}
-                          {rental.cardOnFile && <span>?? {rental.cardOnFile}</span>}
+                          {rental.address && <span>🏠 {rental.address}</span>}
+                          {rental.cardOnFile && <span>💳 {rental.cardOnFile}</span>}
                         </div>
                       )}
                       <div className="mt-2">
@@ -1752,7 +1752,7 @@ export default function MarinaPage() {
           </>
         )}
 
-        {/* --- TRANSIENT TAB --- */}
+        {/* ─── TRANSIENT TAB ─── */}
         {activeTab === 'transient' && (
           <>
             <button onClick={() => setEditBooking('new')}
@@ -1763,7 +1763,7 @@ export default function MarinaPage() {
 
             {transient.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-center">
-                <span style={{ fontSize: '3rem' }}>???</span>
+                <span style={{ fontSize: '3rem' }}>🛥️</span>
                 <p className="text-sm mt-3 mb-1 font-bold" style={headStyle}>No transient bookings</p>
                 <p className="text-xs" style={dimStyle}>Track short-term guest dock bookings here</p>
               </div>
@@ -1792,16 +1792,16 @@ export default function MarinaPage() {
                         </span>
                       </div>
                       <div className="flex flex-wrap gap-2 text-xs mb-1" style={dimStyle}>
-                        {slip && <span>?? {slip.name}</span>}
-                        {booking.checkin && <span>?? {booking.checkin} ? {booking.checkout}</span>}
-                        {nights > 0 && <span>?? {nights}n</span>}
-                        {total > 0 && <span style={{ color: '#4A90E2', fontFamily: 'Georgia, serif' }}>?? ${total}</span>}
+                        {slip && <span>📍 {slip.name}</span>}
+                        {booking.checkin && <span>📅 {booking.checkin} → {booking.checkout}</span>}
+                        {nights > 0 && <span>🌙 {nights}n</span>}
+                        {total > 0 && <span style={{ color: '#4A90E2', fontFamily: 'Georgia, serif' }}>💰 ${total}</span>}
                       </div>
                       <div className="flex flex-wrap gap-2">
-                        {booking.loa > 0 && <span style={{ ...dimStyle, fontSize: '13px' }}>LOA: {booking.loa}ft</span>}
-                        {booking.powerType !== 'none' && <span style={{ fontSize: '13px', color: '#4A90E2', fontFamily: 'Georgia, serif' }}>? {booking.powerType === 'double30' ? 'Double 30A' : booking.powerType}</span>}
-                        {booking.waterAtSlip && <span style={{ fontSize: '13px', color: '#4caf82', fontFamily: 'Georgia, serif' }}>?? Water</span>}
-                        {booking.discountCard !== 'none' && <span style={{ fontSize: '13px', color: '#C68B3A', fontFamily: 'Georgia, serif' }}>?? {booking.discountCard.toUpperCase()}</span>}
+                        {booking.loa > 0 && <span style={{ ...dimStyle, fontSize: '10px' }}>LOA: {booking.loa}ft</span>}
+                        {booking.powerType !== 'none' && <span style={{ fontSize: '10px', color: '#4A90E2', fontFamily: 'Georgia, serif' }}>⚡ {booking.powerType === 'double30' ? 'Double 30A' : booking.powerType}</span>}
+                        {booking.waterAtSlip && <span style={{ fontSize: '10px', color: '#4caf82', fontFamily: 'Georgia, serif' }}>💧 Water</span>}
+                        {booking.discountCard !== 'none' && <span style={{ fontSize: '10px', color: '#C68B3A', fontFamily: 'Georgia, serif' }}>🎫 {booking.discountCard.toUpperCase()}</span>}
                       </div>
                     </button>
                   )
@@ -1811,7 +1811,7 @@ export default function MarinaPage() {
           </>
         )}
 
-        {/* --- WAITLIST TAB --- */}
+        {/* ─── WAITLIST TAB ─── */}
         {activeTab === 'waitlist' && (
           <>
             <button onClick={() => setEditWaitlist('new')}
@@ -1823,17 +1823,17 @@ export default function MarinaPage() {
             {availableSlips > 0 && waitlist.filter(e => !e.notified).length > 0 && (
               <div className="mb-4 rounded-xl p-4 flex items-center gap-3"
                 style={{ background: 'rgba(76,175,130,0.1)', border: '1px solid rgba(76,175,130,0.3)' }}>
-                <span style={{ fontSize: '1.5rem' }}>??</span>
+                <span style={{ fontSize: '1.5rem' }}>🟢</span>
                 <div className="flex-1">
                   <p className="text-sm font-bold" style={{ color: '#4caf82', fontFamily: 'Georgia, serif' }}>Slips Available!</p>
-                  <p className="text-xs" style={dimStyle}>{availableSlips} slip{availableSlips !== 1 ? 's' : ''} open � notify your waitlist</p>
+                  <p className="text-xs" style={dimStyle}>{availableSlips} slip{availableSlips !== 1 ? 's' : ''} open — notify your waitlist</p>
                 </div>
               </div>
             )}
 
             {waitlist.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-center">
-                <span style={{ fontSize: '3rem' }}>??</span>
+                <span style={{ fontSize: '3rem' }}>📋</span>
                 <p className="text-sm mt-3 mb-1 font-bold" style={headStyle}>Waitlist is empty</p>
                 <p className="text-xs" style={dimStyle}>Add people waiting for a slip</p>
               </div>
@@ -1848,35 +1848,35 @@ export default function MarinaPage() {
                           <span className="text-xs font-bold" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>#{idx + 1}</span>
                           <p className="text-base font-bold" style={headStyle}>{entry.name}</p>
                         </div>
-                        {entry.vesselName && <p className="text-xs mt-0.5" style={dimStyle}>??? {entry.vesselName}</p>}
+                        {entry.vesselName && <p className="text-xs mt-0.5" style={dimStyle}>🛥️ {entry.vesselName}</p>}
                       </div>
                       {entry.notified && (
                         <span style={{ background: 'rgba(76,175,130,0.15)', color: '#4caf82', border: '1px solid rgba(76,175,130,0.3)', borderRadius: '6px', padding: '2px 8px', fontSize: '11px', fontFamily: 'Georgia, serif' }}>
-                          Notified ?
+                          Notified ✅
                         </span>
                       )}
                     </div>
                     <div className="flex flex-wrap gap-3 text-xs mb-3" style={dimStyle}>
-                      {entry.phone && <span>?? {entry.phone}</span>}
-                      {entry.email && <span>?? {entry.email}</span>}
-                      <span>?? Needs {entry.lengthNeeded}ft</span>
-                      <span>?? {entry.dateAdded}</span>
+                      {entry.phone && <span>📞 {entry.phone}</span>}
+                      {entry.email && <span>✉️ {entry.email}</span>}
+                      <span>📏 Needs {entry.lengthNeeded}ft</span>
+                      <span>📅 {entry.dateAdded}</span>
                     </div>
                     {entry.notes && <p className="text-xs mb-3 truncate" style={dimStyle}>{entry.notes}</p>}
                     <div className="flex gap-2">
                       <button onClick={() => setEditWaitlist(entry)}
                         style={{ flex: 1, padding: '7px', borderRadius: '8px', fontSize: '12px', cursor: 'pointer', fontFamily: 'Georgia, serif', background: 'rgba(74,144,226,0.12)', color: '#4A90E2', border: '1px solid rgba(74,144,226,0.3)' }}>
-                        ?? Edit
+                        ✏️ Edit
                       </button>
                       {!entry.notified && availableSlips > 0 && (
                         <button onClick={() => notifyWaitlist(entry.id)}
                           style={{ flex: 1, padding: '7px', borderRadius: '8px', fontSize: '12px', cursor: 'pointer', fontFamily: 'Georgia, serif', background: 'rgba(76,175,130,0.12)', color: '#4caf82', border: '1px solid rgba(76,175,130,0.3)' }}>
-                          ?? Notify
+                          🔔 Notify
                         </button>
                       )}
                       <button onClick={() => removeWaitlistEntry(entry.id)}
                         style={{ padding: '7px 12px', borderRadius: '8px', fontSize: '12px', cursor: 'pointer', fontFamily: 'Georgia, serif', background: 'rgba(232,112,112,0.1)', color: '#e87070', border: '1px solid rgba(232,112,112,0.25)' }}>
-                        ??
+                        🗑
                       </button>
                     </div>
                   </div>
@@ -1887,7 +1887,7 @@ export default function MarinaPage() {
         )}
       </main>
 
-      {/* -- Modals -- */}
+      {/* ── Modals ── */}
       {showDockManager && (
         <DockManagerModal
           docks={docks}
@@ -1937,13 +1937,13 @@ export default function MarinaPage() {
         />
       )}
 
-      {/* -- Ungrouped Manager Modal -- */}
+      {/* ── Ungrouped Manager Modal ── */}
       {ungroupedManagerDock && (
         <div className="fixed inset-0 z-[55] flex items-center justify-center px-6" style={{ background: 'rgba(0,0,0,0.75)' }} onClick={() => setUngroupedManagerDock(null)}>
           <div className="w-full max-w-sm rounded-2xl p-5" style={{ background: '#0d1f3c', border: '1px solid rgba(198,139,58,0.4)' }} onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-base font-bold" style={headStyle}>?? Manage: {ungroupedManagerDock}</h2>
-              <button onClick={() => setUngroupedManagerDock(null)} style={{ color: 'rgba(245,240,232,0.78)', background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer', lineHeight: 1 }}>?</button>
+              <h2 className="text-base font-bold" style={headStyle}>⚙️ Manage: {ungroupedManagerDock}</h2>
+              <button onClick={() => setUngroupedManagerDock(null)} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
             </div>
             <p className="text-xs mb-4" style={dimStyle}>
               {slips.filter(s => s.dock === ungroupedManagerDock).length} slip(s) not assigned to a named dock.
@@ -1953,7 +1953,7 @@ export default function MarinaPage() {
               <label style={labelStyle}>Move All to Dock</label>
               <select value={ungroupedTargetDock} onChange={e => setUngroupedTargetDock(e.target.value)}
                 style={{ ...inputStyle, cursor: 'pointer', marginBottom: '8px' }}>
-                <option value="">� Select dock �</option>
+                <option value="">— Select dock —</option>
                 {docks.map(d => (
                   <option key={d.id} value={d.name} style={{ background: '#0d1f3c' }}>Dock {d.name}</option>
                 ))}
@@ -1969,7 +1969,7 @@ export default function MarinaPage() {
               <button
                 onClick={() => setUngroupedDeleteConfirm(true)}
                 style={{ width: '100%', background: 'rgba(232,112,112,0.12)', color: '#e87070', border: '1px solid rgba(232,112,112,0.3)', borderRadius: '10px', padding: '10px', fontSize: '13px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
-                ?? Delete All in &quot;{ungroupedManagerDock}&quot;
+                🗑 Delete All in &quot;{ungroupedManagerDock}&quot;
               </button>
             </div>
           </div>

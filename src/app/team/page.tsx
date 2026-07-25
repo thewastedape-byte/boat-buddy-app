@@ -121,7 +121,7 @@ export default function TeamPage() {
   }
 
   const seatsUsed = members.length + 1 // +1 for owner
-  const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }
+  const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
   const labelStyle = { color: '#C68B3A', fontFamily: 'Georgia, serif' }
 
   return (
@@ -192,7 +192,7 @@ export default function TeamPage() {
                   <option value="admin" style={{ background: '#1a0a02' }}>Admin</option>
                 </select>
                 <button onClick={() => removeMember(member.email)}
-                  style={{ background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.82)', border: '1px solid rgba(139,26,26,0.3)', borderRadius: '6px', padding: '2px 8px', fontSize: '11px', cursor: 'pointer' }}>
+                  style={{ background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.5)', border: '1px solid rgba(139,26,26,0.3)', borderRadius: '6px', padding: '2px 8px', fontSize: '11px', cursor: 'pointer' }}>
                   ✕
                 </button>
               </div>
@@ -250,11 +250,11 @@ export default function TeamPage() {
                       </button>
                       <button type="button" onClick={() => setInviteLink('')}
                         className="py-2 px-3 rounded-lg text-xs"
-                        style={{ background: 'rgba(139,26,26,0.15)', color: 'rgba(245,240,232,0.78)', border: '1px solid rgba(139,26,26,0.2)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
+                        style={{ background: 'rgba(139,26,26,0.15)', color: 'rgba(245,240,232,0.4)', border: '1px solid rgba(139,26,26,0.2)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
                         ✕
                       </button>
                     </div>
-                    <p className="text-xs" style={{ color: 'rgba(245,240,232,0.72)', fontFamily: 'Georgia, serif' }}>Link expires in 7 days. Valid for one signup.</p>
+                    <p className="text-xs" style={{ color: 'rgba(245,240,232,0.3)', fontFamily: 'Georgia, serif' }}>Link expires in 7 days. Valid for one signup.</p>
                   </div>
                 )}
               </div>

@@ -7,7 +7,7 @@ import { getAuth } from '@/lib/auth'
 
 export default function MarinaAddonCheckoutPage() {
   const [loading, setLoading] = useState(false)
-  const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }
+  const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
   const headStyle = { color: '#F5F0E8', fontFamily: 'Georgia, serif' }
 
   const handleCheckout = async () => {

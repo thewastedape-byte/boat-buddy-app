@@ -304,18 +304,18 @@ function WorkOrderContent() {
               style={{ ...iStyle, textAlign: 'center', fontSize: '18px', fontWeight: 'bold', letterSpacing: '0.5px', borderBottom: 'none', width: '100%', maxWidth: '100%' }} />
             <div style={{ fontSize: '11px', letterSpacing: '3px', color: '#555', marginTop: '2px' }}>WORK ORDER / REPAIR RECORD</div>
             {shopPhone && <div style={{ fontSize: '11px', color: '#555', marginTop: '2px' }}>{shopPhone}</div>}
-            {shopAddress && <div style={{ fontSize: '13px', color: '#777', marginTop: '1px' }}>{shopAddress}</div>}
-            {!shopPhone && !shopAddress && <div style={{ fontSize: '13px', color: '#aaa', marginTop: '4px' }}>boatbuddy.thewastedape.com</div>}
+            {shopAddress && <div style={{ fontSize: '10px', color: '#777', marginTop: '1px' }}>{shopAddress}</div>}
+            {!shopPhone && !shopAddress && <div style={{ fontSize: '10px', color: '#aaa', marginTop: '4px' }}>boatbuddy.thewastedape.com</div>}
           </div>
 
           {/* WO # and Date */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
             <div>
-              <div style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '4px' }}>Work Order #</div>
+              <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '4px' }}>Work Order #</div>
               <input value={workOrderNum} onChange={e => setWorkOrderNum(e.target.value)} style={{ ...iStyle, fontSize: '14px', fontWeight: 'bold' }} />
             </div>
             <div>
-              <div style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '4px' }}>Date</div>
+              <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '4px' }}>Date</div>
               <input type="date" value={orderDate} onChange={e => setOrderDate(e.target.value)} style={{ ...iStyle }} />
             </div>
           </div>
@@ -323,7 +323,7 @@ function WorkOrderContent() {
           {/* Vessel Selector — screen only */}
           {allVessels.length > 1 && (
             <div className="no-print" style={{ marginBottom: '16px' }}>
-              <div style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px', fontWeight: 'bold' }}>Select Vessel</div>
+              <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px', fontWeight: 'bold' }}>Select Vessel</div>
               <select
                 value={vessel?.id || ''}
                 onChange={e => {
@@ -341,7 +341,7 @@ function WorkOrderContent() {
 
           {/* Vessel Info */}
           <div style={{ background: '#f5f5f5', border: '1px solid #ddd', borderRadius: '6px', padding: '14px', marginBottom: '20px' }}>
-            <div style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '10px', fontWeight: 'bold' }}>Vessel Information</div>
+            <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '10px', fontWeight: 'bold' }}>Vessel Information</div>
             {vessel ? (
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 16px', fontSize: '13px' }}>
                 {vessel.name && <div><span style={{ color: '#666' }}>Name: </span><strong>{vessel.name}</strong></div>}
@@ -362,7 +362,7 @@ function WorkOrderContent() {
 
           {/* Problem */}
           <div style={{ marginBottom: '20px' }}>
-            <div style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px', fontWeight: 'bold' }}>Problem / Symptom</div>
+            <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px', fontWeight: 'bold' }}>Problem / Symptom</div>
             <textarea value={problemDesc} onChange={e => setProblemDesc(e.target.value)} rows={3}
               placeholder="Describe the problem or symptom reported..."
               style={{ ...iStyle, resize: 'none', borderBottom: 'none', border: '1px solid #ccc', borderRadius: '4px', padding: '8px', width: '100%', fontSize: '13px', boxSizing: 'border-box' }} />
@@ -370,7 +370,7 @@ function WorkOrderContent() {
 
           {/* Parts Table */}
           <div style={{ marginBottom: '20px' }}>
-            <div style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '8px', fontWeight: 'bold' }}>Parts / Materials</div>
+            <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '8px', fontWeight: 'bold' }}>Parts / Materials</div>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
               <thead>
                 <tr style={{ background: '#f0f0f0' }}>
@@ -428,21 +428,21 @@ function WorkOrderContent() {
 
           {/* Labor */}
           <div style={{ marginBottom: '20px' }}>
-            <div style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '8px', fontWeight: 'bold' }}>Labor</div>
+            <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '8px', fontWeight: 'bold' }}>Labor</div>
             <textarea value={laborNotes} onChange={e => setLaborNotes(e.target.value)} rows={3}
               placeholder="Describe work performed..."
               style={{ ...iStyle, resize: 'none', borderBottom: 'none', border: '1px solid #ccc', borderRadius: '4px', padding: '8px', width: '100%', fontSize: '13px', marginBottom: '10px', boxSizing: 'border-box' }} />
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', background: '#f5f5f5', borderRadius: '6px', padding: '10px' }}>
               <div>
-                <div style={{ fontSize: '13px', color: '#555', marginBottom: '4px' }}>Hours</div>
+                <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>Hours</div>
                 <input value={laborHours} onChange={e => setLaborHours(e.target.value)} placeholder="0.0" style={{ ...iStyle }} />
               </div>
               <div>
-                <div style={{ fontSize: '13px', color: '#555', marginBottom: '4px' }}>Rate ($/hr)</div>
+                <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>Rate ($/hr)</div>
                 <input value={laborRate} onChange={e => setLaborRate(e.target.value)} placeholder="0.00" style={{ ...iStyle }} />
               </div>
               <div>
-                <div style={{ fontSize: '13px', color: '#555', marginBottom: '4px' }}>Labor Total</div>
+                <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>Labor Total</div>
                 <div style={{ padding: '2px 4px', fontWeight: 'bold', fontSize: '13px' }}>{fmt(laborTotal)}</div>
               </div>
             </div>
@@ -457,12 +457,12 @@ function WorkOrderContent() {
           {/* Technician */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
             <div>
-              <div style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px' }}>Technician Name</div>
+              <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px' }}>Technician Name</div>
               <input value={techName} onChange={e => setTechName(e.target.value)} placeholder="Name"
                 style={{ ...iStyle }} />
             </div>
             <div>
-              <div style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px' }}>Signature</div>
+              <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px' }}>Signature</div>
               <div style={{ borderBottom: '1px solid #ccc', height: '28px' }}></div>
             </div>
           </div>
@@ -474,11 +474,11 @@ function WorkOrderContent() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div>
-                <div style={{ fontSize: '13px', color: '#888', marginBottom: '4px' }}>Customer Name</div>
+                <div style={{ fontSize: '10px', color: '#888', marginBottom: '4px' }}>Customer Name</div>
                 <div style={{ borderBottom: '1px solid #ccc', height: '28px' }}></div>
               </div>
               <div>
-                <div style={{ fontSize: '13px', color: '#888', marginBottom: '4px' }}>Signature / Date</div>
+                <div style={{ fontSize: '10px', color: '#888', marginBottom: '4px' }}>Signature / Date</div>
                 <div style={{ borderBottom: '1px solid #ccc', height: '28px' }}></div>
               </div>
             </div>
@@ -486,7 +486,7 @@ function WorkOrderContent() {
 
           {/* Footer */}
           <div style={{ textAlign: 'center', borderTop: '1px solid #eee', paddingTop: '12px' }}>
-            <p style={{ fontSize: '13px', color: '#aaa' }}>Generated by Boat Buddy by WastedApe — AI-powered marine diagnostics</p>
+            <p style={{ fontSize: '10px', color: '#aaa' }}>Generated by Boat Buddy by WastedApe — AI-powered marine diagnostics</p>
           </div>
         </div>
 

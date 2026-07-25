@@ -39,7 +39,7 @@ export default function AdminPage() {
     } catch {} finally { setLoading(false) }
   }
 
-  const dimStyle = { color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }
+  const dimStyle = { color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }
   const labelStyle = { color: '#C68B3A', fontFamily: 'Georgia, serif' }
 
   const mem = data?.inMemory

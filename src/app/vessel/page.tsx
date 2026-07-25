@@ -332,7 +332,7 @@ export default function VesselPage() {
                 <div>
                   <label className="block text-xs mb-1" style={labelStyle}>Vessel Type</label>
                   <select className="input-field" value={form.type} onChange={e => set('type', e.target.value)}
-                    style={{ background: 'rgba(245, 240, 232, 0.1)', border: '1px solid rgba(198, 139, 58, 0.5)', borderRadius: '8px', color: form.type ? '#F5F0E8' : 'rgba(245,240,232,0.78)', padding: '12px 16px', fontFamily: 'Georgia, serif', fontSize: '16px', width: '100%', outline: 'none' }}>
+                    style={{ background: 'rgba(245, 240, 232, 0.1)', border: '1px solid rgba(198, 139, 58, 0.5)', borderRadius: '8px', color: form.type ? '#F5F0E8' : 'rgba(245,240,232,0.4)', padding: '12px 16px', fontFamily: 'Georgia, serif', fontSize: '16px', width: '100%', outline: 'none' }}>
                     {VESSEL_TYPES.map(t => (
                       <option key={t} value={t} style={{ background: '#1a0a02', color: '#F5F0E8' }}>{t || '— Select type —'}</option>
                     ))}
@@ -412,7 +412,7 @@ export default function VesselPage() {
                       </a>
                       <button type="button" onClick={() => set('insuranceDoc', '')}
                         className="text-xs px-2 py-1.5 rounded-lg"
-                        style={{background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.82)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif'}}>
+                        style={{background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.5)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif'}}>
                         ✕ Remove
                       </button>
                     </div>
@@ -459,14 +459,14 @@ export default function VesselPage() {
 
       <main className="flex-1 overflow-y-auto px-4 py-4 pb-28">
         <h1 className="text-xl font-bold mb-1" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>⚓ My Fleet</h1>
-        <p className="text-xs mb-5" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>
+        <p className="text-xs mb-5" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>
           {vessels.length} vessel{vessels.length !== 1 ? 's' : ''}.{loadingCloud ? ' ☁️ Syncing...' : ''} Active vessel is used in chat and work orders.
         </p>
 
         {vessels.length === 0 && !loadingCloud && (
           <div className="text-center py-12">
             <p className="text-4xl mb-3">⚓</p>
-            <p className="text-sm mb-4" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>No vessels yet.</p>
+            <p className="text-sm mb-4" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>No vessels yet.</p>
             <button onClick={startNew} className="btn-primary px-8">+ Add Your First Vessel</button>
           </div>
         )}
@@ -474,7 +474,7 @@ export default function VesselPage() {
         {vessels.length === 0 && loadingCloud && (
           <div className="text-center py-12">
             <p className="text-2xl mb-3">☁️</p>
-            <p className="text-sm" style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif' }}>Loading your fleet...</p>
+            <p className="text-sm" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>Loading your fleet...</p>
           </div>
         )}
 
@@ -522,7 +522,7 @@ export default function VesselPage() {
                 </button>
                 <button onClick={() => handleDelete(v.id)}
                   className="text-xs px-3 py-1.5 rounded-lg"
-                  style={{ background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.82)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
+                  style={{ background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.5)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
                   🗑️
                 </button>
               </div>

@@ -140,7 +140,7 @@ export default function WelcomePage() {
           </p>
           <div className="flex flex-col gap-3">
             {[
-              { name: 'Stow Away', tier: null, price: 'Free', desc: '1 question every 6 hours', color: 'rgba(245,240,232,0.82)', border: 'rgba(245,240,232,0.1)' },
+              { name: 'Stow Away', tier: null, price: 'Free', desc: '1 question every 6 hours', color: 'rgba(245,240,232,0.5)', border: 'rgba(245,240,232,0.1)' },
               { name: 'First Mate', tier: 'first_mate', price: '$19.99/mo', desc: 'Unlimited AI · Work orders · Diagrams', color: '#7aafd4', border: 'rgba(122,175,212,0.4)', badge: 'MOST POPULAR' },
               { name: 'Captain', tier: 'captain', price: '$39.99/mo', desc: 'Full shop tools · 5 team seats', color: '#C68B3A', border: 'rgba(198,139,58,0.4)' },
               { name: 'Admiral', tier: 'admiral', price: '$79.99/mo', desc: 'Everything · 10 team seats', color: '#C68B3A', border: 'rgba(198,139,58,0.4)' },
@@ -154,7 +154,7 @@ export default function WelcomePage() {
                   style={{ border: `1px solid ${t.border}`, cursor: 'pointer', position: 'relative' }}>
                   {(t as any).badge && (
                     <span className="absolute text-xs font-bold px-2 py-0.5 rounded-full"
-                      style={{ top: -10, right: 12, background: '#7aafd4', color: '#1A0A00', fontSize: '13px' }}>
+                      style={{ top: -10, right: 12, background: '#7aafd4', color: '#1A0A00', fontSize: '10px' }}>
                       {(t as any).badge}
                     </span>
                   )}
@@ -171,7 +171,7 @@ export default function WelcomePage() {
             ))}
           </div>
           <p className="text-xs text-center mt-3 mb-2"
-            style={{ color: 'rgba(245,240,232,0.72)', fontFamily: 'Georgia, serif' }}>
+            style={{ color: 'rgba(245,240,232,0.3)', fontFamily: 'Georgia, serif' }}>
             No credit card required for free tier · Cancel anytime
           </p>
           <p className="text-xs text-center mb-8">

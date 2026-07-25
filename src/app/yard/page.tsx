@@ -750,7 +750,7 @@ export default function YardPage() {
                         zIndex: 10,
                         padding: 0,
                         transition: 'transform 0.15s',
-                        fontSize: '13px',
+                        fontSize: '10px',
                         color: '#fff',
                         fontWeight: 'bold',
                         fontFamily: 'Georgia, serif',

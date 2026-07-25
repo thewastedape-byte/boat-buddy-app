@@ -396,21 +396,21 @@ export default function InventoryPage() {
                 <p className="text-xs font-bold mb-2" style={labelStyle}>🏭 Vendor / Supplier</p>
                 <div className="flex flex-col gap-2">
                   <div className="grid grid-cols-2 gap-3">
-                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '13px' }}>Company Name</label>
+                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '10px' }}>Company Name</label>
                       <input className="input-field" value={form.supplier || ''} onChange={e => setField('supplier', e.target.value)} placeholder="West Marine, etc." /></div>
-                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '13px' }}>Contact Name</label>
+                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '10px' }}>Contact Name</label>
                       <input className="input-field" value={form.vendor_contact || ''} onChange={e => setField('vendor_contact', e.target.value)} placeholder="John Smith" /></div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '13px' }}>Phone</label>
+                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '10px' }}>Phone</label>
                       <input className="input-field" value={form.vendor_phone || ''} onChange={e => setField('vendor_phone', e.target.value)} placeholder="(555) 000-0000" /></div>
-                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '13px' }}>Email</label>
+                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '10px' }}>Email</label>
                       <input type="email" className="input-field" value={form.vendor_email || ''} onChange={e => setField('vendor_email', e.target.value)} placeholder="orders@vendor.com" /></div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '13px' }}>Website</label>
+                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '10px' }}>Website</label>
                       <input className="input-field" value={form.vendor_website || ''} onChange={e => setField('vendor_website', e.target.value)} placeholder="westmarine.com" /></div>
-                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '13px' }}>Account #</label>
+                    <div><label className="block text-xs mb-1" style={{ ...dimStyle, fontSize: '10px' }}>Account #</label>
                       <input className="input-field" value={form.vendor_account || ''} onChange={e => setField('vendor_account', e.target.value)} placeholder="Your acct #" /></div>
                   </div>
                 </div>
