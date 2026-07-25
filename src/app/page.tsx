@@ -6,6 +6,7 @@ import { findDiagram } from '@/lib/diagrams'
 import NavBar from '@/components/NavBar'
 import TCModal from '@/components/TCModal'
 import Logo from '@/components/Logo'
+import HelpChatModal from '@/components/HelpChatModal'
 
 interface Message {
   id: string
@@ -31,6 +32,7 @@ export default function ChatPage() {
   const [subscription, setSubscription] = useState<string | undefined>(undefined)
   const [serviceAlert, setServiceAlert] = useState<string | null>(null)
   const [inlineDiagram, setInlineDiagram] = useState<{title: string, svgPath: string} | null>(null)
+  const [helpChatOpen, setHelpChatOpen] = useState(false)
   const diagramRef = useRef<HTMLDivElement>(null)
   const [manualMode, setManualMode] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -492,6 +494,10 @@ export default function ChatPage() {
             style={{ background: 'rgba(0,0,0,0.45)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
             ❓ Help
           </a>
+          <button onClick={() => setHelpChatOpen(true)} title="Help Chat" className="text-xs px-3 py-1.5 rounded-lg"
+            style={{ background: 'rgba(0,0,0,0.45)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
+            💬
+          </button>
           <button onClick={handleNewChat} className="text-xs px-3 py-1.5 rounded-lg"
             style={{ background: 'rgba(0,0,0,0.45)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)', fontFamily: 'Georgia, serif' }}>
             + New
@@ -749,6 +755,8 @@ export default function ChatPage() {
           </button>
         </div>
       </div>
+
+      <HelpChatModal open={helpChatOpen} onClose={() => setHelpChatOpen(false)} />
 
       {/* Hidden file inputs */}
       <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
