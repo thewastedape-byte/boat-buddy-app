@@ -126,14 +126,14 @@ const EMPTY_WO: WOForm = {
 }
 
 // Save to localStorage — mirrors marina's saveLS() exactly
-function saveWO(wo: WOForm) {
-  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(wo)) } catch {}
+function saveWO(wo: WOForm, key: string = DRAFT_KEY) {
+  try { localStorage.setItem(key, JSON.stringify(wo)) } catch {}
 }
 
 // Load from localStorage
-function loadWO(): WOForm | null {
+function loadWO(key: string = DRAFT_KEY): WOForm | null {
   try {
-    const raw = localStorage.getItem(DRAFT_KEY)
+    const raw = localStorage.getItem(key)
     return raw ? JSON.parse(raw) : null
   } catch { return null }
 }
@@ -153,6 +153,7 @@ function WorkOrderContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const entryId = searchParams.get('id')
+  const storeKey = entryId ? (DRAFT_KEY + '_' + entryId) : DRAFT_KEY
 
   // Single form state object — same pattern as marina/yard
   const [wo, setWo] = useState<WOForm>(EMPTY_WO)
@@ -176,7 +177,7 @@ function WorkOrderContent() {
   const set = (key: keyof WOForm, val: any) => {
     setWo(prev => {
       const next = { ...prev, [key]: val }
-      if (!entryId) saveWO(next)
+      saveWO(next, storeKey)
       return next
     })
   }
@@ -185,7 +186,7 @@ function WorkOrderContent() {
     setWo(prev => {
       const newParts = prev.parts.map((p, idx) => idx === i ? { ...p, [field]: val } : p)
       const next = { ...prev, parts: newParts }
-      if (!entryId) saveWO(next)
+      saveWO(next, storeKey)
       return next
     })
   }
@@ -193,7 +194,7 @@ function WorkOrderContent() {
   const addPartRow = () => {
     setWo(prev => {
       const next = { ...prev, parts: [...prev.parts, { description: '', qty: '1', price: '' }] }
-      if (!entryId) saveWO(next)
+      saveWO(next, storeKey)
       return next
     })
   }
@@ -201,7 +202,7 @@ function WorkOrderContent() {
   const removePartRow = (i: number) => {
     setWo(prev => {
       const next = { ...prev, parts: prev.parts.filter((_, idx) => idx !== i) }
-      if (!entryId) saveWO(next)
+      saveWO(next, storeKey)
       return next
     })
   }
@@ -239,7 +240,13 @@ function WorkOrderContent() {
     } catch {}
 
     if (entryId) {
-      // Opening from a repair log entry — load it, ignore any saved draft
+      // Check for previously saved edits for this job first
+      const savedEdits = loadWO(storeKey)
+      if (savedEdits) {
+        setWo(savedEdits)
+        loadVessel(savedEdits.vesselId, vessels)
+      } else {
+      // First time opening this log entry — load from log
       try {
         const logRaw = localStorage.getItem(userKey(REPAIR_LOG_KEY))
         if (logRaw) {
@@ -272,9 +279,10 @@ function WorkOrderContent() {
         }
       } catch {}
       loadVessel(undefined, vessels)
+      } // end else (no savedEdits)
     } else {
       // No log entry — restore from localStorage or start fresh (same as marina mount)
-      const draft = loadWO()
+      const draft = loadWO(storeKey)
       if (draft) {
         setWo(draft)
         loadVessel(draft.vesselId, vessels)
@@ -316,7 +324,7 @@ function WorkOrderContent() {
       else
         newParts = [...prev.parts, row]
       const next = { ...prev, parts: newParts }
-      if (!entryId) saveWO(next)
+      saveWO(next, storeKey)
       return next
     })
     setPickerTargetRow(null)
@@ -356,7 +364,7 @@ function WorkOrderContent() {
           <button
             onClick={() => {
               if (!confirm('Clear this work order and start fresh?')) return
-              try { localStorage.removeItem(DRAFT_KEY) } catch {}
+              try { localStorage.removeItem(storeKey) } catch {}
               setWo({ ...EMPTY_WO, orderDate: new Date().toISOString().split('T')[0], workOrderNum: genWONum() })
             }}
             className="text-xs px-3 py-1.5 rounded-lg"
@@ -367,7 +375,7 @@ function WorkOrderContent() {
             style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
             📋 Log
           </Link>
-          <button onClick={() => { try { localStorage.removeItem(DRAFT_KEY) } catch {} window.print() }}
+          <button onClick={() => { try { localStorage.removeItem(storeKey) } catch {} window.print() }}
             className="text-xs px-3 py-1.5 rounded-lg font-bold"
             style={{ background: '#C68B3A', color: '#3D1C02', border: 'none', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
             🖨️ Print
@@ -566,7 +574,7 @@ function WorkOrderContent() {
         {/* Action buttons */}
         <div className="no-print flex flex-col gap-3" style={{ maxWidth: '700px', margin: '0 auto' }}>
           <div className="flex gap-3">
-            <button onClick={() => { try { localStorage.removeItem(DRAFT_KEY) } catch {} window.print() }} className="btn-primary flex-1">
+            <button onClick={() => { try { localStorage.removeItem(storeKey) } catch {} window.print() }} className="btn-primary flex-1">
               🖨️ Print / Save PDF
             </button>
             <button onClick={() => setShowEmailForm(!showEmailForm)}
@@ -612,7 +620,7 @@ function WorkOrderContent() {
                     const data = await resp.json()
                     if (!resp.ok || data.error) { alert('Failed to send email: ' + (data.error || 'Unknown error')); return }
                     setEmailSent(true)
-                    try { localStorage.removeItem(DRAFT_KEY) } catch {}
+                    try { localStorage.removeItem(storeKey) } catch {}
                     setTimeout(() => { setEmailSent(false); setShowEmailForm(false) }, 3000)
                   } catch (err: any) { alert('Send failed: ' + (err?.message || 'Network error')) } finally { setEmailSending(false) }
                 }}
@@ -655,3 +663,6 @@ export default function WorkOrderPage() {
     </Suspense>
   )
 }
+
+
+
