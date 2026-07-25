@@ -47,6 +47,9 @@ interface Slip {
   notes: string
   vesselName: string
   ownerName: string
+  phone: string
+  address: string
+  cardOnFile: string
 }
 
 interface Payment {
@@ -524,6 +527,7 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
     name: '', dock: defaultDock || docks[0]?.name || 'Ungrouped', length: 30, beam: 12,
     amenities: { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false },
     status: 'available', notes: '', vesselName: '', ownerName: '',
+    phone: '', address: '', cardOnFile: '',
   })
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [nameError, setNameError] = useState(false)
@@ -564,6 +568,9 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
 
           <Field label="Vessel Name" value={form.vesselName || ''} onChange={v => setForm(f => ({ ...f, vesselName: v }))} placeholder="e.g. Sea Wolf" />
           <Field label="Owner / Contact" value={form.ownerName || ''} onChange={v => setForm(f => ({ ...f, ownerName: v }))} placeholder="John Smith" />
+          <Field label="Phone" value={form.phone || ''} onChange={v => setForm(f => ({ ...f, phone: v }))} type="tel" placeholder="e.g. (410) 555-1234" />
+          <Field label="Address" value={form.address || ''} onChange={v => setForm(f => ({ ...f, address: v }))} placeholder="e.g. 123 Marina Blvd" />
+          <Field label="Card on File" value={form.cardOnFile || ''} onChange={v => setForm(f => ({ ...f, cardOnFile: v }))} placeholder="Visa •••• 1234 exp 12/27" />
 
           <div className="flex gap-3">
             <div className="flex-1">
@@ -1112,13 +1119,18 @@ export default function MarinaPage() {
   const [editBooking, setEditBooking] = useState<TransientBooking | 'new' | null>(null)
   const [editWaitlist, setEditWaitlist] = useState<WaitlistEntry | 'new' | null>(null)
   const [showDockManager, setShowDockManager] = useState(false)
+  const [collapsedDocks, setCollapsedDocks] = useState<Set<string>>(new Set())
+  const toggleDock = (dockId: string) => setCollapsedDocks(prev => { const s = new Set(prev); s.has(dockId) ? s.delete(dockId) : s.add(dockId); return s; })
+  const [ungroupedManagerDock, setUngroupedManagerDock] = useState<string | null>(null)
+  const [ungroupedTargetDock, setUngroupedTargetDock] = useState('')
+  const [ungroupedDeleteConfirm, setUngroupedDeleteConfirm] = useState(false)
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/login'); return }
     const loadedSlips = loadLS<Slip[]>(SLIPS_KEY, [])
     // Migrate old slips without dock field
     const defaultAmenities = { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false }
-    const migratedSlips = loadedSlips.map(s => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s }))
+    const migratedSlips = loadedSlips.map(s => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s, phone: s.phone || '', address: s.address || '', cardOnFile: s.cardOnFile || '' }))
     const localDocks = loadLS<Dock[]>(DOCKS_KEY, [])
     const localRentals = loadLS<Rental[]>(RENTALS_KEY, []).map(r => ({ address: r.address || '', cardOnFile: r.cardOnFile || '', ...r }))
     const localTransient = loadLS<TransientBooking[]>(TRANSIENT_KEY, []).map(b => ({ address: b.address || '', cardOnFile: b.cardOnFile || '', ...b }))
@@ -1140,7 +1152,7 @@ export default function MarinaPage() {
           const cloudSlips = await cloudGet(email, SLIPS_KEY)
           if (cloudSlips !== null) {
             const parsed: Slip[] = JSON.parse(cloudSlips)
-            const migrated = parsed.map((s: Slip) => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s }))
+            const migrated = parsed.map((s: Slip) => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s, phone: s.phone || '', address: s.address || '', cardOnFile: s.cardOnFile || '' }))
             setSlips(migrated)
             localStorage.setItem(userKey(SLIPS_KEY), cloudSlips)
           } else if (migratedSlips.length > 0) {
@@ -1239,6 +1251,9 @@ export default function MarinaPage() {
           notes: '',
           vesselName: '',
           ownerName: '',
+          phone: '',
+          address: '',
+          cardOnFile: '',
         }
       })
       setSlips(prev => {
@@ -1274,6 +1289,20 @@ export default function MarinaPage() {
     saveLS(SLIPS_KEY, updatedSlips)
   }
 
+  const moveUngroupedToDock = (fromDockName: string, toDockName: string) => {
+    if (!toDockName) return
+    const updated = slips.map(s => s.dock === fromDockName ? { ...s, dock: toDockName } : s)
+    setSlips(updated); saveLS(SLIPS_KEY, updated)
+    setUngroupedManagerDock(null)
+  }
+
+  const deleteUngroupedSlips = (dockName: string) => {
+    const updated = slips.filter(s => s.dock !== dockName)
+    setSlips(updated); saveLS(SLIPS_KEY, updated)
+    setUngroupedManagerDock(null)
+    setUngroupedDeleteConfirm(false)
+  }
+
   // ── SLIP handlers ──
   const saveSlip = (form: Partial<Slip>) => {
     if (!form.name) return
@@ -1284,6 +1313,7 @@ export default function MarinaPage() {
         amenities: form.amenities || { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false },
         status: form.status || 'available', notes: form.notes || '',
         vesselName: form.vesselName || '', ownerName: form.ownerName || '',
+        phone: form.phone || '', address: form.address || '', cardOnFile: form.cardOnFile || '',
       }
       const updated = [...slips, newSlip]
       setSlips(updated); saveLS(SLIPS_KEY, updated)
@@ -1526,7 +1556,9 @@ export default function MarinaPage() {
             {/* Dock grids */}
             {allDockNames.map(dockName => {
               const dockSlips = slips.filter(s => s.dock === dockName)
-              if (dockSlips.length === 0 && !docks.find(d => d.name === dockName)) return null
+              const isNamed = !!docks.find(d => d.name === dockName)
+              if (dockSlips.length === 0 && !isNamed) return null
+              const isCollapsed = collapsedDocks.has(dockName)
               const filteredDockSlips = searchQuery
                 ? dockSlips.filter(s => {
                   const rental = rentals.find(r => r.slipId === s.id)
@@ -1544,22 +1576,32 @@ export default function MarinaPage() {
               return (
                 <div key={dockName} className="mb-5">
                   {/* Dock header */}
-                  <div className="flex items-center justify-between mb-2">
-                    <h2 className="text-sm font-bold uppercase tracking-wider" style={goldStyle}>
-                      ⚓ Dock {dockName}
-                      <span className="ml-2 text-xs font-normal" style={dimStyle}>
+                  <div className="flex items-center justify-between mb-2" onClick={() => toggleDock(dockName)} style={{ cursor: 'pointer' }}>
+                    <h2 className="text-sm font-bold uppercase tracking-wider flex items-center gap-1.5" style={goldStyle}>
+                      <span style={{ fontSize: '9px', opacity: 0.8, lineHeight: 1 }}>{isCollapsed ? '▶' : '▼'}</span>
+                      ⚓ {isNamed ? `Dock ${dockName}` : dockName}
+                      <span className="ml-1 text-xs font-normal" style={dimStyle}>
                         {dockSlips.filter(s => s.status === 'available').length} open / {dockSlips.length} total
                       </span>
                     </h2>
-                    <button
-                      onClick={() => { setNewSlipDock(dockName); setEditSlip('new') }}
-                      style={{ background: 'rgba(74,144,226,0.15)', color: '#4A90E2', border: '1px solid rgba(74,144,226,0.3)', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
-                      + Slip
-                    </button>
+                    <div className="flex items-center gap-1.5">
+                      {!isNamed && (
+                        <button
+                          onClick={e => { e.stopPropagation(); setUngroupedManagerDock(dockName); setUngroupedTargetDock('') }}
+                          style={{ background: 'rgba(198,139,58,0.15)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.3)', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
+                          ⚙️ Manage
+                        </button>
+                      )}
+                      <button
+                        onClick={e => { e.stopPropagation(); setNewSlipDock(dockName); setEditSlip('new') }}
+                        style={{ background: 'rgba(74,144,226,0.15)', color: '#4A90E2', border: '1px solid rgba(74,144,226,0.3)', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
+                        + Slip
+                      </button>
+                    </div>
                   </div>
 
                   {/* Slip grid */}
-                  {filteredDockSlips.length > 0 ? (
+                  {!isCollapsed && (filteredDockSlips.length > 0 ? (
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                       {filteredDockSlips.map(slip => {
                         const rental = rentals.find(r => r.slipId === slip.id)
@@ -1576,10 +1618,10 @@ export default function MarinaPage() {
                       })}
                     </div>
                   ) : searchQuery ? (
-                    <p className="text-xs py-2" style={dimStyle}>No matches in Dock {dockName}</p>
+                    <p className="text-xs py-2" style={dimStyle}>No matches in {isNamed ? `Dock ${dockName}` : dockName}</p>
                   ) : (
                     <p className="text-xs py-2" style={dimStyle}>No slips in this dock yet — tap + Slip to add one.</p>
-                  )}
+                  ))}
                 </div>
               )
             })}
@@ -1846,10 +1888,58 @@ export default function MarinaPage() {
         />
       )}
 
+      {/* ── Ungrouped Manager Modal ── */}
+      {ungroupedManagerDock && (
+        <div className="fixed inset-0 z-[55] flex items-center justify-center px-6" style={{ background: 'rgba(0,0,0,0.75)' }} onClick={() => setUngroupedManagerDock(null)}>
+          <div className="w-full max-w-sm rounded-2xl p-5" style={{ background: '#0d1f3c', border: '1px solid rgba(198,139,58,0.4)' }} onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-base font-bold" style={headStyle}>⚙️ Manage: {ungroupedManagerDock}</h2>
+              <button onClick={() => setUngroupedManagerDock(null)} style={{ color: 'rgba(245,240,232,0.4)', background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
+            </div>
+            <p className="text-xs mb-4" style={dimStyle}>
+              {slips.filter(s => s.dock === ungroupedManagerDock).length} slip(s) not assigned to a named dock.
+            </p>
+
+            <div className="mb-4">
+              <label style={labelStyle}>Move All to Dock</label>
+              <select value={ungroupedTargetDock} onChange={e => setUngroupedTargetDock(e.target.value)}
+                style={{ ...inputStyle, cursor: 'pointer', marginBottom: '8px' }}>
+                <option value="">— Select dock —</option>
+                {docks.map(d => (
+                  <option key={d.id} value={d.name} style={{ background: '#0d1f3c' }}>Dock {d.name}</option>
+                ))}
+              </select>
+              <button
+                onClick={() => ungroupedTargetDock && moveUngroupedToDock(ungroupedManagerDock, ungroupedTargetDock)}
+                style={{ width: '100%', background: ungroupedTargetDock ? '#4A90E2' : 'rgba(74,144,226,0.3)', color: '#fff', border: 'none', borderRadius: '10px', padding: '10px', fontSize: '13px', fontWeight: 'bold', cursor: ungroupedTargetDock ? 'pointer' : 'not-allowed', fontFamily: 'Georgia, serif' }}>
+                {ungroupedTargetDock ? `Move All to Dock ${ungroupedTargetDock}` : 'Move All to ...'}
+              </button>
+            </div>
+
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '16px' }}>
+              <button
+                onClick={() => setUngroupedDeleteConfirm(true)}
+                style={{ width: '100%', background: 'rgba(232,112,112,0.12)', color: '#e87070', border: '1px solid rgba(232,112,112,0.3)', borderRadius: '10px', padding: '10px', fontSize: '13px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
+                🗑 Delete All in &quot;{ungroupedManagerDock}&quot;
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {ungroupedDeleteConfirm && ungroupedManagerDock && (
+        <ConfirmModal
+          message={`Delete all ${slips.filter(s => s.dock === ungroupedManagerDock).length} slip(s) in "${ungroupedManagerDock}"? This cannot be undone.`}
+          onConfirm={() => deleteUngroupedSlips(ungroupedManagerDock)}
+          onCancel={() => setUngroupedDeleteConfirm(false)}
+        />
+      )}
+
       <NavBar />
     </div>
   )
 }
+
 
 
 
