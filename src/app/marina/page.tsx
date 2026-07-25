@@ -100,6 +100,33 @@ interface WaitlistEntry {
   notified: boolean
 }
 
+// ── Cloud sync helpers ──
+const _CLOUD_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://gemini-marine-api.onrender.com'
+
+function getAuthEmail(): string | null {
+  if (typeof window === 'undefined') return null
+  try { return JSON.parse(localStorage.getItem('boat_buddy_auth') || '{}').email || null } catch { return null }
+}
+
+async function cloudGet(email: string, key: string): Promise<string | null> {
+  try {
+    const res = await fetch(`${_CLOUD_BASE}/api/db/storage?user_email=${encodeURIComponent(email)}&key=${encodeURIComponent(key)}`)
+    if (!res.ok) return null
+    const json = await res.json()
+    return json.data ?? null
+  } catch { return null }
+}
+
+async function cloudSet(email: string, key: string, data: string): Promise<void> {
+  try {
+    await fetch(`${_CLOUD_BASE}/api/db/storage`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_email: email, key, data }),
+    })
+  } catch {}
+}
+
 // ── Helpers ──
 function loadLS<T>(key: string, fallback: T): T {
   if (typeof window === 'undefined') return fallback
@@ -111,6 +138,13 @@ function loadLS<T>(key: string, fallback: T): T {
 
 function saveLS(key: string, value: unknown) {
   localStorage.setItem(userKey(key), JSON.stringify(value))
+  // Fire-and-forget cloud backup
+  ;(async () => {
+    try {
+      const email = getAuthEmail()
+      if (email) await cloudSet(email, key, JSON.stringify(value))
+    } catch {}
+  })()
 }
 
 function genId() {
@@ -1056,11 +1090,80 @@ export default function MarinaPage() {
     // Migrate old slips without dock field
     const defaultAmenities = { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false }
     const migratedSlips = loadedSlips.map(s => ({ dock: 'Main', amenities: defaultAmenities, ...s }))
+    const localDocks = loadLS<Dock[]>(DOCKS_KEY, [])
+    const localRentals = loadLS<Rental[]>(RENTALS_KEY, [])
+    const localTransient = loadLS<TransientBooking[]>(TRANSIENT_KEY, [])
+    const localWaitlist = loadLS<WaitlistEntry[]>(WAITLIST_KEY, [])
     setSlips(migratedSlips)
-    setDocks(loadLS<Dock[]>(DOCKS_KEY, []))
-    setRentals(loadLS<Rental[]>(RENTALS_KEY, []))
-    setTransient(loadLS<TransientBooking[]>(TRANSIENT_KEY, []))
-    setWaitlist(loadLS<WaitlistEntry[]>(WAITLIST_KEY, []))
+    setDocks(localDocks)
+    setRentals(localRentals)
+    setTransient(localTransient)
+    setWaitlist(localWaitlist)
+
+    // Cloud sync – migrate-on-first-load pattern
+    ;(async () => {
+      try {
+        const email = getAuthEmail()
+        if (!email) return
+
+        // Slips
+        try {
+          const cloudSlips = await cloudGet(email, SLIPS_KEY)
+          if (cloudSlips !== null) {
+            const parsed: Slip[] = JSON.parse(cloudSlips)
+            const migrated = parsed.map((s: Slip) => ({ dock: 'Main', amenities: defaultAmenities, ...s }))
+            setSlips(migrated)
+            localStorage.setItem(userKey(SLIPS_KEY), cloudSlips)
+          } else if (migratedSlips.length > 0) {
+            await cloudSet(email, SLIPS_KEY, JSON.stringify(migratedSlips))
+          }
+        } catch {}
+
+        // Docks
+        try {
+          const cloudDocks = await cloudGet(email, DOCKS_KEY)
+          if (cloudDocks !== null) {
+            setDocks(JSON.parse(cloudDocks))
+            localStorage.setItem(userKey(DOCKS_KEY), cloudDocks)
+          } else if (localDocks.length > 0) {
+            await cloudSet(email, DOCKS_KEY, JSON.stringify(localDocks))
+          }
+        } catch {}
+
+        // Rentals
+        try {
+          const cloudRentals = await cloudGet(email, RENTALS_KEY)
+          if (cloudRentals !== null) {
+            setRentals(JSON.parse(cloudRentals))
+            localStorage.setItem(userKey(RENTALS_KEY), cloudRentals)
+          } else if (localRentals.length > 0) {
+            await cloudSet(email, RENTALS_KEY, JSON.stringify(localRentals))
+          }
+        } catch {}
+
+        // Transient bookings
+        try {
+          const cloudTransient = await cloudGet(email, TRANSIENT_KEY)
+          if (cloudTransient !== null) {
+            setTransient(JSON.parse(cloudTransient))
+            localStorage.setItem(userKey(TRANSIENT_KEY), cloudTransient)
+          } else if (localTransient.length > 0) {
+            await cloudSet(email, TRANSIENT_KEY, JSON.stringify(localTransient))
+          }
+        } catch {}
+
+        // Waitlist
+        try {
+          const cloudWaitlist = await cloudGet(email, WAITLIST_KEY)
+          if (cloudWaitlist !== null) {
+            setWaitlist(JSON.parse(cloudWaitlist))
+            localStorage.setItem(userKey(WAITLIST_KEY), cloudWaitlist)
+          } else if (localWaitlist.length > 0) {
+            await cloudSet(email, WAITLIST_KEY, JSON.stringify(localWaitlist))
+          }
+        } catch {}
+      } catch {}
+    })()
   }, [router])
 
   useEffect(() => {
@@ -1701,3 +1804,4 @@ export default function MarinaPage() {
     </div>
   )
 }
+
