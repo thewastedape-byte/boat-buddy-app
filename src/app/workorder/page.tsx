@@ -65,8 +65,8 @@ function PartPickerModal({ onSelect, onClose }: {
     <div className="fixed inset-0 z-[100] flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.8)' }} onClick={onClose}>
       <div className="w-full max-w-lg rounded-t-2xl flex flex-col" style={{ background: '#1a0a02', border: '1px solid rgba(198,139,58,0.4)', borderBottom: 'none', maxHeight: '80vh' }} onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between p-4 pb-2">
-          <h3 style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 16, margin: 0 }}>?? Pick from Inventory</h3>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(245,240,232,0.75)', fontSize: 20, cursor: 'pointer', lineHeight: 1 }}>?</button>
+          <h3 style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 16, margin: 0 }}>📦 Pick from Inventory</h3>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(245,240,232,0.75)', fontSize: 20, cursor: 'pointer', lineHeight: 1 }}>✕</button>
         </div>
         <div className="px-4 pb-2">
           <input
@@ -273,19 +273,19 @@ function WorkOrderContent() {
         <div className="flex items-center gap-2">
           <Link href="/log" className="text-xs px-3 py-1.5 rounded-lg"
             style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
-            ? Log
+            📋 Log
           </Link>
           <button onClick={() => window.print()}
             className="text-xs px-3 py-1.5 rounded-lg font-bold"
             style={{ background: '#C68B3A', color: '#3D1C02', border: 'none', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
-            ??? Print
+            🖨️ Print
           </button>
         </div>
       </header>
 
       <main className="flex-1 overflow-y-auto px-3 py-4 pb-28">
         <h1 className="no-print text-xl font-bold mb-4" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
-          ?? Work Order / Repair Record
+          🔧 Work Order / Repair Record
         </h1>
 
         {/* WHITE PAPER DOCUMENT */}
@@ -298,7 +298,7 @@ function WorkOrderContent() {
           <div style={{ textAlign: 'center', marginBottom: '20px', paddingBottom: '16px', borderBottom: '3px solid #1a1a1a' }}>
             {shopLogo
               ? <img src={shopLogo} alt="logo" style={{ height: '60px', maxWidth: '200px', objectFit: 'contain', marginBottom: '8px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
-              : <div style={{ fontSize: '28px', marginBottom: '4px' }}>?</div>
+              : <div style={{ fontSize: '28px', marginBottom: '4px' }}>⚓</div>
             }
             <input value={shopName} onChange={e => setShopName(e.target.value)}
               style={{ ...iStyle, textAlign: 'center', fontSize: '18px', fontWeight: 'bold', letterSpacing: '0.5px', borderBottom: 'none', width: '100%', maxWidth: '100%' }} />
@@ -356,7 +356,7 @@ function WorkOrderContent() {
                 {vessel.documentNumber && <div><span style={{ color: '#666' }}>Doc/HIN: </span>{vessel.documentNumber}</div>}
               </div>
             ) : (
-              <p style={{ fontSize: '12px', color: '#888' }}>No vessel profile — <Link href="/vessel" style={{ color: '#C68B3A' }}>set up vessel ?</Link></p>
+              <p style={{ fontSize: '12px', color: '#888' }}>No vessel profile — <Link href="/vessel" style={{ color: '#C68B3A' }}>set up vessel →</Link></p>
             )}
           </div>
 
@@ -421,7 +421,7 @@ function WorkOrderContent() {
               </button>
               <button onClick={() => openPicker()}
                 style={{ background: 'rgba(198,139,58,0.12)', border: '1px solid rgba(198,139,58,0.4)', borderRadius: '4px', color: '#C68B3A', padding: '4px 14px', fontSize: '12px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
-                ?? Search Inventory
+                📦 Search Inventory
               </button>
             </div>
           </div>
@@ -494,12 +494,12 @@ function WorkOrderContent() {
         <div className="no-print flex flex-col gap-3" style={{ maxWidth: '700px', margin: '0 auto' }}>
           <div className="flex gap-3">
             <button onClick={() => window.print()} className="btn-primary flex-1">
-              ??? Print / Save PDF
+              🖨️ Print / Save PDF
             </button>
             <button onClick={() => setShowEmailForm(!showEmailForm)}
               className="flex-1 py-3 rounded-xl text-sm font-bold"
               style={{ background: showEmailForm ? 'rgba(139,26,26,0.2)' : 'rgba(198,139,58,0.2)', color: showEmailForm ? 'rgba(245,240,232,0.82)' : '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif' }}>
-              ?? Email to Customer
+              📧 Email to Customer
             </button>
           </div>
 
@@ -542,18 +542,18 @@ function WorkOrderContent() {
                 }}
                 className="btn-primary w-full py-3"
                 style={{ opacity: !customerEmail || emailSending ? 0.5 : 1 }}>
-                {emailSending ? 'Sending...' : emailSent ? '? Sent!' : '?? Send Invoice Email'}
+                {emailSending ? 'Sending...' : emailSent ? '✅ Sent!' : '📧 Send Invoice Email'}
               </button>
             </div>
           )}
 
           <Link href="/log" className="text-center py-3 rounded-lg text-sm font-bold"
             style={{ background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            ? Back to Log
+            📋 Back to Log
           </Link>
         </div>
         <p className="no-print text-xs text-center mt-3" style={{ color: 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif' }}>
-          Tip: Print ? Save as PDF or email directly to customer.
+          Tip: Print → Save as PDF or email directly to customer.
         </p>
       </main>
       {showPartPicker && (

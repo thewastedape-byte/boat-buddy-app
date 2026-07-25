@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { isLoggedIn, userKey } from '@/lib/auth'
@@ -69,7 +69,7 @@ const EMPTY_FORM = {
   nextServiceNote: '',
 }
 
-export default function RepairLogPage() {
+function RepairLogContent() {
   const router = useRouter()
   const [entries, setEntries] = useState<RepairLogEntry[]>([])
   const [expanded, setExpanded] = useState<string | null>(null)
@@ -85,8 +85,10 @@ export default function RepairLogPage() {
     const log = getRepairLog()
     setEntries(log)
     // Pre-fill vessel name from profile
-    const vessel = getVesselProfile()
-    if (vessel?.name) setForm(f => ({ ...f, vessel: vessel.name }))
+    try {
+      const vessel = getVesselProfile()
+      if (vessel?.name) setForm(f => ({ ...f, vessel: vessel.name }))
+    } catch { /* safe fallback */ }
     // Check for upcoming service reminders (within 14 days)
     const now = Date.now()
     const fourteenDays = 14 * 24 * 60 * 60 * 1000
@@ -487,6 +489,18 @@ export default function RepairLogPage() {
 
       <NavBar />
     </div>
+  )
+}
+
+export default function RepairLogPage() {
+  return (
+    <Suspense fallback={
+      <div className="bg-wood min-h-screen flex items-center justify-center">
+        <p style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Loading...</p>
+      </div>
+    }>
+      <RepairLogContent />
+    </Suspense>
   )
 }
 
