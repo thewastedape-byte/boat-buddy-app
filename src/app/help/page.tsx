@@ -149,9 +149,9 @@ const customerItems: HelpItem[] = [
 
 const teamItems: HelpItem[] = [
   {
-    icon: '💬',
+    icon: '👥',
     title: 'Team Chat',
-    desc: 'Real-time messaging across all devices. Messages sync instantly — anyone on your team can post and reply. Tap Team Chat in the bottom nav.',
+    desc: 'Tap the 👥 Team icon in the bottom nav to open Team Chat. Real-time messaging for your whole crew.',
     tip: 'Post job updates, parts requests, or quick questions to the crew.',
   },
   {

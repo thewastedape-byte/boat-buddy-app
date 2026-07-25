@@ -78,6 +78,10 @@ export default function NavBar() {
           <span className="nav-icon">📦</span>
           <span>Parts</span>
         </Link>
+        <Link href="/groupchat" className={`nav-item ${pathname === '/groupchat' ? 'active' : ''}`}>
+          <span className="nav-icon">👥</span>
+          <span>Team</span>
+        </Link>
         <Link href="/marina" className={`nav-item ${pathname === '/marina' ? 'active' : ''}`}>
           <span className="nav-icon">⛵</span>
           <span>Marina</span>
