@@ -34,15 +34,10 @@ function PartPickerModal({ onSelect, onClose }: {
   const [parts, setParts] = useState<InventoryPart[]>([])
 
   useEffect(() => {
-    // Load from localStorage using same key as inventory page
     try {
       const raw = localStorage.getItem(userKey('bb_inventory'))
-      if (raw) {
-        const local: InventoryPart[] = JSON.parse(raw)
-        setParts(local)
-      }
+      if (raw) setParts(JSON.parse(raw))
     } catch {}
-    // Also try API — only replace if non-empty
     try {
       const authRaw = localStorage.getItem('boat_buddy_auth')
       const email = authRaw ? JSON.parse(authRaw)?.email || '' : ''
@@ -70,13 +65,9 @@ function PartPickerModal({ onSelect, onClose }: {
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(245,240,232,0.75)', fontSize: 20, cursor: 'pointer', lineHeight: 1 }}>✕</button>
         </div>
         <div className="px-4 pb-2">
-          <input
-            autoFocus
-            value={search}
-            onChange={e => setSearch(e.target.value)}
+          <input autoFocus value={search} onChange={e => setSearch(e.target.value)}
             placeholder="Search parts, part#, supplier..."
-            style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid rgba(198,139,58,0.3)', background: 'rgba(255,255,255,0.07)', color: '#F5F0E8', fontFamily: 'Georgia, serif', fontSize: 14, outline: 'none', boxSizing: 'border-box' }}
-          />
+            style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid rgba(198,139,58,0.3)', background: 'rgba(255,255,255,0.07)', color: '#F5F0E8', fontFamily: 'Georgia, serif', fontSize: 14, outline: 'none', boxSizing: 'border-box' }} />
         </div>
         <div className="overflow-y-auto flex-1 px-4 pb-20">
           {filtered.length === 0 && (
@@ -86,15 +77,8 @@ function PartPickerModal({ onSelect, onClose }: {
           )}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingTop: 8 }}>
             {filtered.map(part => (
-              <button
-                key={part.id}
-                onClick={() => onSelect(part)}
-                style={{
-                  background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(198,139,58,0.2)',
-                  borderRadius: 10, padding: '10px 14px', cursor: 'pointer', textAlign: 'left',
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8,
-                }}
-              >
+              <button key={part.id} onClick={() => onSelect(part)}
+                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(198,139,58,0.2)', borderRadius: 10, padding: '10px 14px', cursor: 'pointer', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif', fontSize: 14, fontWeight: 'bold', margin: 0 }}>{part.name}</p>
                   <p style={{ color: 'rgba(245,240,232,0.82)', fontFamily: 'Georgia, serif', fontSize: 11, margin: '2px 0 0' }}>
@@ -102,12 +86,8 @@ function PartPickerModal({ onSelect, onClose }: {
                   </p>
                 </div>
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                  {part.unit_price ? (
-                    <p style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 13, fontWeight: 'bold', margin: 0 }}>${part.unit_price.toFixed(2)}</p>
-                  ) : null}
-                  <p style={{ color: part.qty <= 0 ? '#e87070' : 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif', fontSize: 11, margin: '1px 0 0' }}>
-                    {part.qty} in stock
-                  </p>
+                  {part.unit_price ? <p style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', fontSize: 13, fontWeight: 'bold', margin: 0 }}>${part.unit_price.toFixed(2)}</p> : null}
+                  <p style={{ color: part.qty <= 0 ? '#e87070' : 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif', fontSize: 11, margin: '1px 0 0' }}>{part.qty} in stock</p>
                 </div>
               </button>
             ))}
@@ -118,26 +98,72 @@ function PartPickerModal({ onSelect, onClose }: {
   )
 }
 
+// ── Work order form state — persisted to localStorage like marina/yard ──────
+interface WOForm {
+  problemDesc: string
+  laborNotes: string
+  laborHours: string
+  laborRate: string
+  techName: string
+  customerName: string
+  customerEmail: string
+  parts: PartRow[]
+  vesselId: string
+  workOrderNum: string
+  orderDate: string
+}
+
+const EMPTY_PARTS: PartRow[] = [
+  { description: '', qty: '1', price: '' },
+  { description: '', qty: '1', price: '' },
+  { description: '', qty: '1', price: '' },
+]
+
+const EMPTY_WO: WOForm = {
+  problemDesc: '', laborNotes: '', laborHours: '', laborRate: '',
+  techName: '', customerName: '', customerEmail: '',
+  parts: EMPTY_PARTS, vesselId: '', workOrderNum: '', orderDate: '',
+}
+
+// Save to localStorage — mirrors marina's saveLS() exactly
+function saveWO(wo: WOForm) {
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(wo)) } catch {}
+}
+
+// Load from localStorage
+function loadWO(): WOForm | null {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY)
+    return raw ? JSON.parse(raw) : null
+  } catch { return null }
+}
+
+function genWONum() {
+  const now = new Date()
+  return 'WO-' + now.getFullYear() + '-' +
+    String(now.getMonth() + 1).padStart(2, '0') +
+    String(now.getDate()).padStart(2, '0') + '-' +
+    String(now.getHours()).padStart(2, '0') +
+    String(now.getMinutes()).padStart(2, '0')
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 function WorkOrderContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const entryId = searchParams.get('id')
 
+  // Single form state object — same pattern as marina/yard
+  const [wo, setWo] = useState<WOForm>(EMPTY_WO)
+
+  // Non-persisted UI / profile state
   const [vessel, setVessel] = useState<VesselProfile | null>(null)
   const [allVessels, setAllVessels] = useState<VesselProfile[]>([])
   const [shopName, setShopName] = useState('')
   const [shopPhone, setShopPhone] = useState('')
   const [shopAddress, setShopAddress] = useState('')
   const [shopLogo, setShopLogo] = useState('')
-  const [problemDesc, setProblemDesc] = useState('')
-  const [laborNotes, setLaborNotes] = useState('')
-  const [laborHours, setLaborHours] = useState('')
-  const [laborRate, setLaborRate] = useState('')
-  const [techName, setTechName] = useState('')
-  const [orderDate, setOrderDate] = useState('')
-  const [workOrderNum, setWorkOrderNum] = useState('')
-  const [customerEmail, setCustomerEmail] = useState('')
-  const [customerName, setCustomerName] = useState('')
   const [invoiceFromEmail, setInvoiceFromEmail] = useState('')
   const [invoiceAppPw, setInvoiceAppPw] = useState('')
   const [emailSent, setEmailSent] = useState(false)
@@ -145,46 +171,58 @@ function WorkOrderContent() {
   const [showEmailForm, setShowEmailForm] = useState(false)
   const [showPartPicker, setShowPartPicker] = useState(false)
   const [pickerTargetRow, setPickerTargetRow] = useState<number | null>(null)
-  const [parts, setParts] = useState<PartRow[]>([
-    { description: '', qty: '1', price: '' },
-    { description: '', qty: '1', price: '' },
-    { description: '', qty: '1', price: '' },
-  ])
-  const [savedManually, setSavedManually] = useState(false)
 
-  // Write a patch to the draft immediately — called on every field change
-  const writeWO = (patch: object) => {
-    if (entryId) return // never overwrite draft when editing a log entry
-    try {
-      let current: any = {}
-      try { current = JSON.parse(localStorage.getItem(DRAFT_KEY) || '{}') } catch {}
-      localStorage.setItem(DRAFT_KEY, JSON.stringify({
-        ...current,
-        ...patch,
-        savedAt: Date.now()
-      }))
-    } catch {}
+  // Update a field and immediately save entire wo to localStorage (like marina saveLS)
+  const set = (key: keyof WOForm, val: any) => {
+    setWo(prev => {
+      const next = { ...prev, [key]: val }
+      if (!entryId) saveWO(next)
+      return next
+    })
   }
 
-  const saveDraft = () => {
-    if (entryId) return
+  const updatePart = (i: number, field: keyof PartRow, val: string) => {
+    setWo(prev => {
+      const newParts = prev.parts.map((p, idx) => idx === i ? { ...p, [field]: val } : p)
+      const next = { ...prev, parts: newParts }
+      if (!entryId) saveWO(next)
+      return next
+    })
+  }
+
+  const addPartRow = () => {
+    setWo(prev => {
+      const next = { ...prev, parts: [...prev.parts, { description: '', qty: '1', price: '' }] }
+      if (!entryId) saveWO(next)
+      return next
+    })
+  }
+
+  const removePartRow = (i: number) => {
+    setWo(prev => {
+      const next = { ...prev, parts: prev.parts.filter((_, idx) => idx !== i) }
+      if (!entryId) saveWO(next)
+      return next
+    })
+  }
+
+  // Load vessel helper
+  const loadVessel = (vesselId: string | undefined, vessels: VesselProfile[]) => {
+    if (vesselId) {
+      const dv = vessels.find(v => v.id === vesselId)
+      if (dv) { setVessel(dv); return }
+    }
     try {
-      localStorage.setItem(DRAFT_KEY, JSON.stringify({
-        problemDesc, laborNotes, laborHours, laborRate,
-        techName, customerEmail, customerName,
-        parts, vesselId: vessel?.id,
-        workOrderNum, orderDate,
-        savedAt: Date.now()
-      }))
-      setSavedManually(true)
-      setTimeout(() => setSavedManually(false), 2500)
+      const vRaw = localStorage.getItem(userKey(VESSEL_KEY))
+      if (vRaw) { setVessel(JSON.parse(vRaw)); return }
     } catch {}
+    if (vessels.length > 0) setVessel(vessels[0])
   }
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/login'); return }
 
-    // Business profile
+    // Business profile (not persisted in WO draft)
     setInvoiceFromEmail(localStorage.getItem(userKey('bb_invoice_email')) || '')
     setInvoiceAppPw(localStorage.getItem(userKey('bb_invoice_app_pw')) || '')
     setShopName(localStorage.getItem(userKey('bb_biz_name')) || 'Boat Buddy Marine')
@@ -200,122 +238,89 @@ function WorkOrderContent() {
       setAllVessels(vessels)
     } catch {}
 
-    const newWO = () => {
-      const now = new Date()
-      setOrderDate(now.toISOString().split('T')[0])
-      setWorkOrderNum('WO-' + now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + '-' + String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0'))
-    }
-
     if (entryId) {
-      // Coming from a log entry — load it, generate fresh WO#
+      // Opening from a repair log entry — load it, ignore any saved draft
       try {
         const logRaw = localStorage.getItem(userKey(REPAIR_LOG_KEY))
         if (logRaw) {
           const log: RepairLogEntry[] = JSON.parse(logRaw)
           const found = log.find(e => e.id === entryId)
           if (found) {
-            setProblemDesc(found.symptom || '')
-            if (found.laborHours) setLaborHours(found.laborHours)
-            if (found.notes) setLaborNotes(found.notes)
-            if (found.parts && found.parts.length > 0) {
-              const prefilled = found.parts.map(p => ({ description: p, qty: '1', price: '' }))
-              setParts([...prefilled, { description: '', qty: '1', price: '' }, { description: '', qty: '1', price: '' }])
+            const preParts: PartRow[] = (found.parts || []).length > 0
+              ? [...(found.parts || []).map(p => ({ description: p, qty: '1', price: '' })),
+                 { description: '', qty: '1', price: '' },
+                 { description: '', qty: '1', price: '' }]
+              : [...EMPTY_PARTS]
+            const fresh: WOForm = {
+              ...EMPTY_WO,
+              problemDesc: found.symptom || '',
+              laborNotes: found.notes || '',
+              laborHours: found.laborHours || '',
+              parts: preParts,
+              orderDate: new Date().toISOString().split('T')[0],
+              workOrderNum: genWONum(),
             }
+            setWo(fresh)
+            // Vessel
             if (found.vessel_id) {
               const mv = vessels.find(v => v.id === found.vessel_id)
-              if (mv) setVessel(mv)
+              if (mv) { setVessel(mv); return }
             }
+            loadVessel(undefined, vessels)
+            return
           }
         }
       } catch {}
-      // Default vessel if not set by log entry
-      try {
-        const vRaw = localStorage.getItem(userKey(VESSEL_KEY))
-        if (vRaw) setVessel(prev => prev || JSON.parse(vRaw))
-        else if (vessels.length > 0) setVessel(prev => prev || vessels[0])
-      } catch {}
-      newWO()
+      loadVessel(undefined, vessels)
     } else {
-      // No log entry — try to restore draft
-      let draft: any = null
-      try {
-        const draftRaw = localStorage.getItem(DRAFT_KEY)
-        if (draftRaw) draft = JSON.parse(draftRaw)
-      } catch {}
-
+      // No log entry — restore from localStorage or start fresh (same as marina mount)
+      const draft = loadWO()
       if (draft) {
-        // Restore all draft fields
-        if (draft.problemDesc) setProblemDesc(draft.problemDesc)
-        if (draft.laborNotes) setLaborNotes(draft.laborNotes)
-        if (draft.laborHours) setLaborHours(draft.laborHours)
-        if (draft.laborRate) setLaborRate(draft.laborRate)
-        if (draft.techName) setTechName(draft.techName)
-        if (draft.customerEmail) setCustomerEmail(draft.customerEmail)
-        if (draft.customerName) setCustomerName(draft.customerName)
-        if (draft.parts && draft.parts.length > 0) setParts(draft.parts)
-        if (draft.workOrderNum) setWorkOrderNum(draft.workOrderNum)
-        if (draft.orderDate) setOrderDate(draft.orderDate)
-        // Restore vessel
-        if (draft.vesselId) {
-          const dv = vessels.find(v => v.id === draft.vesselId)
-          if (dv) setVessel(dv)
-        }
-        if (!draft.vesselId || vessels.every(v => v.id !== draft.vesselId)) {
-          try {
-            const vRaw = localStorage.getItem(userKey(VESSEL_KEY))
-            if (vRaw) setVessel(JSON.parse(vRaw))
-            else if (vessels.length > 0) setVessel(vessels[0])
-          } catch {}
-        }
+        setWo(draft)
+        loadVessel(draft.vesselId, vessels)
       } else {
-        // No draft — fresh work order
-        try {
-          const vRaw = localStorage.getItem(userKey(VESSEL_KEY))
-          if (vRaw) setVessel(JSON.parse(vRaw))
-          else if (vessels.length > 0) setVessel(vessels[0])
-        } catch {}
-        newWO()
+        // Fresh work order
+        const fresh: WOForm = {
+          ...EMPTY_WO,
+          orderDate: new Date().toISOString().split('T')[0],
+          workOrderNum: genWONum(),
+        }
+        setWo(fresh)
+        loadVessel(undefined, vessels)
       }
     }
   }, [router, entryId])
 
-  const updatePart = (i: number, field: keyof PartRow, val: string) => {
-    setParts(prev => {
-      const next = prev.map((p, idx) => idx === i ? { ...p, [field]: val } : p)
-      writeWO({ parts: next })
-      return next
-    })
-  }
-  const addPartRow = () => setParts(prev => [...prev, { description: '', qty: '1', price: '' }])
-  const removePartRow = (i: number) => setParts(prev => prev.filter((_, idx) => idx !== i))
-
+  // Inventory picker
   const openPicker = (rowIndex?: number) => {
-    if (rowIndex !== undefined) {
-      setPickerTargetRow(rowIndex)
-    } else {
-      // Find first empty row or append
-      const emptyIdx = parts.findIndex(p => !p.description.trim())
-      setPickerTargetRow(emptyIdx >= 0 ? emptyIdx : parts.length)
+    if (rowIndex !== undefined) { setPickerTargetRow(rowIndex) }
+    else {
+      const emptyIdx = wo.parts.findIndex(p => !p.description.trim())
+      setPickerTargetRow(emptyIdx >= 0 ? emptyIdx : wo.parts.length)
     }
     setShowPartPicker(true)
   }
 
   const handlePickPart = (part: InventoryPart) => {
     setShowPartPicker(false)
-    const targetIdx = pickerTargetRow ?? parts.findIndex(p => !p.description.trim())
+    const targetIdx = pickerTargetRow ?? wo.parts.findIndex(p => !p.description.trim())
     const row: PartRow = {
       description: part.name + (part.part_number ? ` [${part.part_number}]` : ''),
       qty: '1',
       price: part.unit_price ? part.unit_price.toFixed(2) : '',
     }
-    // Fill the target row, or append if needed
-    if (targetIdx >= 0 && targetIdx < parts.length) {
-      setParts(prev => prev.map((p, i) => i === targetIdx ? row : p))
-    } else {
-      setParts(prev => [...prev, row])
-    }
+    setWo(prev => {
+      let newParts: PartRow[]
+      if (targetIdx >= 0 && targetIdx < prev.parts.length)
+        newParts = prev.parts.map((p, i) => i === targetIdx ? row : p)
+      else
+        newParts = [...prev.parts, row]
+      const next = { ...prev, parts: newParts }
+      if (!entryId) saveWO(next)
+      return next
+    })
     setPickerTargetRow(null)
-    // Deduct 1 from inventory
+    // Deduct from inventory
     try {
       const authRaw = localStorage.getItem('boat_buddy_auth')
       const email = authRaw ? JSON.parse(authRaw)?.email || '' : ''
@@ -324,10 +329,8 @@ function WorkOrderContent() {
       const raw = localStorage.getItem(invKey)
       if (raw) {
         const inv: InventoryPart[] = JSON.parse(raw)
-        const updated = inv.map(p => p.id === part.id ? { ...p, qty: Math.max(0, p.qty - 1) } : p)
-        localStorage.setItem(invKey, JSON.stringify(updated))
+        localStorage.setItem(invKey, JSON.stringify(inv.map(p => p.id === part.id ? { ...p, qty: Math.max(0, p.qty - 1) } : p)))
       }
-      // Also update API
       fetch(`${API_URL}/api/db/parts/${part.id}`, {
         method: 'PUT', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...part, qty: Math.max(0, part.qty - 1) })
@@ -336,14 +339,9 @@ function WorkOrderContent() {
   }
 
   // Calculations
-  const partsTotal = parts.reduce((sum, p) => {
-    const qty = parseFloat(p.qty) || 0
-    const price = parseFloat(p.price) || 0
-    return sum + qty * price
-  }, 0)
-  const laborTotal = (parseFloat(laborHours) || 0) * (parseFloat(laborRate) || 0)
+  const partsTotal = wo.parts.reduce((sum, p) => sum + (parseFloat(p.qty) || 0) * (parseFloat(p.price) || 0), 0)
+  const laborTotal = (parseFloat(wo.laborHours) || 0) * (parseFloat(wo.laborRate) || 0)
   const grandTotal = partsTotal + laborTotal
-
   const fmt = (n: number) => n > 0 ? '$' + n.toFixed(2) : '—'
 
   const iStyle = { background: 'transparent', border: 'none', borderBottom: '1px solid #ccc', borderRadius: 0, color: '#1a1a1a', fontFamily: 'Georgia, serif', fontSize: '13px', padding: '2px 4px', width: '100%', outline: 'none' }
@@ -355,16 +353,11 @@ function WorkOrderContent() {
         style={{ background: 'rgba(20, 8, 2, 0.95)', borderBottom: '1px solid rgba(198,139,58,0.3)' }}>
         <Logo size="sm" />
         <div className="flex items-center gap-2">
-          {savedManually && (
-            <span className="text-xs" style={{ color: 'rgba(100,220,130,0.9)', fontFamily: 'Georgia, serif' }}>✅ Saved!</span>
-          )}
           <button
             onClick={() => {
               if (!confirm('Clear this work order and start fresh?')) return
               try { localStorage.removeItem(DRAFT_KEY) } catch {}
-              setProblemDesc(''); setLaborNotes(''); setLaborHours(''); setLaborRate('')
-              setTechName(''); setCustomerEmail(''); setCustomerName('')
-              setParts([{ description: '', qty: '1', price: '' }, { description: '', qty: '1', price: '' }, { description: '', qty: '1', price: '' }])
+              setWo({ ...EMPTY_WO, orderDate: new Date().toISOString().split('T')[0], workOrderNum: genWONum() })
             }}
             className="text-xs px-3 py-1.5 rounded-lg"
             style={{ background: 'rgba(139,26,26,0.15)', color: 'rgba(245,240,232,0.82)', border: '1px solid rgba(139,26,26,0.35)', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
@@ -388,11 +381,8 @@ function WorkOrderContent() {
         </h1>
 
         {/* WHITE PAPER DOCUMENT */}
-        <div id="work-order-doc" style={{
-          background: '#fff', color: '#1a1a1a', borderRadius: '8px',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.4)', padding: '28px 24px',
-          maxWidth: '700px', margin: '0 auto 16px', fontFamily: 'Georgia, serif'
-        }}>
+        <div id="work-order-doc" style={{ background: '#fff', color: '#1a1a1a', borderRadius: '8px', boxShadow: '0 4px 20px rgba(0,0,0,0.4)', padding: '28px 24px', maxWidth: '700px', margin: '0 auto 16px', fontFamily: 'Georgia, serif' }}>
+
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '20px', paddingBottom: '16px', borderBottom: '3px solid #1a1a1a' }}>
             {shopLogo
@@ -411,29 +401,23 @@ function WorkOrderContent() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
             <div>
               <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '4px' }}>Work Order #</div>
-              <input value={workOrderNum} onChange={e => { setWorkOrderNum(e.target.value); writeWO({ workOrderNum: e.target.value }) }} style={{ ...iStyle, fontSize: '14px', fontWeight: 'bold' }} />
+              <input value={wo.workOrderNum} onChange={e => set('workOrderNum', e.target.value)} style={{ ...iStyle, fontSize: '14px', fontWeight: 'bold' }} />
             </div>
             <div>
               <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '4px' }}>Date</div>
-              <input type="date" value={orderDate} onChange={e => { setOrderDate(e.target.value); writeWO({ orderDate: e.target.value }) }} style={{ ...iStyle }} />
+              <input type="date" value={wo.orderDate} onChange={e => set('orderDate', e.target.value)} style={{ ...iStyle }} />
             </div>
           </div>
 
-          {/* Vessel Selector — screen only */}
+          {/* Vessel Selector */}
           {allVessels.length > 1 && (
             <div className="no-print" style={{ marginBottom: '16px' }}>
               <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px', fontWeight: 'bold' }}>Select Vessel</div>
-              <select
-                value={vessel?.id || ''}
-                onChange={e => {
-                  const v = allVessels.find(v => v.id === e.target.value)
-                  if (v) { setVessel(v); writeWO({ vesselId: v.id }) }
-                }}
-                style={{ width: '100%', padding: '8px 12px', border: '1px solid #ccc', borderRadius: '6px', fontSize: '14px', fontFamily: 'Georgia, serif', background: '#f9f9f9', color: '#1a1a1a' }}
-              >
-                {allVessels.map(v => (
-                  <option key={v.id} value={v.id}>{v.name} — {v.year} {v.make} {v.model}</option>
-                ))}
+              <select value={vessel?.id || ''} onChange={e => {
+                const v = allVessels.find(v => v.id === e.target.value)
+                if (v) { setVessel(v); set('vesselId', v.id) }
+              }} style={{ width: '100%', padding: '8px 12px', border: '1px solid #ccc', borderRadius: '6px', fontSize: '14px', fontFamily: 'Georgia, serif', background: '#f9f9f9', color: '#1a1a1a' }}>
+                {allVessels.map(v => <option key={v.id} value={v.id}>{v.name} — {v.year} {v.make} {v.model}</option>)}
               </select>
             </div>
           )}
@@ -462,7 +446,7 @@ function WorkOrderContent() {
           {/* Problem */}
           <div style={{ marginBottom: '20px' }}>
             <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px', fontWeight: 'bold' }}>Problem / Symptom</div>
-            <textarea value={problemDesc} onChange={e => { setProblemDesc(e.target.value); writeWO({ problemDesc: e.target.value }) }} rows={3}
+            <textarea value={wo.problemDesc} onChange={e => set('problemDesc', e.target.value)} rows={3}
               placeholder="Describe the problem or symptom reported..."
               style={{ ...iStyle, resize: 'none', borderBottom: 'none', border: '1px solid #ccc', borderRadius: '4px', padding: '8px', width: '100%', fontSize: '13px', boxSizing: 'border-box' }} />
           </div>
@@ -481,27 +465,22 @@ function WorkOrderContent() {
                 </tr>
               </thead>
               <tbody>
-                {parts.map((p, i) => {
+                {wo.parts.map((p, i) => {
                   const rowTotal = (parseFloat(p.qty) || 0) * (parseFloat(p.price) || 0)
                   return (
                     <tr key={i} style={{ borderBottom: '1px solid #eee' }}>
                       <td style={{ padding: '6px 8px' }}>
-                        <input value={p.description} onChange={e => updatePart(i, 'description', e.target.value)}
-                          placeholder="Part or material name" style={{ ...iStyle }} />
+                        <input value={p.description} onChange={e => updatePart(i, 'description', e.target.value)} placeholder="Part or material name" style={{ ...iStyle }} />
                       </td>
                       <td style={{ padding: '6px 8px', textAlign: 'center' }}>
-                        <input value={p.qty} onChange={e => updatePart(i, 'qty', e.target.value)}
-                          style={{ ...iStyle, textAlign: 'center', width: '40px' }} />
+                        <input value={p.qty} onChange={e => updatePart(i, 'qty', e.target.value)} style={{ ...iStyle, textAlign: 'center', width: '40px' }} />
                       </td>
                       <td style={{ padding: '6px 8px', textAlign: 'right' }}>
-                        <input value={p.price} onChange={e => updatePart(i, 'price', e.target.value)}
-                          placeholder="0.00" style={{ ...iStyle, textAlign: 'right', width: '70px' }} />
+                        <input value={p.price} onChange={e => updatePart(i, 'price', e.target.value)} placeholder="0.00" style={{ ...iStyle, textAlign: 'right', width: '70px' }} />
                       </td>
-                      <td style={{ padding: '6px 8px', textAlign: 'right', color: '#333' }}>
-                        {rowTotal > 0 ? '$' + rowTotal.toFixed(2) : '—'}
-                      </td>
+                      <td style={{ padding: '6px 8px', textAlign: 'right', color: '#333' }}>{rowTotal > 0 ? '$' + rowTotal.toFixed(2) : '—'}</td>
                       <td style={{ padding: '6px 4px', textAlign: 'center' }} className="no-print">
-                        <button onClick={() => removePartRow(i)} style={{ background: 'none', border: 'none', color: '#aaa', cursor: 'pointer', fontSize: '14px' }}>?</button>
+                        <button onClick={() => removePartRow(i)} style={{ background: 'none', border: 'none', color: '#aaa', cursor: 'pointer', fontSize: '14px' }}>✕</button>
                       </td>
                     </tr>
                   )
@@ -514,12 +493,10 @@ function WorkOrderContent() {
               </tbody>
             </table>
             <div className="no-print flex gap-2" style={{ marginTop: '8px' }}>
-              <button onClick={addPartRow}
-                style={{ background: 'none', border: '1px dashed #bbb', borderRadius: '4px', color: '#888', padding: '4px 12px', fontSize: '12px', cursor: 'pointer', flex: 1 }}>
+              <button onClick={addPartRow} style={{ background: 'none', border: '1px dashed #bbb', borderRadius: '4px', color: '#888', padding: '4px 12px', fontSize: '12px', cursor: 'pointer', flex: 1 }}>
                 + Add Row
               </button>
-              <button onClick={() => openPicker()}
-                style={{ background: 'rgba(198,139,58,0.12)', border: '1px solid rgba(198,139,58,0.4)', borderRadius: '4px', color: '#C68B3A', padding: '4px 14px', fontSize: '12px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
+              <button onClick={() => openPicker()} style={{ background: 'rgba(198,139,58,0.12)', border: '1px solid rgba(198,139,58,0.4)', borderRadius: '4px', color: '#C68B3A', padding: '4px 14px', fontSize: '12px', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
                 📦 Search Inventory
               </button>
             </div>
@@ -528,17 +505,17 @@ function WorkOrderContent() {
           {/* Labor */}
           <div style={{ marginBottom: '20px' }}>
             <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '8px', fontWeight: 'bold' }}>Labor</div>
-            <textarea value={laborNotes} onChange={e => { setLaborNotes(e.target.value); writeWO({ laborNotes: e.target.value }) }} rows={3}
+            <textarea value={wo.laborNotes} onChange={e => set('laborNotes', e.target.value)} rows={3}
               placeholder="Describe work performed..."
               style={{ ...iStyle, resize: 'none', borderBottom: 'none', border: '1px solid #ccc', borderRadius: '4px', padding: '8px', width: '100%', fontSize: '13px', marginBottom: '10px', boxSizing: 'border-box' }} />
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', background: '#f5f5f5', borderRadius: '6px', padding: '10px' }}>
               <div>
                 <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>Hours</div>
-                <input value={laborHours} onChange={e => { setLaborHours(e.target.value); writeWO({ laborHours: e.target.value }) }} placeholder="0.0" style={{ ...iStyle }} />
+                <input value={wo.laborHours} onChange={e => set('laborHours', e.target.value)} placeholder="0.0" style={{ ...iStyle }} />
               </div>
               <div>
                 <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>Rate ($/hr)</div>
-                <input value={laborRate} onChange={e => { setLaborRate(e.target.value); writeWO({ laborRate: e.target.value }) }} placeholder="0.00" style={{ ...iStyle }} />
+                <input value={wo.laborRate} onChange={e => set('laborRate', e.target.value)} placeholder="0.00" style={{ ...iStyle }} />
               </div>
               <div>
                 <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>Labor Total</div>
@@ -557,8 +534,7 @@ function WorkOrderContent() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
             <div>
               <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px' }}>Technician Name</div>
-              <input value={techName} onChange={e => { setTechName(e.target.value); writeWO({ techName: e.target.value }) }} placeholder="Name"
-                style={{ ...iStyle }} />
+              <input value={wo.techName} onChange={e => set('techName', e.target.value)} placeholder="Name" style={{ ...iStyle }} />
             </div>
             <div>
               <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', color: '#555', marginBottom: '6px' }}>Signature</div>
@@ -568,9 +544,7 @@ function WorkOrderContent() {
 
           {/* Customer Auth */}
           <div style={{ borderTop: '1px dashed #ccc', paddingTop: '16px', marginBottom: '16px' }}>
-            <div style={{ fontSize: '11px', color: '#666', marginBottom: '12px' }}>
-              Customer Authorization: I authorize the above described work to be performed.
-            </div>
+            <div style={{ fontSize: '11px', color: '#666', marginBottom: '12px' }}>Customer Authorization: I authorize the above described work to be performed.</div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div>
                 <div style={{ fontSize: '10px', color: '#888', marginBottom: '4px' }}>Customer Name</div>
@@ -589,14 +563,8 @@ function WorkOrderContent() {
           </div>
         </div>
 
-        {/* Screen buttons */}
+        {/* Action buttons */}
         <div className="no-print flex flex-col gap-3" style={{ maxWidth: '700px', margin: '0 auto' }}>
-          <button
-            onClick={saveDraft}
-            className="w-full py-3 rounded-xl text-sm font-bold"
-            style={{ background: savedManually ? 'rgba(0,160,80,0.35)' : 'rgba(0,120,60,0.2)', color: savedManually ? '#7fffb2' : '#5ae89a', border: `1px solid ${savedManually ? 'rgba(0,160,80,0.6)' : 'rgba(0,160,80,0.35)'}`, fontFamily: 'Georgia, serif', cursor: 'pointer', transition: 'all 0.2s' }}>
-            {savedManually ? '✅ Draft Saved!' : '💾 Save Draft'}
-          </button>
           <div className="flex gap-3">
             <button onClick={() => { try { localStorage.removeItem(DRAFT_KEY) } catch {} window.print() }} className="btn-primary flex-1">
               🖨️ Print / Save PDF
@@ -612,19 +580,18 @@ function WorkOrderContent() {
             <div className="p-4 rounded-xl flex flex-col gap-3" style={{ background: 'rgba(198,139,58,0.06)', border: '1px solid rgba(198,139,58,0.2)' }}>
               <div>
                 <label className="block text-xs mb-1" style={{ color: 'rgba(198,139,58,0.7)', fontFamily: 'Georgia, serif' }}>Customer Name</label>
-                <input className="input-field" value={customerName} onChange={e => setCustomerName(e.target.value)} placeholder="John Smith" />
+                <input className="input-field" value={wo.customerName} onChange={e => set('customerName', e.target.value)} placeholder="John Smith" />
               </div>
               <div>
                 <label className="block text-xs mb-1" style={{ color: 'rgba(198,139,58,0.7)', fontFamily: 'Georgia, serif' }}>Customer Email</label>
-                <input type="email" className="input-field" value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} placeholder="customer@example.com" />
+                <input type="email" className="input-field" value={wo.customerEmail} onChange={e => set('customerEmail', e.target.value)} placeholder="customer@example.com" />
               </div>
               <button
-                disabled={!customerEmail || emailSending}
+                disabled={!wo.customerEmail || emailSending}
                 onClick={async () => {
                   setEmailSending(true)
-                  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://gemini-marine-api.onrender.com'
-                  const partsSubtotal = parts.reduce((sum, p) => sum + (parseFloat(p.qty||'1') * parseFloat(p.price||'0')), 0)
-                  const lTotal = laborHours && laborRate ? (parseFloat(laborHours) * parseFloat(laborRate)).toFixed(2) : '0.00'
+                  const partsSubtotal = wo.parts.reduce((sum, p) => sum + (parseFloat(p.qty || '1') * parseFloat(p.price || '0')), 0)
+                  const lTotal = wo.laborHours && wo.laborRate ? (parseFloat(wo.laborHours) * parseFloat(wo.laborRate)).toFixed(2) : '0.00'
                   const gTotal = (partsSubtotal + parseFloat(lTotal)).toFixed(2)
                   try {
                     const resp = await fetch(`${API_URL}/api/send-invoice`, {
@@ -632,11 +599,14 @@ function WorkOrderContent() {
                       body: JSON.stringify({
                         fromEmail: invoiceFromEmail || undefined,
                         appPassword: invoiceAppPw || undefined,
-                        to: customerEmail, customerName, shopName, shopPhone, shopAddress,
-                        workOrderNum, vessel: vessel ? `${vessel.name} — ${vessel.engine || ''}` : '',
-                        problemDesc, parts, laborDesc: laborNotes, laborHours, laborRate,
+                        to: wo.customerEmail, customerName: wo.customerName,
+                        shopName, shopPhone, shopAddress,
+                        workOrderNum: wo.workOrderNum,
+                        vessel: vessel ? `${vessel.name} — ${vessel.engineMake || ''}` : '',
+                        problemDesc: wo.problemDesc, parts: wo.parts,
+                        laborDesc: wo.laborNotes, laborHours: wo.laborHours, laborRate: wo.laborRate,
                         laborTotal: lTotal, partsTotal: partsSubtotal.toFixed(2), grandTotal: gTotal,
-                        techName, date: orderDate,
+                        techName: wo.techName, date: wo.orderDate,
                       })
                     })
                     const data = await resp.json()
@@ -647,7 +617,7 @@ function WorkOrderContent() {
                   } catch (err: any) { alert('Send failed: ' + (err?.message || 'Network error')) } finally { setEmailSending(false) }
                 }}
                 className="btn-primary w-full py-3"
-                style={{ opacity: !customerEmail || emailSending ? 0.5 : 1 }}>
+                style={{ opacity: !wo.customerEmail || emailSending ? 0.5 : 1 }}>
                 {emailSending ? 'Sending...' : emailSent ? '✅ Sent!' : '📧 Send Invoice Email'}
               </button>
             </div>
@@ -662,13 +632,13 @@ function WorkOrderContent() {
           Tip: Print → Save as PDF or email directly to customer.
         </p>
       </main>
+
       {showPartPicker && (
         <PartPickerModal
           onSelect={handlePickPart}
           onClose={() => { setShowPartPicker(false); setPickerTargetRow(null) }}
         />
       )}
-
       <NavBar />
     </div>
   )
@@ -685,4 +655,3 @@ export default function WorkOrderPage() {
     </Suspense>
   )
 }
-
