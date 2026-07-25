@@ -27,6 +27,9 @@ interface YardSpot {
   ownerName: string
   notes: string
   status: SpotStatus
+  insuranceCompany: string
+  policyNumber: string
+  insuranceExpiry: string  // YYYY-MM
 }
 
 interface YardConfig {
@@ -43,6 +46,9 @@ interface YardPin {
   ownerName: string
   notes: string
   status: SpotStatus
+  insuranceCompany: string
+  policyNumber: string
+  insuranceExpiry: string  // YYYY-MM
 }
 
 // ── Helpers ──
@@ -95,8 +101,8 @@ const goldStyle = { color: '#C68B3A', fontFamily: 'Georgia, serif' }
 // ── Spot Modal (shared between grid + custom map + satellite) ──
 interface PinModalProps {
   title: string
-  form: { vesselName: string; ownerName: string; notes: string; status: SpotStatus }
-  onChange: (f: { vesselName: string; ownerName: string; notes: string; status: SpotStatus }) => void
+  form: { vesselName: string; ownerName: string; notes: string; status: SpotStatus; insuranceCompany: string; policyNumber: string; insuranceExpiry: string }
+  onChange: (f: { vesselName: string; ownerName: string; notes: string; status: SpotStatus; insuranceCompany: string; policyNumber: string; insuranceExpiry: string }) => void
   onSave: () => void
   onClose: () => void
   extraInfo?: string
@@ -146,6 +152,30 @@ function SlipModal({ title, form, onChange, onSave, onClose, extraInfo }: PinMod
               className="w-full px-3 py-2 rounded-lg text-sm resize-none"
               style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(74,144,226,0.25)', color: '#F5F0E8', fontFamily: 'Georgia, serif', outline: 'none' }} />
           </div>
+          {/* Insurance */}
+          <div style={{ marginTop: 4 }}>
+            <p style={{ color: '#C68B3A', fontSize: 11, fontFamily: 'Georgia, serif', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Insurance</p>
+            <div className="flex flex-col gap-3">
+              <div>
+                <label className="text-xs mb-1 block" style={dimStyle}>Insurance Company</label>
+                <input value={form.insuranceCompany} onChange={e => onChange({ ...form, insuranceCompany: e.target.value })}
+                  placeholder="e.g. BoatUS, Progressive" className="w-full px-3 py-2 rounded-lg text-sm"
+                  style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(74,144,226,0.25)', color: '#F5F0E8', fontFamily: 'Georgia, serif', outline: 'none' }} />
+              </div>
+              <div>
+                <label className="text-xs mb-1 block" style={dimStyle}>Policy Number</label>
+                <input value={form.policyNumber} onChange={e => onChange({ ...form, policyNumber: e.target.value })}
+                  placeholder="e.g. POL-123456" className="w-full px-3 py-2 rounded-lg text-sm"
+                  style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(74,144,226,0.25)', color: '#F5F0E8', fontFamily: 'Georgia, serif', outline: 'none' }} />
+              </div>
+              <div>
+                <label className="text-xs mb-1 block" style={dimStyle}>Policy Expiry</label>
+                <input type="month" value={form.insuranceExpiry} onChange={e => onChange({ ...form, insuranceExpiry: e.target.value })}
+                  className="w-full px-3 py-2 rounded-lg text-sm"
+                  style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(74,144,226,0.25)', color: '#F5F0E8', fontFamily: 'Georgia, serif', outline: 'none' }} />
+              </div>
+            </div>
+          </div>
           <button onClick={onSave} className="w-full py-3 rounded-xl text-sm font-bold mt-1"
             style={{ background: '#4A90E2', color: '#fff', border: 'none', fontFamily: 'Georgia, serif', cursor: 'pointer' }}>
             Save Slip
@@ -157,7 +187,7 @@ function SlipModal({ title, form, onChange, onSave, onClose, extraInfo }: PinMod
 }
 
 // ── Empty pin form ──
-const emptyPinForm = { vesselName: '', ownerName: '', notes: '', status: 'available' as SpotStatus }
+const emptyPinForm = { vesselName: '', ownerName: '', notes: '', status: 'available' as SpotStatus, insuranceCompany: '', policyNumber: '', insuranceExpiry: '' }
 
 // ── Main Page ──
 export default function YardPage() {
@@ -280,19 +310,19 @@ export default function YardPage() {
   // ──────────────────────────────────────────────────────────────
   const getSpot = useCallback((row: number, col: number): YardSpot => {
     const found = spots.find(s => s.row === row && s.col === col)
-    if (found) return found
-    return { id: `${row}-${col}`, row, col, label: generateLabel(row, col), vesselName: '', ownerName: '', notes: '', status: 'available' }
+    if (found) return { insuranceCompany: '', policyNumber: '', insuranceExpiry: '', ...found }
+    return { id: `${row}-${col}`, row, col, label: generateLabel(row, col), vesselName: '', ownerName: '', notes: '', status: 'available', insuranceCompany: '', policyNumber: '', insuranceExpiry: '' }
   }, [spots])
 
   const openSpot = (row: number, col: number) => {
     const spot = getSpot(row, col)
     setSelectedSpot(spot)
-    setGridForm({ vesselName: spot.vesselName, ownerName: spot.ownerName, notes: spot.notes, status: spot.status })
+    setGridForm({ vesselName: spot.vesselName, ownerName: spot.ownerName, notes: spot.notes, status: spot.status, insuranceCompany: spot.insuranceCompany || '', policyNumber: spot.policyNumber || '', insuranceExpiry: spot.insuranceExpiry || '' })
   }
 
   const saveSpot = () => {
     if (!selectedSpot) return
-    const updated: YardSpot = { ...selectedSpot, ...gridForm }
+    const updated: YardSpot = { ...selectedSpot, ...gridForm, insuranceCompany: gridForm.insuranceCompany || '', policyNumber: gridForm.policyNumber || '', insuranceExpiry: gridForm.insuranceExpiry || '' }
     const newSpots = spots.filter(s => !(s.row === updated.row && s.col === updated.col))
     newSpots.push(updated)
     setSpots(newSpots)
@@ -347,6 +377,7 @@ export default function YardPage() {
       x, y,
       label: `P${pins.length + 1}`,
       vesselName: '', ownerName: '', notes: '', status: 'available',
+      insuranceCompany: '', policyNumber: '', insuranceExpiry: '',
     }
     const updated = [...pins, newPin]
     setPins(updated)
@@ -359,7 +390,7 @@ export default function YardPage() {
   const openPin = (pin: YardPin, e: React.MouseEvent) => {
     e.stopPropagation()
     setSelectedPin(pin)
-    setPinForm({ vesselName: pin.vesselName, ownerName: pin.ownerName, notes: pin.notes, status: pin.status })
+    setPinForm({ vesselName: pin.vesselName, ownerName: pin.ownerName, notes: pin.notes, status: pin.status, insuranceCompany: pin.insuranceCompany || '', policyNumber: pin.policyNumber || '', insuranceExpiry: pin.insuranceExpiry || '' })
   }
 
   const savePin = () => {
@@ -472,7 +503,7 @@ export default function YardPage() {
       })
       marker.addListener('click', () => {
         setSelectedSatPin(pin)
-        setSatPinForm({ vesselName: pin.vesselName, ownerName: pin.ownerName, notes: pin.notes, status: pin.status })
+        setSatPinForm({ vesselName: pin.vesselName, ownerName: pin.ownerName, notes: pin.notes, status: pin.status, insuranceCompany: pin.insuranceCompany || '', policyNumber: pin.policyNumber || '', insuranceExpiry: pin.insuranceExpiry || '' })
         setPendingSatPin(null)
       })
       markersRef.current.push(marker)
@@ -649,9 +680,16 @@ export default function YardPage() {
                 {Array.from({ length: config.rows }).map((_, row) =>
                   Array.from({ length: config.cols }).map((_, col) => {
                     const spot = getSpot(row, col)
+                    const spotInsWarning = (() => {
+                      if (!spot.insuranceExpiry) return false
+                      const [yr, mo] = spot.insuranceExpiry.split('-').map(Number)
+                      if (!yr || !mo) return false
+                      const lastDay = new Date(yr, mo, 0)
+                      return lastDay.getTime() - Date.now() <= 30 * 86400000
+                    })()
                     return (
                       <button key={`${row}-${col}`} onClick={() => openSpot(row, col)}
-                        title={`${spot.label}${spot.vesselName ? ` – ${spot.vesselName}` : ''}`}
+                        title={`${spot.label}${spot.vesselName ? ` – ${spot.vesselName}` : ''}${spotInsWarning ? ' ⚠️ Insurance expiring' : ''}`}
                         style={{
                           height: '40px', borderRadius: '5px', background: spotColor(spot),
                           border: `1px solid ${spotBorder(spot)}`, cursor: 'pointer',
@@ -659,9 +697,11 @@ export default function YardPage() {
                           fontSize: '9px', fontFamily: 'Georgia, serif',
                           color: spot.status === 'available' ? 'rgba(74,144,226,0.6)' : '#fff',
                           fontWeight: 'bold', transition: 'transform 0.1s, opacity 0.1s', padding: 0,
+                          position: 'relative',
                         }}
                         onMouseEnter={e => (e.currentTarget.style.opacity = '0.8')}
                         onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
+                        {spotInsWarning && <span style={{ position: 'absolute', top: 1, right: 2, fontSize: '8px', lineHeight: 1 }}>⚠️</span>}
                         {spot.label}
                       </button>
                     )
@@ -732,10 +772,18 @@ export default function YardPage() {
                   <img src={yardImage} alt="Yard map" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', maxHeight: '500px', pointerEvents: 'none' }} />
 
                   {/* Pins overlay */}
-                  {pins.map(pin => (
+                  {pins.map(pin => {
+                    const pinInsWarning = (() => {
+                      if (!pin.insuranceExpiry) return false
+                      const [yr, mo] = pin.insuranceExpiry.split('-').map(Number)
+                      if (!yr || !mo) return false
+                      const lastDay = new Date(yr, mo, 0)
+                      return lastDay.getTime() - Date.now() <= 30 * 86400000
+                    })()
+                    return (
                     <button key={pin.id}
                       onClick={e => openPin(pin, e)}
-                      title={`${pin.label}${pin.vesselName ? ` – ${pin.vesselName}` : ''}`}
+                      title={`${pin.label}${pin.vesselName ? ` – ${pin.vesselName}` : ''}${pinInsWarning ? ' ⚠️ Insurance expiring' : ''}`}
                       style={{
                         position: 'absolute',
                         left: `${pin.x}%`,
@@ -756,9 +804,10 @@ export default function YardPage() {
                         fontFamily: 'Georgia, serif',
                         boxShadow: `0 0 0 2px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.5)`,
                       }}>
-                      ⚓
+                      {pinInsWarning ? '⚠️' : '⚓'}
                     </button>
-                  ))}
+                    )
+                  })}
                 </div>
                 <p className="text-xs mt-1" style={{ color: 'rgba(245,240,232,0.72)', fontFamily: 'Georgia, serif' }}>
                   Tap anywhere on the map to add a slip pin

@@ -50,6 +50,9 @@ interface Slip {
   phone: string
   address: string
   cardOnFile: string
+  insuranceCompany: string
+  policyNumber: string
+  insuranceExpiry: string  // YYYY-MM
 }
 
 interface Payment {
@@ -303,6 +306,15 @@ function SlipCell({ slip, occupantName, effectiveStatus, onClick }: {
   const bg = slipStatusBg(displayStatus)
   const color = slipStatusColor(displayStatus)
 
+  const insWarning = (() => {
+    if (!slip.insuranceExpiry) return false
+    const [yr, mo] = slip.insuranceExpiry.split('-').map(Number)
+    if (!yr || !mo) return false
+    const lastDay = new Date(yr, mo, 0) // last day of that month
+    const today = new Date()
+    return lastDay.getTime() - today.getTime() <= 30 * 86400000
+  })()
+
   return (
     <button onClick={onClick}
       style={{
@@ -319,7 +331,11 @@ function SlipCell({ slip, occupantName, effectiveStatus, onClick }: {
         minHeight: '68px',
         gap: '2px',
         flexShrink: 0,
+        position: 'relative',
       }}>
+      {insWarning && (
+        <span style={{ position: 'absolute', top: 2, right: 3, fontSize: '9px', lineHeight: 1 }} title="Insurance expiring soon">⚠️</span>
+      )}
       <span style={{ color, fontSize: '13px', fontWeight: 'bold', fontFamily: 'Georgia, serif', lineHeight: 1 }}>{slip.name}</span>
       <span style={{ fontSize: '8px', color, opacity: 0.85, fontFamily: 'Georgia, serif', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         {displayStatus === 'available' ? 'open' : displayStatus === 'rented' ? 'rented' : displayStatus === 'reserved' ? 'rsvd' : 'maint'}
@@ -529,6 +545,7 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
     amenities: { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false },
     status: 'available', notes: '', vesselName: '', ownerName: '',
     phone: '', address: '', cardOnFile: '',
+    insuranceCompany: '', policyNumber: '', insuranceExpiry: '',
   })
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [nameError, setNameError] = useState(false)
@@ -572,6 +589,20 @@ function SlipDetailModal({ slip, rentals, docks, defaultDock, onSave, onDelete, 
           <Field label="Phone" value={form.phone || ''} onChange={v => setForm(f => ({ ...f, phone: v }))} type="tel" placeholder="e.g. (410) 555-1234" />
           <Field label="Address" value={form.address || ''} onChange={v => setForm(f => ({ ...f, address: v }))} placeholder="e.g. 123 Marina Blvd" />
           <Field label="Card on File" value={form.cardOnFile || ''} onChange={v => setForm(f => ({ ...f, cardOnFile: v }))} placeholder="Visa •••• 1234 exp 12/27" />
+
+          {/* Insurance */}
+          <div style={{ marginTop: 4 }}>
+            <p style={{ color: '#C68B3A', fontSize: 11, fontFamily: 'Georgia, serif', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Insurance</p>
+            <div className="flex flex-col gap-3">
+              <Field label="Insurance Company" value={form.insuranceCompany || ''} onChange={v => setForm(f => ({ ...f, insuranceCompany: v }))} placeholder="e.g. BoatUS, Progressive" />
+              <Field label="Policy Number" value={form.policyNumber || ''} onChange={v => setForm(f => ({ ...f, policyNumber: v }))} placeholder="e.g. POL-123456" />
+              <div>
+                <label style={labelStyle}>Policy Expiry</label>
+                <input type="month" value={form.insuranceExpiry || ''} onChange={e => setForm(f => ({ ...f, insuranceExpiry: e.target.value }))}
+                  style={inputStyle} />
+              </div>
+            </div>
+          </div>
 
           <div className="flex gap-3">
             <div className="flex-1">
@@ -1170,7 +1201,7 @@ export default function MarinaPage() {
     const loadedSlips = loadLS<Slip[]>(SLIPS_KEY, [])
     // Migrate old slips without dock field
     const defaultAmenities = { amp30: false, amp50: false, water: false, pumpout: false, liveaboard: false }
-    const migratedSlips = loadedSlips.map(s => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s, phone: s.phone || '', address: s.address || '', cardOnFile: s.cardOnFile || '' }))
+    const migratedSlips = loadedSlips.map(s => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s, phone: s.phone || '', address: s.address || '', cardOnFile: s.cardOnFile || '', insuranceCompany: s.insuranceCompany || '', policyNumber: s.policyNumber || '', insuranceExpiry: s.insuranceExpiry || '' }))
     const localDocks = loadLS<Dock[]>(DOCKS_KEY, [])
     const localRentals = loadLS<Rental[]>(RENTALS_KEY, []).map(r => ({ address: r.address || '', cardOnFile: r.cardOnFile || '', ...r }))
     const localTransient = loadLS<TransientBooking[]>(TRANSIENT_KEY, []).map(b => ({ address: b.address || '', cardOnFile: b.cardOnFile || '', ...b }))
@@ -1192,7 +1223,7 @@ export default function MarinaPage() {
           const cloudSlips = await cloudGet(email, SLIPS_KEY)
           if (cloudSlips !== null) {
             const parsed: Slip[] = JSON.parse(cloudSlips)
-            const migrated = parsed.map((s: Slip) => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s, phone: s.phone || '', address: s.address || '', cardOnFile: s.cardOnFile || '' }))
+            const migrated = parsed.map((s: Slip) => ({ dock: 'Main', amenities: defaultAmenities, vesselName: '', ownerName: '', ...s, phone: s.phone || '', address: s.address || '', cardOnFile: s.cardOnFile || '', insuranceCompany: s.insuranceCompany || '', policyNumber: s.policyNumber || '', insuranceExpiry: s.insuranceExpiry || '' }))
             setSlips(migrated)
             localStorage.setItem(userKey(SLIPS_KEY), cloudSlips)
           } else if (migratedSlips.length > 0) {
@@ -1294,6 +1325,9 @@ export default function MarinaPage() {
           phone: '',
           address: '',
           cardOnFile: '',
+          insuranceCompany: '',
+          policyNumber: '',
+          insuranceExpiry: '',
         }
       })
       setSlips(prev => {
@@ -1354,6 +1388,7 @@ export default function MarinaPage() {
         status: form.status || 'available', notes: form.notes || '',
         vesselName: form.vesselName || '', ownerName: form.ownerName || '',
         phone: form.phone || '', address: form.address || '', cardOnFile: form.cardOnFile || '',
+        insuranceCompany: form.insuranceCompany || '', policyNumber: form.policyNumber || '', insuranceExpiry: form.insuranceExpiry || '',
       }
       const updated = [...slips, newSlip]
       setSlips(updated); saveLS(SLIPS_KEY, updated)
