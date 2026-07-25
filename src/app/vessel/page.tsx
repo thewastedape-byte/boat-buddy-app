@@ -20,6 +20,10 @@ export interface VesselProfile {
   engineHours: string
   homePort: string
   documentNumber: string
+  insuranceCompany: string
+  policyNumber: string
+  insuranceExpiry: string
+  insuranceDoc: string
 }
 
 const VESSELS_KEY = 'boat_buddy_vessels'
@@ -73,6 +77,10 @@ function toApiPayload(vessel: VesselProfile, userEmail: string) {
     engine_hours: vessel.engineHours,
     home_port: vessel.homePort,
     document_number: vessel.documentNumber,
+    insurance_company: vessel.insuranceCompany,
+    policy_number: vessel.policyNumber,
+    insurance_expiry: vessel.insuranceExpiry,
+    // insuranceDoc intentionally excluded — localStorage only (can be large)
   }
 }
 
@@ -91,6 +99,10 @@ function fromApiVessel(cv: any): VesselProfile {
     engineHours: cv.engine_hours || '',
     homePort: cv.home_port || '',
     documentNumber: cv.document_number || '',
+    insuranceCompany: cv.insurance_company || '',
+    policyNumber: cv.policy_number || '',
+    insuranceExpiry: cv.insurance_expiry || '',
+    insuranceDoc: '', // localStorage only — not stored in DB
   }
 }
 
@@ -98,6 +110,7 @@ const EMPTY: Omit<VesselProfile, 'id'> = {
   name: '', type: '', year: '', make: '', model: '',
   engineMake: '', engineModel: '', engineSerial: '', engineHours: '',
   homePort: '', documentNumber: '',
+  insuranceCompany: '', policyNumber: '', insuranceExpiry: '', insuranceDoc: '',
 }
 
 const VESSEL_TYPES = [
@@ -374,6 +387,53 @@ export default function VesselPage() {
               </div>
             </div>
 
+            <div className="panel p-4">
+              <h2 className="text-xs uppercase tracking-wider mb-3" style={labelStyle}>Insurance</h2>
+              <div className="flex flex-col gap-3">
+                <div>
+                  <label className="block text-xs mb-1" style={labelStyle}>Insurance Company</label>
+                  <input className="input-field" placeholder="e.g. BoatUS" value={form.insuranceCompany} onChange={e => set('insuranceCompany', e.target.value)} />
+                </div>
+                <div>
+                  <label className="block text-xs mb-1" style={labelStyle}>Policy Number</label>
+                  <input className="input-field" placeholder="e.g. BU-1234567" value={form.policyNumber} onChange={e => set('policyNumber', e.target.value)} />
+                </div>
+                <div>
+                  <label className="block text-xs mb-1" style={labelStyle}>Policy Expiry</label>
+                  <input className="input-field" type="month" value={form.insuranceExpiry} onChange={e => set('insuranceExpiry', e.target.value)} />
+                </div>
+                <div>
+                  <label className="block text-xs mb-1" style={labelStyle}>Insurance Document</label>
+                  {form.insuranceDoc ? (
+                    <div className="flex gap-2 items-center">
+                      <a href={form.insuranceDoc} download="insurance.pdf" className="text-xs px-3 py-1.5 rounded-lg"
+                        style={{background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif'}}>
+                        ⬇️ Download Insurance Doc
+                      </a>
+                      <button type="button" onClick={() => set('insuranceDoc', '')}
+                        className="text-xs px-2 py-1.5 rounded-lg"
+                        style={{background: 'rgba(139,26,26,0.2)', color: 'rgba(245,240,232,0.5)', border: '1px solid rgba(139,26,26,0.3)', fontFamily: 'Georgia, serif'}}>
+                        ✕ Remove
+                      </button>
+                    </div>
+                  ) : (
+                    <label className="text-xs px-3 py-2 rounded-lg cursor-pointer inline-block"
+                      style={{background: 'rgba(198,139,58,0.2)', color: '#C68B3A', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif'}}>
+                      📎 Upload Insurance Doc
+                      <input type="file" accept="image/*,application/pdf" className="hidden"
+                        onChange={e => {
+                          const file = e.target.files?.[0]
+                          if (!file) return
+                          const reader = new FileReader()
+                          reader.onload = ev => set('insuranceDoc', ev.target?.result as string)
+                          reader.readAsDataURL(file)
+                        }} />
+                    </label>
+                  )}
+                </div>
+              </div>
+            </div>
+
             <button type="submit" disabled={saving} className="btn-primary w-full"
               style={saving ? { opacity: 0.7, cursor: 'not-allowed' } : {}}>
               {saving ? '⏳ Saving...' : '💾 Save Vessel'}
@@ -429,6 +489,16 @@ export default function VesselPage() {
                     {v.id === activeId && (
                       <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(198,139,58,0.3)', color: '#C68B3A', fontFamily: 'Georgia, serif' }}>Active</span>
                     )}
+                    {v.insuranceExpiry && (() => {
+                      const expiry = new Date(v.insuranceExpiry + '-01')
+                      const daysLeft = Math.ceil((expiry.getTime() - Date.now()) / 86400000)
+                      return daysLeft <= 30 ? (
+                        <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(200,120,0,0.25)', color: '#FFB347', fontFamily: 'Georgia, serif', border: '1px solid rgba(200,120,0,0.4)' }}
+                          title={`Insurance expires ${v.insuranceExpiry}`}>
+                          ⚠️ {daysLeft > 0 ? `${daysLeft}d` : 'Expired'}
+                        </span>
+                      ) : null
+                    })()}
                   </div>
                   <p className="text-xs" style={{ color: 'rgba(245,240,232,0.55)', fontFamily: 'Georgia, serif' }}>
                     {[v.year, v.make, v.model].filter(Boolean).join(' ')}
@@ -464,3 +534,4 @@ export default function VesselPage() {
     </div>
   )
 }
+
