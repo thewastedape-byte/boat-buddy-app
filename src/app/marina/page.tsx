@@ -296,11 +296,12 @@ function ConfirmModal({ message, onConfirm, onCancel }: { message: string; onCon
 // ─────────────────────────────────────────────────────────
 // SLIP GRID CELL
 // ─────────────────────────────────────────────────────────
-function SlipCell({ slip, occupantName, onClick }: {
-  slip: Slip; occupantName?: string; onClick: () => void
+function SlipCell({ slip, occupantName, effectiveStatus, onClick }: {
+  slip: Slip; occupantName?: string; effectiveStatus?: SlipStatus; onClick: () => void
 }) {
-  const bg = slipStatusBg(slip.status)
-  const color = slipStatusColor(slip.status)
+  const displayStatus = effectiveStatus ?? slip.status
+  const bg = slipStatusBg(displayStatus)
+  const color = slipStatusColor(displayStatus)
 
   return (
     <button onClick={onClick}
@@ -321,7 +322,7 @@ function SlipCell({ slip, occupantName, onClick }: {
       }}>
       <span style={{ color, fontSize: '13px', fontWeight: 'bold', fontFamily: 'Georgia, serif', lineHeight: 1 }}>{slip.name}</span>
       <span style={{ fontSize: '8px', color, opacity: 0.85, fontFamily: 'Georgia, serif', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-        {slip.status === 'available' ? 'open' : slip.status === 'rented' ? 'rented' : slip.status === 'reserved' ? 'rsvd' : 'maint'}
+        {displayStatus === 'available' ? 'open' : displayStatus === 'rented' ? 'rented' : displayStatus === 'reserved' ? 'rsvd' : 'maint'}
       </span>
       {occupantName && (
         <span style={{
@@ -1464,9 +1465,12 @@ export default function MarinaPage() {
   }
 
   // ── Stats ──
+  const activeTransientSlipIds = new Set(transient.filter(b => b.status === 'active' && b.slipId).map(b => b.slipId))
+  const upcomingTransientSlipIds = new Set(transient.filter(b => b.status === 'upcoming' && b.slipId).map(b => b.slipId))
   const totalSlips = slips.length
-  const rentedSlips = slips.filter(s => s.status === 'rented').length
-  const availableSlips = slips.filter(s => s.status === 'available').length
+  const rentedSlips = slips.filter(s => s.status === 'rented' || (s.status !== 'maintenance' && activeTransientSlipIds.has(s.id))).length
+  const reservedSlips = slips.filter(s => s.status === 'reserved' || (s.status === 'available' && upcomingTransientSlipIds.has(s.id))).length
+  const availableSlips = slips.filter(s => s.status === 'available' && !activeTransientSlipIds.has(s.id) && !upcomingTransientSlipIds.has(s.id)).length
   const maintenanceSlips = slips.filter(s => s.status === 'maintenance').length
 
   // ── Dock grouping ──
@@ -1557,10 +1561,11 @@ export default function MarinaPage() {
         {activeTab === 'slips' && (
           <>
             {/* Summary stats */}
-            <div className="grid grid-cols-4 gap-2 mb-3">
+            <div className="grid grid-cols-5 gap-1.5 mb-3">
               {[
                 { label: 'Total', value: totalSlips, color: '#F5F0E8' },
                 { label: 'Rented', value: rentedSlips, color: '#4A90E2' },
+                { label: 'Reserved', value: reservedSlips, color: '#A855F7' },
                 { label: 'Open', value: availableSlips, color: '#4caf82' },
                 { label: 'Maint.', value: maintenanceSlips, color: '#e87070' },
               ].map(stat => (
@@ -1646,11 +1651,16 @@ export default function MarinaPage() {
                         const rental = rentals.find(r => r.slipId === slip.id)
                         const booking = transient.find(b => b.slipId === slip.id && b.status !== 'checked_out')
                         const occupant = rental?.vesselName || booking?.vesselName || slip.vesselName || undefined
+                        const effectiveStatus: SlipStatus =
+                          booking?.status === 'active' ? 'rented' :
+                          booking?.status === 'upcoming' ? 'reserved' :
+                          slip.status
                         return (
                           <SlipCell
                             key={slip.id}
                             slip={slip}
                             occupantName={occupant}
+                            effectiveStatus={effectiveStatus}
                             onClick={() => setEditSlip(slip)}
                           />
                         )
