@@ -34,7 +34,7 @@ export default function WelcomePage() {
             Your AI Marine Mechanic
           </h1>
           <p className="text-sm leading-relaxed"
-            style={{ color: 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif' }}>
+            style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif', textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}>
             Diagnose engine problems, search service manuals, manage your whole shop — right from your phone.
           </p>
         </div>
@@ -48,7 +48,7 @@ export default function WelcomePage() {
           </Link>
           <Link href="/login"
             className="w-full text-center py-3 rounded-xl text-sm"
-            style={{ background: 'rgba(245,240,232,0.07)', border: '1px solid rgba(245,240,232,0.2)', color: 'rgba(245,240,232,0.65)', fontFamily: 'Georgia, serif', textDecoration: 'none', display: 'block' }}>
+            style={{ background: '#0a1c37', border: '1px solid rgba(198,139,58,0.5)', color: '#F5F0E8', fontFamily: 'Georgia, serif', textDecoration: 'none', display: 'block' }}>
             Already have an account? Sign In
           </Link>
         </div>
@@ -71,7 +71,7 @@ export default function WelcomePage() {
                 <span className="text-2xl flex-shrink-0 mt-0.5">{f.icon}</span>
                 <div>
                   <p className="text-sm font-bold mb-1" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>{f.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(245,240,232,0.55)', fontFamily: 'Georgia, serif' }}>{f.desc}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>{f.desc}</p>
                 </div>
               </div>
             ))}
@@ -80,10 +80,10 @@ export default function WelcomePage() {
 
         {/* Team features teaser */}
         <div className="w-full max-w-sm panel p-5 mb-8"
-          style={{ background: 'rgba(198,139,58,0.06)', borderColor: 'rgba(198,139,58,0.3)' }}>
+          style={{ background: '#0a1c37', borderColor: 'rgba(198,139,58,0.4)' }}>
           <p className="text-xs uppercase tracking-wider mb-3"
             style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>
-            For Marine Shops & Service Yards
+            For Marine Shops &amp; Service Yards
           </p>
           <div className="flex flex-col gap-2">
             {[
@@ -93,7 +93,7 @@ export default function WelcomePage() {
               '💬 Real-time team group chat',
               '🔗 Zapier integrations (QuickBooks, Slack & more)',
             ].map((item, i) => (
-              <p key={i} className="text-xs" style={{ color: 'rgba(245,240,232,0.65)', fontFamily: 'Georgia, serif' }}>{item}</p>
+              <p key={i} className="text-xs" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>{item}</p>
             ))}
           </div>
         </div>
@@ -106,27 +106,27 @@ export default function WelcomePage() {
           </p>
           <div className="flex flex-col gap-3">
             <div className="panel p-4 flex items-start gap-3"
-              style={{ borderColor: 'rgba(74,144,226,0.3)', background: 'rgba(74,144,226,0.05)' }}>
+              style={{ borderColor: 'rgba(74,144,226,0.4)', background: '#0a1c37' }}>
               <span className="text-2xl flex-shrink-0">⚓</span>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Yard Manager</p>
                   <span className="text-sm font-bold" style={{ color: '#4A90E2', fontFamily: 'Georgia, serif' }}>+$29/mo</span>
                 </div>
-                <p className="text-xs mt-1 leading-relaxed" style={{ color: 'rgba(245,240,232,0.55)', fontFamily: 'Georgia, serif' }}>Drag &amp; drop boat yard map, slip assignments, vessel &amp; owner tracking, occupancy at a glance.</p>
-                <p className="text-xs mt-1" style={{ color: 'rgba(198,139,58,0.7)', fontFamily: 'Georgia, serif' }}>Free on Captain &amp; Admiral plans</p>
+                <p className="text-xs mt-1 leading-relaxed" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Drag &amp; drop boat yard map, slip assignments, vessel &amp; owner tracking, occupancy at a glance.</p>
+                <p className="text-xs mt-1" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>Free on Captain &amp; Admiral plans</p>
               </div>
             </div>
             <div className="panel p-4 flex items-start gap-3"
-              style={{ borderColor: 'rgba(74,144,226,0.3)', background: 'rgba(74,144,226,0.05)' }}>
+              style={{ borderColor: 'rgba(74,144,226,0.4)', background: '#0a1c37' }}>
               <span className="text-2xl flex-shrink-0">🚢</span>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Marina Manager</p>
                   <span className="text-sm font-bold" style={{ color: '#4A90E2', fontFamily: 'Georgia, serif' }}>+$49/mo</span>
                 </div>
-                <p className="text-xs mt-1 leading-relaxed" style={{ color: 'rgba(245,240,232,0.55)', fontFamily: 'Georgia, serif' }}>Full slip rentals, transient bookings, rental agreements, waitlist management, and payment tracking.</p>
-                <p className="text-xs mt-1" style={{ color: 'rgba(198,139,58,0.7)', fontFamily: 'Georgia, serif' }}>Free on Captain &amp; Admiral plans</p>
+                <p className="text-xs mt-1 leading-relaxed" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Full slip rentals, transient bookings, rental agreements, waitlist management, and payment tracking.</p>
+                <p className="text-xs mt-1" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>Free on Captain &amp; Admiral plans</p>
               </div>
             </div>
           </div>
@@ -140,10 +140,10 @@ export default function WelcomePage() {
           </p>
           <div className="flex flex-col gap-3">
             {[
-              { name: 'Stow Away', tier: null, price: 'Free', desc: '1 question every 6 hours', color: 'rgba(245,240,232,0.5)', border: 'rgba(245,240,232,0.1)' },
-              { name: 'First Mate', tier: 'first_mate', price: '$19.99/mo', desc: 'Unlimited AI · Work orders · Diagrams', color: '#7aafd4', border: 'rgba(122,175,212,0.4)', badge: 'MOST POPULAR' },
-              { name: 'Captain', tier: 'captain', price: '$39.99/mo', desc: 'Full shop tools · 5 team seats', color: '#C68B3A', border: 'rgba(198,139,58,0.4)' },
-              { name: 'Admiral', tier: 'admiral', price: '$79.99/mo', desc: 'Everything · 10 team seats', color: '#C68B3A', border: 'rgba(198,139,58,0.4)' },
+              { name: 'Stow Away', tier: null, price: 'Free', desc: '1 question every 6 hours', color: '#F5F0E8', border: 'rgba(245,240,232,0.2)' },
+              { name: 'First Mate', tier: 'first_mate', price: '$9.99/mo', desc: 'Unlimited AI · Work orders · Diagrams', color: '#7aafd4', border: 'rgba(122,175,212,0.5)', badge: 'MOST POPULAR' },
+              { name: 'Captain', tier: 'captain', price: '$24.99/mo', desc: 'Full shop tools · 5 team seats', color: '#C68B3A', border: 'rgba(198,139,58,0.4)' },
+              { name: 'Admiral', tier: 'admiral', price: '$49.99/mo', desc: 'Everything · 10 team seats', color: '#C68B3A', border: 'rgba(198,139,58,0.4)' },
             ].map((t, i) => (
               <Link
                 key={i}
@@ -151,18 +151,20 @@ export default function WelcomePage() {
                 style={{ textDecoration: 'none' }}
               >
                 <div className="panel p-4 flex items-center justify-between"
-                  style={{ border: `1px solid ${t.border}`, cursor: 'pointer', position: 'relative' }}>
-                  {(t as any).badge && (
-                    <span className="absolute text-xs font-bold px-2 py-0.5 rounded-full"
-                      style={{ top: -10, right: 12, background: '#7aafd4', color: '#1A0A00', fontSize: '10px' }}>
-                      {(t as any).badge}
-                    </span>
-                  )}
+                  style={{ border: `1px solid ${t.border}`, cursor: 'pointer' }}>
                   <div>
-                    <p className="text-sm font-bold" style={{ color: t.color, fontFamily: 'Georgia, serif' }}>{t.name}</p>
-                    <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.45)', fontFamily: 'Georgia, serif' }}>{t.desc}</p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="text-sm font-bold" style={{ color: t.color, fontFamily: 'Georgia, serif' }}>{t.name}</p>
+                      {(t as any).badge && (
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full"
+                          style={{ background: '#C68B3A', color: '#1A0A00', fontSize: '9px', whiteSpace: 'nowrap' }}>
+                          {(t as any).badge}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs mt-0.5" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>{t.desc}</p>
                   </div>
-                  <div className="flex items-center gap-2 flex-shrink-0">
+                  <div className="flex items-center gap-2 flex-shrink-0 ml-3">
                     <span className="text-sm font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>{t.price}</span>
                     {t.tier && <span style={{ color: t.color }}>→</span>}
                   </div>
@@ -171,7 +173,7 @@ export default function WelcomePage() {
             ))}
           </div>
           <p className="text-xs text-center mt-3 mb-2"
-            style={{ color: 'rgba(245,240,232,0.3)', fontFamily: 'Georgia, serif' }}>
+            style={{ color: 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif' }}>
             No credit card required for free tier · Cancel anytime
           </p>
           <p className="text-xs text-center mb-8">
