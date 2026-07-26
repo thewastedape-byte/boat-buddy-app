@@ -201,10 +201,10 @@ function slipStatusColor(s: SlipStatus) {
 }
 
 function slipStatusBg(s: SlipStatus) {
-  if (s === 'available') return 'rgba(76,175,130,0.18)'
-  if (s === 'rented') return 'rgba(74,144,226,0.18)'
-  if (s === 'reserved') return 'rgba(168,85,247,0.18)'
-  return 'rgba(232,112,112,0.18)'
+  if (s === 'available') return '#1b5e3d'
+  if (s === 'rented') return '#0d3b6e'
+  if (s === 'reserved') return '#4a1072'
+  return '#7a2100'
 }
 
 // ── Styles ──
@@ -342,8 +342,8 @@ function SlipCell({ slip, occupantName, effectiveStatus, onClick }: {
       {insWarning && (
         <span style={{ position: 'absolute', top: 2, right: 3, fontSize: '9px', lineHeight: 1 }} title="Insurance expiring soon">⚠️</span>
       )}
-      <span style={{ color, fontSize: '13px', fontWeight: 'bold', fontFamily: 'Georgia, serif', lineHeight: 1 }}>{slip.name}</span>
-      <span style={{ fontSize: '8px', color, opacity: 0.85, fontFamily: 'Georgia, serif', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+      <span style={{ color: '#fff', fontSize: '13px', fontWeight: 'bold', fontFamily: 'Georgia, serif', lineHeight: 1 }}>{slip.name}</span>
+      <span style={{ fontSize: '8px', color: 'rgba(255,255,255,0.9)', fontFamily: 'Georgia, serif', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         {displayStatus === 'available' ? 'open' : displayStatus === 'rented' ? 'rented' : displayStatus === 'reserved' ? 'rsvd' : 'maint'}
       </span>
       {occupantName && (
@@ -1927,7 +1927,7 @@ export default function MarinaPage() {
               </div>
             ) : (
               <div className="flex flex-col gap-3">
-                {transient.filter(b => !searchQuery || b.vesselName.toLowerCase().includes(searchQuery.toLowerCase()) || b.captainName.toLowerCase().includes(searchQuery.toLowerCase())).map(booking => {
+                {transient.filter(b => !searchQuery || (b.vesselName||'').toLowerCase().includes(searchQuery.toLowerCase()) || (b.captainName||'').toLowerCase().includes(searchQuery.toLowerCase())).map(booking => {
                   const slip = slips.find(s => s.id === booking.slipId)
                   const nights = booking.checkin && booking.checkout ? diffDays(booking.checkin, booking.checkout) : 0
                   const total = nights * booking.nightlyRate
@@ -1946,7 +1946,7 @@ export default function MarinaPage() {
                           border: `1px solid ${bookingStatusColor(booking.status)}50`,
                           borderRadius: '6px', padding: '2px 8px', fontSize: '11px', fontFamily: 'Georgia, serif', textTransform: 'capitalize', fontWeight: 'bold',
                         }}>
-                          {booking.status.replace('_', ' ')}
+                          {(booking.status||'').replace('_', ' ')}
                         </span>
                       </div>
                       <div className="flex flex-wrap gap-2 text-xs mb-1" style={dimStyle}>
@@ -1959,7 +1959,7 @@ export default function MarinaPage() {
                         {booking.loa > 0 && <span style={{ ...dimStyle, fontSize: '10px' }}>LOA: {booking.loa}ft</span>}
                         {booking.powerType !== 'none' && <span style={{ fontSize: '10px', color: '#4A90E2', fontFamily: 'Georgia, serif' }}>⚡ {booking.powerType === 'double30' ? 'Double 30A' : booking.powerType}</span>}
                         {booking.waterAtSlip && <span style={{ fontSize: '10px', color: '#4caf82', fontFamily: 'Georgia, serif' }}>💧 Water</span>}
-                        {booking.discountCard !== 'none' && <span style={{ fontSize: '10px', color: '#C68B3A', fontFamily: 'Georgia, serif' }}>🎫 {booking.discountCard.toUpperCase()}</span>}
+                        {booking.discountCard && booking.discountCard !== 'none' && <span style={{ fontSize: '10px', color: '#C68B3A', fontFamily: 'Georgia, serif' }}>🎫 {booking.discountCard.toUpperCase()}</span>}
                       </div>
                     </button>
                   )
