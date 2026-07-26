@@ -48,7 +48,7 @@ export default function WelcomePage() {
           </Link>
           <Link href="/login"
             className="w-full text-center py-3 rounded-xl text-sm"
-            style={{ background: '#0a1c37', border: '1px solid rgba(198,139,58,0.5)', color: '#F5F0E8', fontFamily: 'Georgia, serif', textDecoration: 'none', display: 'block' }}>
+            style={{ background: '#0a1c37', border: '3px solid #C68B3A', color: '#F5F0E8', fontFamily: 'Georgia, serif', textDecoration: 'none', display: 'block', fontWeight: 'bold' }}>
             Already have an account? Sign In
           </Link>
         </div>
@@ -105,28 +105,34 @@ export default function WelcomePage() {
             Optional Add-ons
           </p>
           <div className="flex flex-col gap-3">
-            <div className="panel p-4 flex items-start gap-3"
-              style={{ borderColor: 'rgba(74,144,226,0.4)', background: '#0a1c37' }}>
+            <div className="p-4 flex items-start gap-3 rounded-xl"
+              style={{ border: '2px dashed rgba(74,144,226,0.6)', background: 'rgba(74,144,226,0.08)' }}>
               <span className="text-2xl flex-shrink-0">⚓</span>
               <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Yard Manager</p>
+                <div className="flex items-center justify-between flex-wrap gap-1">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Yard Manager</p>
+                    <span className="text-xs px-1.5 py-0.5 rounded" style={{ background: 'rgba(74,144,226,0.25)', color: '#7aafd4', fontSize: '9px', fontFamily: 'Georgia, serif' }}>ADD-ON</span>
+                  </div>
                   <span className="text-sm font-bold" style={{ color: '#4A90E2', fontFamily: 'Georgia, serif' }}>+$29/mo</span>
                 </div>
                 <p className="text-xs mt-1 leading-relaxed" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Drag &amp; drop boat yard map, slip assignments, vessel &amp; owner tracking, occupancy at a glance.</p>
-                <p className="text-xs mt-1" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>Free on Captain &amp; Admiral plans</p>
+                <p className="text-xs mt-1 font-bold" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>⚓ FREE on Captain &amp; Admiral plans</p>
               </div>
             </div>
-            <div className="panel p-4 flex items-start gap-3"
-              style={{ borderColor: 'rgba(74,144,226,0.4)', background: '#0a1c37' }}>
+            <div className="p-4 flex items-start gap-3 rounded-xl"
+              style={{ border: '2px dashed rgba(74,144,226,0.6)', background: 'rgba(74,144,226,0.08)' }}>
               <span className="text-2xl flex-shrink-0">🚢</span>
               <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Marina Manager</p>
+                <div className="flex items-center justify-between flex-wrap gap-1">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Marina Manager</p>
+                    <span className="text-xs px-1.5 py-0.5 rounded" style={{ background: 'rgba(74,144,226,0.25)', color: '#7aafd4', fontSize: '9px', fontFamily: 'Georgia, serif' }}>ADD-ON</span>
+                  </div>
                   <span className="text-sm font-bold" style={{ color: '#4A90E2', fontFamily: 'Georgia, serif' }}>+$49/mo</span>
                 </div>
                 <p className="text-xs mt-1 leading-relaxed" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Full slip rentals, transient bookings, rental agreements, waitlist management, and payment tracking.</p>
-                <p className="text-xs mt-1" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>Free on Captain &amp; Admiral plans</p>
+                <p className="text-xs mt-1 font-bold" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>🚢 FREE on Captain &amp; Admiral plans</p>
               </div>
             </div>
           </div>
