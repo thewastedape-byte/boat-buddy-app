@@ -1776,13 +1776,14 @@ export default function MarinaPage() {
                 : dockSlips
 
               return (
-                <div key={dockName} className="mb-5">
+                <div key={dockName} className="mb-5" style={{ background: 'rgba(8,16,40,0.82)', borderRadius: '14px', padding: '10px 10px 12px', border: '1px solid rgba(198,139,58,0.2)' }}>
                   {/* Dock header */}
-                  <div className="flex items-center justify-between mb-2" onClick={() => toggleDock(dockName)} style={{ cursor: 'pointer' }}>
+                  <div className="flex items-center justify-between mb-2" onClick={() => toggleDock(dockName)}
+                    style={{ cursor: 'pointer', background: 'rgba(10,20,50,0.88)', borderRadius: '10px', padding: '10px 14px', border: '1px solid rgba(198,139,58,0.25)' }}>
                     <h2 className="text-sm font-bold uppercase tracking-wider flex items-center gap-1.5" style={goldStyle}>
-                      <span style={{ fontSize: '9px', opacity: 0.8, lineHeight: 1 }}>{isCollapsed ? '▶' : '▼'}</span>
+                      <span style={{ fontSize: '9px', lineHeight: 1 }}>{isCollapsed ? '▶' : '▼'}</span>
                       ⚓ {isNamed ? `Dock ${dockName}` : dockName}
-                      <span className="ml-1 text-xs font-normal" style={dimStyle}>
+                      <span className="ml-1 text-xs font-normal" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
                         {dockSlips.filter(s => s.status === 'available').length} open / {dockSlips.length} total
                       </span>
                     </h2>
@@ -1825,9 +1826,9 @@ export default function MarinaPage() {
                       })}
                     </div>
                   ) : searchQuery ? (
-                    <p className="text-xs py-2" style={dimStyle}>No matches in {isNamed ? `Dock ${dockName}` : dockName}</p>
+                    <p className="text-xs py-2" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>No matches in {isNamed ? `Dock ${dockName}` : dockName}</p>
                   ) : (
-                    <p className="text-xs py-2" style={dimStyle}>No slips in this dock yet — tap + Slip to add one.</p>
+                    <p className="text-xs py-2" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>No slips in this dock yet — tap + Slip to add one.</p>
                   ))}
                 </div>
               )
