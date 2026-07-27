@@ -165,15 +165,17 @@ export default function WelcomePage() {
               </Link>
             ))}
           </div>
-          <p className="text-xs text-center mt-3 mb-2"
+          <p className="text-xs text-center mt-3 mb-4"
             style={{ color: 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif' }}>
             No credit card required for free tier · Cancel anytime
           </p>
-          <p className="text-xs text-center mb-8">
-            <Link href="/about" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif', textDecoration: 'none' }}>
-              Why Boat Buddy vs ChatGPT? →
-            </Link>
-          </p>
+          <Link href="/about" style={{ textDecoration: 'none', display: 'block', marginBottom: '32px' }}>
+            <div className="p-4 rounded-xl text-center"
+              style={{ background: '#0a1c37', border: '2px solid rgba(198,139,58,0.6)' }}>
+              <p className="text-sm font-bold" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>Why Boat Buddy vs ChatGPT? →</p>
+              <p className="text-xs mt-1" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>See how we stack up — marine knowledge, manuals, shop tools</p>
+            </div>
+          </Link>
         </div>
       </main>
     </div>
