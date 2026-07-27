@@ -98,46 +98,6 @@ export default function WelcomePage() {
           </div>
         </div>
 
-        {/* Add-ons */}
-        <div className="w-full max-w-sm mb-8">
-          <p className="text-xs uppercase tracking-wider mb-4"
-            style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>
-            Optional Add-ons
-          </p>
-          <div className="flex flex-col gap-3">
-            <div className="p-4 flex items-start gap-3 rounded-xl"
-              style={{ border: '2px dashed rgba(74,144,226,0.6)', background: 'rgba(74,144,226,0.08)' }}>
-              <span className="text-2xl flex-shrink-0">⚓</span>
-              <div className="flex-1">
-                <div className="flex items-center justify-between flex-wrap gap-1">
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Yard Manager</p>
-                    <span className="text-xs px-1.5 py-0.5 rounded" style={{ background: 'rgba(74,144,226,0.25)', color: '#7aafd4', fontSize: '9px', fontFamily: 'Georgia, serif' }}>ADD-ON</span>
-                  </div>
-                  <span className="text-sm font-bold" style={{ color: '#4A90E2', fontFamily: 'Georgia, serif' }}>+$29/mo</span>
-                </div>
-                <p className="text-xs mt-1 leading-relaxed" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Drag &amp; drop boat yard map, slip assignments, vessel &amp; owner tracking, occupancy at a glance.</p>
-                <p className="text-xs mt-1 font-bold" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>⚓ FREE on Captain &amp; Admiral plans</p>
-              </div>
-            </div>
-            <div className="p-4 flex items-start gap-3 rounded-xl"
-              style={{ border: '2px dashed rgba(74,144,226,0.6)', background: 'rgba(74,144,226,0.08)' }}>
-              <span className="text-2xl flex-shrink-0">🚢</span>
-              <div className="flex-1">
-                <div className="flex items-center justify-between flex-wrap gap-1">
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Marina Manager</p>
-                    <span className="text-xs px-1.5 py-0.5 rounded" style={{ background: 'rgba(74,144,226,0.25)', color: '#7aafd4', fontSize: '9px', fontFamily: 'Georgia, serif' }}>ADD-ON</span>
-                  </div>
-                  <span className="text-sm font-bold" style={{ color: '#4A90E2', fontFamily: 'Georgia, serif' }}>+$49/mo</span>
-                </div>
-                <p className="text-xs mt-1 leading-relaxed" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Full slip rentals, transient bookings, rental agreements, waitlist management, and payment tracking.</p>
-                <p className="text-xs mt-1 font-bold" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>🚢 FREE on Captain &amp; Admiral plans</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Pricing — clickable tiers */}
         <div className="w-full max-w-sm mb-8">
           <p className="text-xs uppercase tracking-wider mb-4 text-center"
@@ -146,24 +106,51 @@ export default function WelcomePage() {
           </p>
           <div className="flex flex-col gap-3">
             {[
-              { name: 'Stow Away', tier: null, price: 'Free', desc: '1 question every 6 hours', color: '#F5F0E8', border: 'rgba(245,240,232,0.2)' },
-              { name: 'First Mate', tier: 'first_mate', price: '$9.99/mo', desc: 'Unlimited AI · Work orders · Diagrams', color: '#7aafd4', border: 'rgba(122,175,212,0.5)', badge: 'MOST POPULAR' },
-              { name: 'Captain', tier: 'captain', price: '$24.99/mo', desc: 'Full shop tools · 5 team seats', color: '#C68B3A', border: 'rgba(198,139,58,0.4)' },
-              { name: 'Admiral', tier: 'admiral', price: '$49.99/mo', desc: 'Everything · 10 team seats', color: '#C68B3A', border: 'rgba(198,139,58,0.4)' },
+              {
+                name: 'Stow Away', icon: '🪝', tier: null, price: 'Free',
+                desc: '1 question every 6 hours · Basic AI diagnosis',
+                nameColor: 'rgba(245,240,232,0.8)',
+                bg: 'rgba(30,20,10,0.9)',
+                border: '1px solid rgba(245,240,232,0.15)',
+              },
+              {
+                name: 'First Mate', icon: '⚓', tier: 'first_mate', price: '$9.99/mo',
+                desc: 'Unlimited AI · Work orders · Diagrams · 6 languages',
+                nameColor: '#7aafd4',
+                bg: 'rgba(10,28,55,0.97)',
+                border: '2px solid rgba(122,175,212,0.7)',
+                badge: 'MOST POPULAR',
+              },
+              {
+                name: 'Captain', icon: '🚢', tier: 'captain', price: '$24.99/mo',
+                desc: 'First Mate + Yard Manager · 5 team seats',
+                nameColor: '#C68B3A',
+                bg: 'rgba(40,22,5,0.97)',
+                border: '2px solid rgba(198,139,58,0.7)',
+              },
+              {
+                name: 'Admiral', icon: '🪖', tier: 'admiral', price: '$49.99/mo',
+                desc: 'Captain + Marina Manager · 10 team seats · Everything',
+                nameColor: '#E8C97A',
+                bg: 'rgba(20,8,2,0.98)',
+                border: '2px solid #C68B3A',
+                badge: 'FULL FLEET',
+              },
             ].map((t, i) => (
               <Link
                 key={i}
                 href={t.tier ? `/signup?tier=${t.tier}` : '/signup'}
                 style={{ textDecoration: 'none' }}
               >
-                <div className="panel p-4 flex items-center justify-between"
-                  style={{ border: `1px solid ${t.border}`, cursor: 'pointer' }}>
+                <div className="p-4 flex items-center justify-between rounded-xl"
+                  style={{ background: t.bg, border: t.border, cursor: 'pointer' }}>
                   <div>
                     <div className="flex items-center gap-2 flex-wrap">
-                      <p className="text-sm font-bold" style={{ color: t.color, fontFamily: 'Georgia, serif' }}>{t.name}</p>
+                      <span>{t.icon}</span>
+                      <p className="text-sm font-bold" style={{ color: t.nameColor, fontFamily: 'Georgia, serif' }}>{t.name}</p>
                       {(t as any).badge && (
                         <span className="text-xs font-bold px-2 py-0.5 rounded-full"
-                          style={{ background: '#C68B3A', color: '#1A0A00', fontSize: '9px', whiteSpace: 'nowrap' }}>
+                          style={{ background: t.nameColor, color: '#1A0A00', fontSize: '9px', whiteSpace: 'nowrap' }}>
                           {(t as any).badge}
                         </span>
                       )}
@@ -172,7 +159,7 @@ export default function WelcomePage() {
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0 ml-3">
                     <span className="text-sm font-bold" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>{t.price}</span>
-                    {t.tier && <span style={{ color: t.color }}>→</span>}
+                    {t.tier && <span style={{ color: t.nameColor }}>→</span>}
                   </div>
                 </div>
               </Link>
