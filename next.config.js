@@ -1,6 +1,7 @@
-﻿/** @type {import('next').NextConfig} */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // Only use static export for Capacitor/Android builds (set via env in GitHub Actions)
+  ...(process.env.CAPACITOR_BUILD === 'true' ? { output: 'export' } : {}),
   reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: true,
