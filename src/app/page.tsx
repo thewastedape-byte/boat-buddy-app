@@ -7,6 +7,7 @@ import NavBar from '@/components/NavBar'
 import TCModal from '@/components/TCModal'
 import Logo from '@/components/Logo'
 import HelpChatModal from '@/components/HelpChatModal'
+import OnboardingModal from '@/components/OnboardingModal'
 
 interface Message {
   id: string
@@ -471,6 +472,7 @@ export default function ChatPage() {
   return (
     <div className="bg-wood min-h-screen flex flex-col">
       {showTC && <TCModal onAccept={() => setShowTC(false)} />}
+      <OnboardingModal />
 
       {/* Header */}
       <header className="flex items-center justify-between px-4 py-3 sticky top-0 z-40"

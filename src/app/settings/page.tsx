@@ -298,7 +298,7 @@ export default function SettingsPage() {
           </h2>
           <div className="flex items-center justify-between py-2">
             <p className="text-sm" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>App Version</p>
-            <p className="text-sm" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>1.0.0</p>
+            <p className="text-sm" style={{ color: 'rgba(245,240,232,0.5)', fontFamily: 'Georgia, serif' }}>5.0.0</p>
           </div>
           <div className="flex items-center justify-between py-2 border-t" style={{ borderColor: 'rgba(198,139,58,0.2)' }}>
             <p className="text-sm" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>API</p>
@@ -311,6 +311,19 @@ export default function SettingsPage() {
             <p className="text-sm" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>Terms &amp; Conditions</p>
             <p style={{ color: 'rgba(198,139,58,0.7)' }}>→</p>
           </Link>
+          <a
+            href="https://play.google.com/store/apps/details?id=com.thewastedape.boatbuddy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between py-2 border-t"
+            style={{ borderColor: 'rgba(198,139,58,0.2)', textDecoration: 'none' }}
+          >
+            <div>
+              <p className="text-sm" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>⭐ Rate Boat Buddy</p>
+              <p className="text-xs mt-0.5" style={{ color: 'rgba(245,240,232,0.4)', fontFamily: 'Georgia, serif' }}>Enjoying the app? Leave us a review!</p>
+            </div>
+            <p style={{ color: 'rgba(198,139,58,0.7)' }}>→</p>
+          </a>
           <Link href="/contact" className="flex items-center justify-between py-2 border-t"
             style={{ borderColor: 'rgba(198,139,58,0.2)' }}>
             <div>

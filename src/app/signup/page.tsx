@@ -16,6 +16,8 @@ function SignupContent() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [signedUp, setSignedUp] = useState(false)
@@ -186,13 +188,31 @@ function SignupContent() {
               </div>
               <div>
                 <label className="block text-xs mb-1.5 uppercase tracking-wider" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>Password</label>
-                <input type="password" className="input-field" placeholder="Min. 6 characters"
-                  value={password} onChange={e => setPassword(e.target.value)} autoComplete="new-password" />
+                <div className="relative">
+                  <input type={showPassword ? 'text' : 'password'} className="input-field" placeholder="Min. 6 characters"
+                    value={password} onChange={e => setPassword(e.target.value)} autoComplete="new-password"
+                    style={{ paddingRight: '2.5rem' }} />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2"
+                    style={{ color: 'rgba(198,139,58,0.7)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', lineHeight: 1 }}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}>
+                    {showPassword ? '🙈' : '👁️'}
+                  </button>
+                </div>
               </div>
               <div>
                 <label className="block text-xs mb-1.5 uppercase tracking-wider" style={{ color: '#C68B3A', fontFamily: 'Georgia, serif' }}>Confirm Password</label>
-                <input type="password" className="input-field" placeholder="Repeat password"
-                  value={confirm} onChange={e => setConfirm(e.target.value)} autoComplete="new-password" />
+                <div className="relative">
+                  <input type={showConfirm ? 'text' : 'password'} className="input-field" placeholder="Repeat password"
+                    value={confirm} onChange={e => setConfirm(e.target.value)} autoComplete="new-password"
+                    style={{ paddingRight: '2.5rem' }} />
+                  <button type="button" onClick={() => setShowConfirm(!showConfirm)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2"
+                    style={{ color: 'rgba(198,139,58,0.7)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', lineHeight: 1 }}
+                    aria-label={showConfirm ? 'Hide password' : 'Show password'}>
+                    {showConfirm ? '🙈' : '👁️'}
+                  </button>
+                </div>
               </div>
               <button type="submit" className="btn-primary w-full mt-2" disabled={loading}>
                 {loading ? 'Creating account...' : inviteInfo ? '⚓ Join Team' : '⚓ Create Account'}
