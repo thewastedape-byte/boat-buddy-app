@@ -203,7 +203,7 @@ export default function ChatPage() {
           }
         } catch {}
 
-        const res = await fetch(`/api/chat`, {
+        const res = await fetch(`https://boatbuddy.thewastedape.com/api/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ question: text, session_id: sessionId, vessel_engine: vesselEngine, has_diagram: !!inlineDiagram, language: localStorage.getItem(userKey('bb_language')) || 'en', email: auth?.email, subscription: auth?.subscription || 'stow_away' }),
