@@ -374,6 +374,7 @@ export default function ChatPage() {
     const sid = newSession()
     setSessionId(sid)
     setMessages([])
+    setInlineDiagram(null)
   }
 
   const rawAuth = getAuth()

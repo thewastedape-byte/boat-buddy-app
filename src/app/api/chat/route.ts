@@ -8,6 +8,17 @@ const SIX_HOURS_MS = 6 * 60 * 60 * 1000
 const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || 'thewastedape@gmail.com,howirolloldschool@gmail.com').split(',')
 const PAID_TIERS = ['first_mate', 'captain', 'admiral']
 
+const CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+}
+
+// Preflight for Capacitor Android (capacitor://localhost origin)
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 200, headers: CORS })
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
@@ -52,7 +63,7 @@ export async function POST(req: NextRequest) {
           const waitMsg = hoursLeft > 0 ? `${hoursLeft}h ${minsLeft}m` : `${minsLeft}m`
           return NextResponse.json(
             { error: 'free_limit', message: `Free question used. Next available in ${waitMsg}.`, nextAvailableMs },
-            { status: 429 }
+            { status: 429, headers: CORS }
           )
         }
       }
@@ -79,9 +90,9 @@ export async function POST(req: NextRequest) {
     })
 
     const data = await res.json()
-    return NextResponse.json(data, { status: res.status })
+    return NextResponse.json(data, { status: res.status, headers: CORS })
   } catch (err) {
     console.error('Chat API error:', err)
-    return NextResponse.json({ error: 'Failed to connect to backend' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to connect to backend' }, { status: 500, headers: CORS })
   }
 }
