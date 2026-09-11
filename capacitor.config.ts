@@ -6,6 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'out',
   server: {
     androidScheme: 'https',
+    url: 'https://boatbuddy.thewastedape.com',
   },
   android: {
     buildOptions: {
