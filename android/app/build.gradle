@@ -18,7 +18,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('../../../../boatbuddy-play/keystore/signing.keystore')
+            storeFile file('signing.keystore')
             storePassword '0ISDe8KPVRqD'
             keyAlias 'my-key-alias'
             keyPassword '0ISDe8KPVRqD'
