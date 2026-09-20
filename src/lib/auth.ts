@@ -28,12 +28,28 @@ export function getUsers(): Record<string, { password: string; name: string }> {
   }
 }
 
-export function signup(email: string, password: string): { success: boolean; error?: string } {
-  const users = getUsers()
-  // Allow re-registration (overwrites existing account)
-  users[email] = { password, name: email.split('@')[0] }
-  localStorage.setItem(USERS_KEY, JSON.stringify(users))
-  return { success: true }
+export async function signup(email: string, password: string, name?: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.toLowerCase().trim(), password, name: name || email.split('@')[0] }),
+    })
+    const data = await res.json()
+    if (!res.ok) return { success: false, error: data.error || 'Sign up failed.' }
+
+    const token = generateToken()
+    const auth = { token, email: email.toLowerCase().trim(), name: data.name || email.split('@')[0], subscription: data.subscription || 'stow_away', loginTime: Date.now() }
+    localStorage.setItem(AUTH_KEY, JSON.stringify(auth))
+
+    const users = getUsers()
+    users[email.toLowerCase().trim()] = { password, name: data.name || email.split('@')[0] }
+    localStorage.setItem(USERS_KEY, JSON.stringify(users))
+
+    return { success: true }
+  } catch {
+    return { success: false, error: 'Connection error. Please check your internet and try again.' }
+  }
 }
 
 export function deleteUser(email: string): void {
@@ -42,21 +58,25 @@ export function deleteUser(email: string): void {
   localStorage.setItem(USERS_KEY, JSON.stringify(users))
 }
 
-export function login(email: string, password: string): { success: boolean; error?: string; firstLogin?: boolean } {
-  const users = getUsers()
-  if (!users[email]) {
-    return { success: false, error: 'No account found with this email.' }
+export async function login(email: string, password: string): Promise<{ success: boolean; error?: string; firstLogin?: boolean }> {
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.toLowerCase().trim(), password }),
+    })
+    const data = await res.json()
+    if (!res.ok) return { success: false, error: data.error || 'Login failed.' }
+
+    const token = generateToken()
+    const auth = { token, email: email.toLowerCase().trim(), name: data.name || email.split('@')[0], subscription: data.subscription || 'stow_away', loginTime: Date.now() }
+    localStorage.setItem(AUTH_KEY, JSON.stringify(auth))
+
+    const tcAccepted = localStorage.getItem(TC_KEY + '_' + email.toLowerCase().trim())
+    return { success: true, firstLogin: !tcAccepted }
+  } catch {
+    return { success: false, error: 'Connection error. Please check your internet and try again.' }
   }
-  if (users[email].password !== password) {
-    return { success: false, error: 'Incorrect password.' }
-  }
-  const token = generateToken()
-  const auth = { token, email, name: users[email].name, loginTime: Date.now() }
-  localStorage.setItem(AUTH_KEY, JSON.stringify(auth))
-  
-  // Check if T&C accepted
-  const tcAccepted = localStorage.getItem(TC_KEY + '_' + email)
-  return { success: true, firstLogin: !tcAccepted }
 }
 
 export function updateAuthSubscription(subscription: string): void {
@@ -78,7 +98,6 @@ export function getAuth(): { token: string; email: string; name: string; subscri
     const raw = localStorage.getItem(AUTH_KEY)
     if (!raw) return null
     const auth = JSON.parse(raw)
-    // Admin emails always get Admiral tier regardless of stored subscription
     if (auth?.email && ADMIN_EMAILS.includes(auth.email.toLowerCase())) {
       return { ...auth, subscription: 'admiral' }
     }
@@ -124,7 +143,6 @@ export function newSession(): string {
   return sid
 }
 
-// Returns a localStorage key scoped to the currently logged-in user
 export function userKey(key: string): string {
   if (typeof window === 'undefined') return key
   try {
@@ -153,7 +171,7 @@ export function generateResetCode(email: string): string | null {
   const users = getUsers()
   if (!users[email]) return null
   const code = Math.floor(100000 + Math.random() * 900000).toString()
-  const resetData = { code, email, expires: Date.now() + 15 * 60 * 1000 } // 15 min
+  const resetData = { code, email, expires: Date.now() + 15 * 60 * 1000 }
   localStorage.setItem('boat_buddy_reset_' + email, JSON.stringify(resetData))
   return code
 }
@@ -179,4 +197,3 @@ export function resetPassword(email: string, code: string, newPassword: string):
   localStorage.removeItem('boat_buddy_reset_' + email)
   return { success: true }
 }
-

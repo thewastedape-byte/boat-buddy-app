@@ -41,7 +41,7 @@ export default function LoginPage() {
     }
     setLoading(true)
     try {
-      const result = login(email.trim().toLowerCase(), password)
+      const result = await login(email.trim().toLowerCase(), password)
       if (result.success) {
         // Fetch fresh subscription from Supabase and store it
         const sub = await fetchSubscription(email.trim().toLowerCase())
@@ -101,7 +101,7 @@ export default function LoginPage() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   className="input-field"
-                  placeholder="••••••••"
+                  placeholder="........"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   autoComplete="current-password"
@@ -114,7 +114,7 @@ export default function LoginPage() {
                   style={{ color: 'rgba(198,139,58,0.7)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', lineHeight: 1 }}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? '🙈' : '👁️'}
+                  {showPassword ? '??' : '???'}
                 </button>
               </div>
             </div>
@@ -126,7 +126,7 @@ export default function LoginPage() {
             </div>
 
             <button type="submit" className="btn-primary w-full mt-2" disabled={loading}>
-              {loading ? 'Signing in...' : '⚓ Sign In'}
+              {loading ? 'Signing in...' : '? Sign In'}
             </button>
           </form>
 

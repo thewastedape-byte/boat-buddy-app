@@ -49,12 +49,12 @@ function SignupContent() {
 
     setLoading(true)
     try {
-      const result = signup(email.trim().toLowerCase(), password)
+      const result = await signup(email.trim().toLowerCase(), password)
       if (!result.success) { setError(result.error || 'Sign up failed.'); return }
 
       // If a paid tier was selected, go straight to Stripe checkout
       if (tierParam && !inviteToken) {
-        login(email.trim().toLowerCase(), password)
+        await login(email.trim().toLowerCase(), password)
         try {
           const res = await fetch('/api/stripe/checkout', {
             method: 'POST',
@@ -100,15 +100,15 @@ function SignupContent() {
       setSignedUp(true)
       // Auto-login and go to tier picker if no invite
       if (!inviteToken) {
-        login(email.trim().toLowerCase(), password)
+        await login(email.trim().toLowerCase(), password)
       }
     } finally {
       setLoading(false)
     }
   }
 
-  const handleContinue = () => {
-    login(email.trim().toLowerCase(), password)
+  const handleContinue = async () => {
+    await login(email.trim().toLowerCase(), password)
     // Re-apply team info after login
     if (inviteInfo) {
       const authRaw = localStorage.getItem('boat_buddy_auth')
@@ -138,7 +138,7 @@ function SignupContent() {
         {inviteInfo && (
           <div className="mb-4 px-4 py-3 rounded-xl text-sm text-center"
             style={{ background: 'rgba(198,139,58,0.12)', border: '1px solid rgba(198,139,58,0.4)', fontFamily: 'Georgia, serif' }}>
-            <p className="font-bold mb-1" style={{ color: '#C68B3A' }}>⚓ Team Invite</p>
+            <p className="font-bold mb-1" style={{ color: '#C68B3A' }}>? Team Invite</p>
             <p style={{ color: 'rgba(245,240,232,0.7)' }}>
               Join as <strong style={{ color: '#F5F0E8' }}>{inviteInfo.role}</strong>
             </p>
@@ -154,7 +154,7 @@ function SignupContent() {
 
         {signedUp ? (
           <div className="panel p-6 text-center">
-            <div className="text-5xl mb-4">{inviteInfo ? '⚓' : '📧'}</div>
+            <div className="text-5xl mb-4">{inviteInfo ? '?' : '??'}</div>
             <h2 className="text-xl font-bold mb-3" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>
               {inviteInfo ? 'You\'re on the team!' : 'Account Created'}
             </h2>
@@ -164,7 +164,7 @@ function SignupContent() {
                 : `Account ready. Tap below to get started.`}
             </p>
             <button className="btn-primary w-full" onClick={handleContinue}>
-              ✅ Continue to App
+              ? Continue to App
             </button>
           </div>
         ) : (
@@ -196,7 +196,7 @@ function SignupContent() {
                     className="absolute right-3 top-1/2 -translate-y-1/2"
                     style={{ color: 'rgba(198,139,58,0.7)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', lineHeight: 1 }}
                     aria-label={showPassword ? 'Hide password' : 'Show password'}>
-                    {showPassword ? '🙈' : '👁️'}
+                    {showPassword ? '??' : '???'}
                   </button>
                 </div>
               </div>
@@ -210,12 +210,12 @@ function SignupContent() {
                     className="absolute right-3 top-1/2 -translate-y-1/2"
                     style={{ color: 'rgba(198,139,58,0.7)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', lineHeight: 1 }}
                     aria-label={showConfirm ? 'Hide password' : 'Show password'}>
-                    {showConfirm ? '🙈' : '👁️'}
+                    {showConfirm ? '??' : '???'}
                   </button>
                 </div>
               </div>
               <button type="submit" className="btn-primary w-full mt-2" disabled={loading}>
-                {loading ? 'Creating account...' : inviteInfo ? '⚓ Join Team' : '⚓ Create Account'}
+                {loading ? 'Creating account...' : inviteInfo ? '? Join Team' : '? Create Account'}
               </button>
             </form>
 
