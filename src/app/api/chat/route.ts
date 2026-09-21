@@ -76,6 +76,9 @@ export async function POST(req: NextRequest) {
           .eq('email', email)
       }
 
+      // Touch last_active for all authenticated users (tracks who's using the app)
+      await supabase.from('users').update({ last_active: new Date().toISOString() }).eq('email', email)
+
       // Override subscription in forwarded body with authoritative DB value
       // (prevents stale localStorage subscription from degrading paid users' experience)
       const authoritative = isAdmin ? 'admiral' : (user?.subscription || 'stow_away')

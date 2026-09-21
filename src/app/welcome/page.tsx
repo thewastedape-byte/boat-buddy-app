@@ -9,7 +9,21 @@ export default function WelcomePage() {
   const router = useRouter()
 
   useEffect(() => {
-    if (isLoggedIn()) router.replace('/')
+    if (isLoggedIn()) {
+      router.replace('/')
+      return
+    }
+    // Fresh install on Android app → skip marketing, go straight to signup
+    if (typeof window !== 'undefined') {
+      const isCapacitorApp = !!(window as any).Capacitor
+      const hasLaunchedBefore = localStorage.getItem('bb_app_launched')
+      if (isCapacitorApp && !hasLaunchedBefore) {
+        localStorage.setItem('bb_app_launched', '1')
+        router.replace('/signup')
+        return
+      }
+      if (!hasLaunchedBefore) localStorage.setItem('bb_app_launched', '1')
+    }
   }, [router])
 
   return (

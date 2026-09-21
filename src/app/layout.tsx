@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import './globals.css'
 import Analytics from '@/components/Analytics'
 
@@ -68,6 +69,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="google-site-verification" content="GOOGLE_VERIFICATION_CODE_HERE" />
+
   
       <script dangerouslySetInnerHTML={{ __html: `
         if ('serviceWorker' in navigator) {
@@ -86,6 +88,17 @@ export default function RootLayout({
       <body className="bg-wood min-h-screen">
         <Analytics />
         {children}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} strategy="afterInteractive" />
+            <Script id="ga4-init" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { send_page_view: false });
+            ` }} />
+          </>
+        )}
       </body>
     </html>
   )
