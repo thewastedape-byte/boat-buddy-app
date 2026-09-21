@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "381600306050",
+    "project_id": "boat-buddy-ai",
+    "storage_bucket": "boat-buddy-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381600306050:android:19e8dbf852329c30a6b59b",
+        "android_client_info": {
+          "package_name": "com.thewastedape.boatbuddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGb5fGAyC-pRcRU6MUHb__b_vKha71HRE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
