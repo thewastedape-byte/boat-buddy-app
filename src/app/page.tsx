@@ -431,16 +431,27 @@ export default function ChatPage() {
         flushDiagram('diag-' + i)
         inDiagram = false
         const partName = line.replace('SEARCH_LINK:', '').trim()
-        const url = 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent('marine ' + partName)
+        const ytUrl = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(partName + ' marine repair how to')
+        const partsUrl = 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent('marine ' + partName)
         result.push(
-          <a key={i} href={url} target="_blank" rel="noopener noreferrer"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginTop: '8px', marginBottom: '4px', padding: '6px 12px', background: 'rgba(198,139,58,0.2)', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '8px', color: '#C68B3A', fontSize: '13px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
-            🔍 See images: {partName}
-          </a>
+          <div key={i} style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px', marginBottom: '4px' }}>
+            <a href={ytUrl} target="_blank" rel="noopener noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '6px 12px', background: 'rgba(200,0,0,0.18)', border: '1px solid rgba(220,60,60,0.55)', borderRadius: '8px', color: '#FF7070', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
+              &#9654; YouTube: {partName}
+            </a>
+            <a href={partsUrl} target="_blank" rel="noopener noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '6px 12px', background: 'rgba(198,139,58,0.2)', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '8px', color: '#C68B3A', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
+              🛒 Buy Parts: {partName}
+            </a>
+          </div>
         )
         return
       }
 
+      if (line.startsWith('YOUTUBE_LINK:')) {
+        // Handled via SEARCH_LINK pairing - skip to avoid duplicates
+        return
+      }
       // Detect diagram lines: contain arrows, box chars, or multiple special chars
       const isDiagramLine = /[─│┌┐└┘├┤┬┴┼→←↑↓↔⇒]/.test(line) || 
         (line.includes('-->') && line.length > 5) ||
