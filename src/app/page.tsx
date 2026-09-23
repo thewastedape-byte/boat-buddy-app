@@ -433,10 +433,12 @@ export default function ChatPage() {
         const partName = line.replace('SEARCH_LINK:', '').replace('YOUTUBE_LINK:', '').trim()
         const ytUrl = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(partName + ' marine repair how to')
         result.push(
-          <a key={i} href={ytUrl} target="_blank" rel="noopener noreferrer"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginTop: '8px', marginBottom: '4px', padding: '6px 14px', background: 'rgba(200,0,0,0.18)', border: '1px solid rgba(220,60,60,0.55)', borderRadius: '8px', color: '#FF7070', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
-            &#9654; YouTube: {partName}
-          </a>
+          <p key={i} style={{ marginBottom: '4px' }}>
+            <a href={ytUrl} target="_blank" rel="noopener noreferrer"
+              style={{ color: '#C68B3A', textDecoration: 'underline', fontSize: '13px', fontFamily: 'Georgia, serif' }}>
+              YouTube: {partName}
+            </a>
+          </p>
         )
         return
       }
@@ -447,10 +449,12 @@ export default function ChatPage() {
         const partName = line.replace('IMAGE_LINK:', '').trim()
         const imgUrl = 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent('marine ' + partName)
         result.push(
-          <a key={i} href={imgUrl} target="_blank" rel="noopener noreferrer"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginTop: '8px', marginBottom: '4px', padding: '6px 14px', background: 'rgba(60,120,200,0.18)', border: '1px solid rgba(80,140,220,0.55)', borderRadius: '8px', color: '#70AAFF', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
-            &#128247; See what it looks like: {partName}
-          </a>
+          <p key={i} style={{ marginBottom: '4px' }}>
+            <a href={imgUrl} target="_blank" rel="noopener noreferrer"
+              style={{ color: '#C68B3A', textDecoration: 'underline', fontSize: '13px', fontFamily: 'Georgia, serif' }}>
+              Images: {partName}
+            </a>
+          </p>
         )
         return
       }
@@ -461,25 +465,14 @@ export default function ChatPage() {
         const partName = line.replace('BUY_LINK:', '').trim()
         const ebayUrl = 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent('marine ' + partName)
         const amazonUrl = 'https://www.amazon.com/s?k=' + encodeURIComponent('marine ' + partName)
-        const westmarineUrl = 'https://www.westmarine.com/search?query=' + encodeURIComponent(partName)
+        const wmUrl = 'https://www.westmarine.com/search?query=' + encodeURIComponent(partName)
         result.push(
-          <div key={i} style={{ marginTop: '10px', marginBottom: '4px' }}>
-            <p style={{ color: 'rgba(198,139,58,0.7)', fontSize: '11px', fontFamily: 'Georgia, serif', marginBottom: '5px' }}>Where to buy: {partName}</p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-              <a href={ebayUrl} target="_blank" rel="noopener noreferrer"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '5px 12px', background: 'rgba(198,139,58,0.2)', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '8px', color: '#C68B3A', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
-                eBay
-              </a>
-              <a href={amazonUrl} target="_blank" rel="noopener noreferrer"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '5px 12px', background: 'rgba(198,139,58,0.2)', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '8px', color: '#C68B3A', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
-                Amazon
-              </a>
-              <a href={westmarineUrl} target="_blank" rel="noopener noreferrer"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '5px 12px', background: 'rgba(198,139,58,0.2)', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '8px', color: '#C68B3A', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
-                West Marine
-              </a>
-            </div>
-          </div>
+          <p key={i} style={{ marginBottom: '4px' }}>
+            <span style={{ color: 'rgba(245,240,232,0.7)', fontSize: '13px', fontFamily: 'Georgia, serif' }}>Buy {partName}: </span>
+            <a href={ebayUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#C68B3A', textDecoration: 'underline', fontSize: '13px', fontFamily: 'Georgia, serif', marginRight: '10px' }}>eBay</a>
+            <a href={amazonUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#C68B3A', textDecoration: 'underline', fontSize: '13px', fontFamily: 'Georgia, serif', marginRight: '10px' }}>Amazon</a>
+            <a href={wmUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#C68B3A', textDecoration: 'underline', fontSize: '13px', fontFamily: 'Georgia, serif' }}>West Marine</a>
+          </p>
         )
         return
       }
@@ -502,7 +495,22 @@ export default function ChatPage() {
           if (line === '') {
             result.push(<br key={i} />)
           } else {
-            result.push(<p key={i} style={{ marginBottom: '4px' }}>{line}</p>)
+            const urlMatch = line.match(/https?:\/\/[^\s]+/)
+            if (urlMatch) {
+              const url = urlMatch[0].replace(/[.,;:!?)'"]+$/, '')
+              const label = line.slice(0, line.indexOf(url)).replace(/:\s*$/, '').trim()
+              result.push(
+                <p key={i} style={{ marginBottom: '4px' }}>
+                  {label && <span style={{ color: 'rgba(245,240,232,0.75)', fontSize: '13px', fontFamily: 'Georgia, serif' }}>{label}: </span>}
+                  <a href={url} target="_blank" rel="noopener noreferrer"
+                    style={{ color: '#C68B3A', textDecoration: 'underline', fontSize: '13px', fontFamily: 'Georgia, serif' }}>
+                    {label || url}
+                  </a>
+                </p>
+              )
+            } else {
+              result.push(<p key={i} style={{ marginBottom: '4px' }}>{line}</p>)
+            }
           }
         }
       }
