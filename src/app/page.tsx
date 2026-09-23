@@ -427,29 +427,60 @@ export default function ChatPage() {
         return
       }
 
-      if (line.startsWith('SEARCH_LINK:')) {
+      if (line.startsWith('SEARCH_LINK:') || line.startsWith('YOUTUBE_LINK:')) {
         flushDiagram('diag-' + i)
         inDiagram = false
-        const partName = line.replace('SEARCH_LINK:', '').trim()
+        const partName = line.replace('SEARCH_LINK:', '').replace('YOUTUBE_LINK:', '').trim()
         const ytUrl = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(partName + ' marine repair how to')
-        const partsUrl = 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent('marine ' + partName)
         result.push(
-          <div key={i} style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px', marginBottom: '4px' }}>
-            <a href={ytUrl} target="_blank" rel="noopener noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '6px 12px', background: 'rgba(200,0,0,0.18)', border: '1px solid rgba(220,60,60,0.55)', borderRadius: '8px', color: '#FF7070', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
-              &#9654; YouTube: {partName}
-            </a>
-            <a href={partsUrl} target="_blank" rel="noopener noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '6px 12px', background: 'rgba(198,139,58,0.2)', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '8px', color: '#C68B3A', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
-              🛒 Buy Parts: {partName}
-            </a>
-          </div>
+          <a key={i} href={ytUrl} target="_blank" rel="noopener noreferrer"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginTop: '8px', marginBottom: '4px', padding: '6px 14px', background: 'rgba(200,0,0,0.18)', border: '1px solid rgba(220,60,60,0.55)', borderRadius: '8px', color: '#FF7070', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
+            &#9654; YouTube: {partName}
+          </a>
         )
         return
       }
 
-      if (line.startsWith('YOUTUBE_LINK:')) {
-        // Handled via SEARCH_LINK pairing - skip to avoid duplicates
+      if (line.startsWith('IMAGE_LINK:')) {
+        flushDiagram('diag-' + i)
+        inDiagram = false
+        const partName = line.replace('IMAGE_LINK:', '').trim()
+        const imgUrl = 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent('marine ' + partName)
+        result.push(
+          <a key={i} href={imgUrl} target="_blank" rel="noopener noreferrer"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginTop: '8px', marginBottom: '4px', padding: '6px 14px', background: 'rgba(60,120,200,0.18)', border: '1px solid rgba(80,140,220,0.55)', borderRadius: '8px', color: '#70AAFF', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
+            &#128247; See what it looks like: {partName}
+          </a>
+        )
+        return
+      }
+
+      if (line.startsWith('BUY_LINK:')) {
+        flushDiagram('diag-' + i)
+        inDiagram = false
+        const partName = line.replace('BUY_LINK:', '').trim()
+        const ebayUrl = 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent('marine ' + partName)
+        const amazonUrl = 'https://www.amazon.com/s?k=' + encodeURIComponent('marine ' + partName)
+        const westmarineUrl = 'https://www.westmarine.com/search?query=' + encodeURIComponent(partName)
+        result.push(
+          <div key={i} style={{ marginTop: '10px', marginBottom: '4px' }}>
+            <p style={{ color: 'rgba(198,139,58,0.7)', fontSize: '11px', fontFamily: 'Georgia, serif', marginBottom: '5px' }}>Where to buy: {partName}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+              <a href={ebayUrl} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '5px 12px', background: 'rgba(198,139,58,0.2)', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '8px', color: '#C68B3A', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
+                eBay
+              </a>
+              <a href={amazonUrl} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '5px 12px', background: 'rgba(198,139,58,0.2)', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '8px', color: '#C68B3A', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
+                Amazon
+              </a>
+              <a href={westmarineUrl} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '5px 12px', background: 'rgba(198,139,58,0.2)', border: '1px solid rgba(198,139,58,0.5)', borderRadius: '8px', color: '#C68B3A', fontSize: '12px', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
+                West Marine
+              </a>
+            </div>
+          </div>
+        )
         return
       }
       // Detect diagram lines: contain arrows, box chars, or multiple special chars
