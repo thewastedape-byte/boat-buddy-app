@@ -9,6 +9,15 @@ const PRICE_MAP: Record<string, string> = {
   marina_addon: 'price_1TWjbhHfCuVeN1IrCs4vZyti',
 }
 
+// Intro coupons: year-1 discounted pricing, auto-expires after 12 months
+const INTRO_COUPON_MAP: Record<string, string> = {
+  first_mate: 'INTRO_FIRST_MATE', // $9.99 → $4.99/mo
+  captain:    'INTRO_CAPTAIN',    // $24.99 → $10.99/mo
+  admiral:    'INTRO_ADMIRAL',    // $49.99 → $29.99/mo
+}
+
+const TRIAL_DAYS = 7
+
 export async function POST(req: NextRequest) {
   const secretKey = process.env.STRIPE_SECRET_KEY
   if (!secretKey) return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 })
@@ -25,12 +34,20 @@ export async function POST(req: NextRequest) {
     const cancelSlug = tier === 'marina_addon' ? 'marina' : tier.includes('yard') ? 'yard' : 'upgrade'
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://boatbuddy.thewastedape.com'
 
+    const introCoupon = !isAddon ? INTRO_COUPON_MAP[tier] : null
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'subscription',
       customer_email: email,
       line_items: [{ price: priceId, quantity: 1 }],
-      ...(isAddon ? {} : { discounts: [{ coupon: 'LAUNCH2026' }] }),
+      ...(isAddon ? {} : {
+        subscription_data: {
+          trial_period_days: TRIAL_DAYS,
+          metadata: { tier, email: email || '' },
+        },
+        ...(introCoupon ? { discounts: [{ coupon: introCoupon }] } : {}),
+      }),
       metadata: { tier, email: email || '' },
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}&tier=${tier}`,
       cancel_url: `${appUrl}/${cancelSlug}`,

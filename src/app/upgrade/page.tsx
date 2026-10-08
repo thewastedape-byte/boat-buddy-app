@@ -22,8 +22,8 @@ const TIERS = [
     icon: '⚓',
     name: 'First Mate',
     tier: 'first_mate',
-    price: '$9.99',
-    originalPrice: '$19.99',
+    price: '$4.99',
+    originalPrice: '$9.99',
     period: '/mo',
     seats: '1 user',
     tag: 'MOST POPULAR',
@@ -42,8 +42,8 @@ const TIERS = [
     icon: '🚢',
     name: 'Captain',
     tier: 'captain',
-    price: '$24.99',
-    originalPrice: '$49',
+    price: '$10.99',
+    originalPrice: '$24.99',
     period: '/mo',
     seats: '5 seats',
     tag: 'TEAM',
@@ -64,8 +64,8 @@ const TIERS = [
     icon: '🪖',
     name: 'Admiral',
     tier: 'admiral',
-    price: '$49.99',
-    originalPrice: '$99',
+    price: '$29.99',
+    originalPrice: '$49.99',
     period: '/mo',
     seats: '10 seats',
     tag: 'YARD / FLEET',
@@ -164,14 +164,14 @@ export default function UpgradePage() {
                   )}
                 </div>
                 <div className="text-right flex-shrink-0">
-                  {tier.originalPrice && (
-                    <span className="text-xs line-through block" style={{ color: 'rgba(245,240,232,0.6)', fontFamily: 'Georgia, serif' }}>{tier.originalPrice}/mo</span>
+                  {tier.tier && (
+                    <span className="text-xs px-2 py-0.5 rounded-full block mb-1" style={{ background: 'rgba(112,192,112,0.15)', color: '#70c070', fontFamily: 'Georgia, serif', border: '1px solid rgba(112,192,112,0.4)' }}>7-Day Free Trial</span>
                   )}
                   <span className="text-2xl font-bold" style={{ color: tier.tag === 'MOST POPULAR' ? '#C68B3A' : '#F5F0E8', fontFamily: 'Georgia, serif' }}>{tier.price}</span>
-                  {tier.originalPrice && (
-                    <span className="text-xs block" style={{ color: '#70c070', fontFamily: 'Georgia, serif' }}>Intro price</span>
-                  )}
                   {tier.period && <span className="text-sm" style={{ color: '#F5F0E8', fontFamily: 'Georgia, serif' }}>{tier.period}</span>}
+                  {tier.originalPrice && (
+                    <span className="text-xs block mt-0.5" style={{ color: 'rgba(245,240,232,0.6)', fontFamily: 'Georgia, serif' }}>then {tier.originalPrice}/mo after year 1</span>
+                  )}
                 </div>
               </div>
 
@@ -191,7 +191,7 @@ export default function UpgradePage() {
                   className="btn-primary w-full"
                   style={{ opacity: loading !== null ? 0.7 : 1 }}
                 >
-                  {loading === tier.tier ? 'Loading...' : `⚓ Get ${tier.name} — ${tier.price}${tier.period}`}
+                  {loading === tier.tier ? 'Loading...' : `🚀 Start 7-Day Free Trial`}
                 </button>
               ) : (
                 <div className="text-center py-1">
@@ -200,7 +200,7 @@ export default function UpgradePage() {
               )}
 
               {tier.tier && (
-                <p className="text-xs text-center mt-2" style={{ color: 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif' }}>Cancel anytime from Settings</p>
+                <p className="text-xs text-center mt-2" style={{ color: 'rgba(245,240,232,0.75)', fontFamily: 'Georgia, serif' }}>No charge for 7 days · Cancel anytime</p>
               )}
             </div>
           ))}
