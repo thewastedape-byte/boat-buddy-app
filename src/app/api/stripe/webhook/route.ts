@@ -49,7 +49,10 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ received: true })
       }
 
-      const subscription = TIER_MAP[tier] || tier
+      const isAddon = ['yard_addon', 'yard_standalone', 'marina_addon'].includes(tier)
+      // Non-addon purchases start with a 7-day trial — give admiral (full app) access
+      // so users can explore everything. On trial end, subscription.updated downgrades them.
+      const subscription = isAddon ? (TIER_MAP[tier] || tier) : 'admiral'
       const supabase = createClient(SUPABASE_URL, serviceKey)
       const { error } = await supabase
         .from('users')
@@ -59,7 +62,27 @@ export async function POST(req: NextRequest) {
       if (error) {
         console.error('[webhook] supabase error:', error.message)
       } else {
-        console.log(`[webhook] upgraded ${email} → ${subscription}`)
+        console.log(`[webhook] trial started ${email} → ${subscription} (paid tier: ${tier})`)
+      }
+    }
+
+    // Trial ended → downgrade to the actual purchased tier
+    if (event.type === 'customer.subscription.updated') {
+      const sub = event.data.object as any
+      const prevStatus = (event.data as any).previous_attributes?.status
+      if (sub.status === 'active' && prevStatus === 'trialing') {
+        const tier = sub.metadata?.tier
+        if (!tier) return NextResponse.json({ received: true })
+        try {
+          const customer = await stripe.customers.retrieve(sub.customer) as any
+          const email = customer.email?.toLowerCase().trim()
+          if (email) {
+            const actualTier = TIER_MAP[tier] || tier
+            const supabase = createClient(SUPABASE_URL, serviceKey)
+            await supabase.from('users').update({ subscription: actualTier }).eq('email', email)
+            console.log(`[webhook] trial ended ${email} → ${actualTier}`)
+          }
+        } catch (e) { console.error('[webhook] trial end downgrade error:', e) }
       }
     }
 
