@@ -374,9 +374,9 @@ export default function SettingsPage() {
             const sub = auth?.subscription || 'stow_away'
             const plans: Record<string, {name: string; desc: string}> = {
               stow_away: { name: 'Stow Away (Free)', desc: '1 question every 6 hours' },
-              first_mate: { name: 'First Mate', desc: '$9.99 / month - Unlimited access' },
-              captain: { name: 'Captain', desc: '$24.99 / month - 5 seats' },
-              admiral: { name: 'Admiral', desc: '$49.99 / month - 10 seats' },
+              first_mate: { name: 'First Mate', desc: '$4.99 / month · first year, then $9.99/mo' },
+              captain: { name: 'Captain', desc: '$10.99 / month · first year, then $24.99/mo' },
+              admiral: { name: 'Admiral', desc: '$29.99 / month · first year, then $49.99/mo' },
             }
             const plan = plans[sub] || plans.stow_away
             return (
